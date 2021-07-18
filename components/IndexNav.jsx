@@ -19,7 +19,7 @@ const IndexNav = () => {
         // console.log(e.target)
     }
 
-    const isMobile = useMediaQuery('(max-width: 767px')
+    const isMobile = useMediaQuery('(max-width: 767px)')
 
     
     
