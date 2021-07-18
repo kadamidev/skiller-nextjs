@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
+// font-family: 'Kotta One', serif;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
+//font-family: 'Noto Sans TC', sans-serif;
+
+
+.textContainer {
+    position: relative;
+    // border: 1px solid black;
+    width: 395px;
+    height: 130px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    // margin-top: 100px;
+    // margin-left: 25px;
+    h1 {
+        font-family: 'Noto Sans TC', sans-serif;
+        // border: 1px solid black;
+        font-size: 3.125rem;
+        font-weight: bold;
+        color: transparent;
+        padding: 0;
+        margin: 0;
+
+        // width: 100%;
+    }
+
+    .productivity {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        background: linear-gradient(180deg, #52E9C5 0%, #AFF6E5 100%);
+        background-clip: text;
+
+
+    }
+
+    .redefined {
+        position: absolute;
+        right: 5px;
+        top: 44px;
+        background: linear-gradient(180deg, #AFF6E5 0%, #52E9C5 100%);
+        background-clip: text;
+
+    }
+
+    p {
+        font-family: 'Kotta One', serif;
+        // border: 1px solid black;
+        // top: 70px;
+        margin: 0;
+        color: #2A5248;
+        font-size: 1.1em;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .textContainer {
+        // border: 1px solid black;
+        width: 700px;
+        height: 175px;
+
+        h1 {
+            font-size: 5rem;
+            // border: 1px solid black;
+
+        }
+
+        .productivity {
+            top: 0px;
+            left: 72px;
+        }
+
+        .redefined {
+            right: 3.5px;
+            top: 70px;
+        }
+
+        p {
+            font-size: 1.6em;
+            position: absolute;
+            left: 5px;
+            top: 97px;
+        }
+
+
+    }
+}

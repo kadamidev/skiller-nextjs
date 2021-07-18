@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.scss'
 import IndexNav from '../components/IndexNav'
+import MainHeading from '../components/MainHeading'
 
 export default function Home() {
   return (
@@ -14,6 +15,11 @@ export default function Home() {
       </Head>
 
       <IndexNav />
+      <div className={styles.center}>
+      <MainHeading />
+      </div>
+
+      {/* <Image  /> */}
       <p className={styles.bigText}>hello</p>
     </div>
   )
