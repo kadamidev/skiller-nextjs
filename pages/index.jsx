@@ -6,6 +6,7 @@ import IndexNav from '../components/IndexNav'
 import MainHeading from '../components/MainHeading'
 import LaunchAppBtn from '../components/LaunchAppBtn'
 import { useMediaQuery } from '../lib/useMediaQuery'
+import Waves from '../components/Waves'
 
 export default function Home() {
     const isMobile = useMediaQuery('(max-width: 767px)')
@@ -19,13 +20,20 @@ export default function Home() {
 
       <IndexNav />
 
-      <div className={styles.center}>
-        <MainHeading />
-        <Image  src='/img/index/hero-img.svg' width={430} height={480}/>
+      <section className={styles.heroSection}>
+        <div className={styles.center}>
+          <MainHeading />
+          <Image  src='/img/index/hero-img.svg' width={430} height={480}/>
 
-      { isMobile && <Link href="menu"><LaunchAppBtn textSize='2.4rem'/></Link> }
+          { isMobile && <Link href="menu"><LaunchAppBtn textSize='2.4rem'/></Link> }
+          
+          <div className={styles.waves}>
+            <Waves />
+          </div>
 
-      </div>
+        </div>
+      </section>
+
 
 
 
