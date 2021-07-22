@@ -8,6 +8,7 @@
     position: relative;
     // border: 1px solid black;
     width: 395px;
+    // min-width: 300px;
     height: 130px;
     display: flex;
     align-items: flex-end;
@@ -82,6 +83,43 @@
             position: absolute;
             left: 5px;
             top: 97px;
+        }
+
+
+    }
+}
+
+@media screen and (min-width: 1080px) {
+    .textContainer {
+        // border: 1px solid black;
+        max-width: 540px;
+        height: 175px;
+        position: relative;
+
+        h1 {
+            font-size: 4em;
+            // border: 1px solid black;
+
+        }
+
+        .productivity {
+            position: absolute;
+            left: auto;
+            right: 91.5px;
+            top: 4px;
+        }
+
+        .redefined {
+            right: 0px;
+            top: 60px;
+        }
+
+        p {
+            font-size: 1.15em;
+            position: absolute;
+            left: auto;
+            right: 345px;
+            top: 85px;
         }
 
 
