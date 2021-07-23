@@ -12,7 +12,7 @@ export default function Home() {
 
 
   return (
-    <div className={styles.container}>
+    <div className='container'>
       <Head>
         <title>Skiller - A task app like no other</title>
         <meta name="description" content="A producitivity web application" />
@@ -29,7 +29,7 @@ export default function Home() {
           </div>
 
           <div className={styles.heroImg}>
-            <Image src='/img/index/hero-img.svg' width={430} height={480} />
+            <Image className={styles.img} src='/img/index/hero-img.svg' width={430} height={480} />
           </div>
 
           <div className={styles.launchBtn}>
