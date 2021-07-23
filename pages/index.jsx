@@ -53,6 +53,28 @@ export default function Home() {
         }
       </section>
 
+      <section className={styles.featuresSection}>
+        <div className={styles.container}>
+
+        <h1 className={styles.heading}>Features</h1>
+
+        <ul className={styles.featuresList}>
+          <li>Checklist</li>
+          <li>Tabs</li>
+          <li>Progress Bars</li>
+          <li>Reminders</li>
+          <li>Mobile Friendly</li>
+          <li>Intuitive UX</li>
+        </ul>
+
+
+
+
+
+
+        </div>
+      </section>
+
 
 
 

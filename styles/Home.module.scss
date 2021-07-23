@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
+//font-family: 'Noto Sans TC', sans-serif;
 
 // .container {
 //     width: 80vw;
@@ -124,6 +126,48 @@
         }
     }
 
+
+
+}
+
+
+.featuresSection {
+    div.container {
+        background: var(--primary-color);
+        height: 100vh;
+        width: 100vw;
+        border: 1px solid black;
+    }
+
+    h1 {
+        font-family: 'Noto Sans TC', sans-serif;
+        color: var(--lightest-aqua);
+        font-size: 7.5vh;
+        font-weight: bold;
+        text-align: center;
+        padding: 0;
+        margin-top: 3vh;
+    }
+
+    ul {
+        // border: 1px solid orange;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100vh - 30.5vh);
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        color: var(--lightest-aqua);
+        font-size: 4vh;
+        // margin-bottom: 5%;
+
+        li {
+            margin: 0;
+            padding: 0;
+        }
+    }
 
 
 }
