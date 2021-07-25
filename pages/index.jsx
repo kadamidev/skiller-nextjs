@@ -56,22 +56,42 @@ export default function Home() {
       <section className={styles.featuresSection}>
         <div className={styles.container}>
 
-        <h1 className={styles.heading}>Features</h1>
+          <h1 className={styles.heading}>Features</h1>
 
-        <ul className={styles.featuresList}>
-          <li>Checklist</li>
-          <li>Tabs</li>
-          <li>Progress Bars</li>
-          <li>Reminders</li>
-          <li>Mobile Friendly</li>
-          <li>Intuitive UX</li>
-        </ul>
+          <ul className={styles.featuresList}>
+            <li>Checklist</li>
+            <li>Tabs</li>
+            <li>Progress Bars</li>
+            <li>Reminders</li>
+            <li>Mobile Friendly</li>
+            <li>Intuitive UX</li>
+          </ul>
 
+        </div>
+      </section>
 
+      <section className={styles.contactSection}>
+        <div className={styles.container}>
 
+          <h1>Contact & Feedback</h1>
 
+          <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p>
 
+          <div className={styles.ideaWrap}>
+            {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
+          </div>
 
+          <form action="">
+            <label className={styles.emailLabel} htmlFor="email">Email Address</label>
+            <input className={styles.emailField} type="email" name="contact[email]" id="email" placeholder='example@email.com'/>
+
+            <label htmlFor="message">Message</label>
+            <textarea name="contact[message]" id="message" cols="30" rows="10" placeholder='...'></textarea>
+            
+            <input className='sendBtn' type="submit" value='FULL SEND'/>
+          </form>
+
+          
         </div>
       </section>
 
