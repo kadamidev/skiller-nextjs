@@ -6,6 +6,7 @@ import IndexNav from '../components/IndexNav'
 import MainHeading from '../components/MainHeading'
 import LaunchAppBtn from '../components/LaunchAppBtn'
 import { useMediaQuery } from '../lib/useMediaQuery'
+import ContactForm from '../components/ContactForm'
 
 export default function Home() {
     const isMobile = useMediaQuery('(max-width: 767px)')
@@ -81,15 +82,9 @@ export default function Home() {
             {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
           </div>
 
-          <form action="">
-            <label className={styles.emailLabel} htmlFor="email">Email Address</label>
-            <input className={styles.emailField} type="email" name="contact[email]" id="email" placeholder='example@email.com'/>
-
-            <label htmlFor="message">Message</label>
-            <textarea name="contact[message]" id="message" cols="30" rows="10" placeholder='...'></textarea>
-            
-            <input className='sendBtn' type="submit" value='FULL SEND'/>
-          </form>
+          <div className={styles.formWrapper}>
+            <ContactForm className={styles.contactForm} />
+          </div>
 
           
         </div>
