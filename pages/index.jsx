@@ -22,7 +22,7 @@ export default function Home() {
 
       <IndexNav />
 
-      <section className={styles.heroSection}>
+      <section className={styles.heroSection} id='hero-section'>
         <div className={styles.heroContainer}>
 
           <div className={styles.heading}>
@@ -36,7 +36,6 @@ export default function Home() {
           <div className={styles.launchBtn}>
             { isMobile && <Link href="menu"><LaunchAppBtn textSize='2.4rem'/></Link> }
           </div>
-        </div>
 
 
 
@@ -52,9 +51,10 @@ export default function Home() {
             </svg>
           )
         }
+        </div>
       </section>
 
-      <section className={styles.featuresSection}>
+      <section className={styles.featuresSection} id='features-section'>
         <div className={styles.container}>
 
           <h1 className={styles.heading}>Features</h1>
@@ -71,7 +71,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.contactSection}>
+      <section className={styles.contactSection} id='contact-section'>
         <div className={styles.container}>
 
           <h1>Contact & Feedback</h1>

@@ -16,6 +16,7 @@ const IndexNav = () => {
 
     const handleCurrentClick = (e) => {
         setCurrent(e.target.textContent)
+        handleMenuClick()
         // console.log(e.target)
     }
 
@@ -25,7 +26,7 @@ const IndexNav = () => {
     
     return (
         <>
-        <nav className={styles.navbar}>
+        <nav className={showNav ? [styles.fixed, styles.navbar].join(" ") : styles.navbar}>
             <div className={styles.container}>
                 <h1 className="logo">Skiller</h1>
 
