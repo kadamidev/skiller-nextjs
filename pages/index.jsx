@@ -76,16 +76,18 @@ export default function Home() {
 
           <h1>Contact & Feedback</h1>
 
-          <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p>
 
-          <div className={styles.ideaWrap}>
-            {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
+          <div className={styles.left}>
+            <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p>
+
+            <div className={styles.ideaWrap}>
+              {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
+            </div>
           </div>
 
           <div className={styles.formWrapper}>
             <ContactForm className={styles.contactForm} />
           </div>
-
           
         </div>
       </section>
