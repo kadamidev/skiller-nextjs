@@ -8,7 +8,7 @@ const LaunchAppBtn = (props) => {
         <div>
             <div className={styles.btn}>
                 <span style={{ fontSize: props.textSize }} >LAUNCH APP</span>
-                <div className={styles.imgWrapper}><Image className={styles.rocket} src="/../public/img/index/rocket.svg" width={imageSize} height={imageSize} /></div>
+                <div className={styles.imgWrapper}><Image className={styles.rocket} src="/img/index/rocket.svg" width={imageSize} height={imageSize} /></div>
             </div>
         </div>
     );
