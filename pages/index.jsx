@@ -91,10 +91,10 @@ export default function Home() {
 
           <h1>Contact & Feedback</h1>
 
-          { !(isMonitor) && <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p> }
+          { !(isMonitor) && <p>We&apos;re happy to hear from you, please share any feedback or improvements you&apos;d like to see.</p> }
           
           <div className={styles.left}>
-            { isMonitor && <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p> }
+            { isMonitor && <p>We&apos;re happy to hear from you, please share any feedback or improvements you&apos;d like to see.</p> }
 
             <div className={styles.ideaWrap}>
               {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
