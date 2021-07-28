@@ -171,11 +171,19 @@
         .launchBtnWrap {
             display: block;
             // border: 1px solid black;
-            margin-bottom: 1em;
-            margin-right: 1em;
+            margin-bottom: 1rem;
+            margin-right: 1rem;
             width: auto;
+            justify-self: unset;
+            align-self: unset;
             // height: 100px;
         }
     }
 }
     
+
+
+// margin-bottom: 5%;
+// width: auto;
+// justify-self: center;
+// align-self: end;
