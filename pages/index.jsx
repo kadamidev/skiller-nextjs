@@ -10,6 +10,7 @@ import ContactForm from '../components/ContactForm'
 
 export default function Home() {
     const isMobile = useMediaQuery('(max-width: 767px)')
+    const isMonitor = useMediaQuery('(min-width: 1080px)')
 
 
   return (
@@ -59,6 +60,13 @@ export default function Home() {
 
           <h1 className={styles.heading}>Features</h1>
 
+          { isMonitor && <div className={styles.left}>
+            <Image src='/img/index/left-checklist.svg' width={295} height={81}/>
+            <Image src='/img/index/left-progress.svg' width={191} height={208}/>
+            <Image src='/img/index/left-mobile.svg' width={175} height={249}/>
+
+          </div> }
+
           <ul className={styles.featuresList}>
             <li>Checklist</li>
             <li>Tabs</li>
@@ -68,6 +76,13 @@ export default function Home() {
             <li>Intuitive UX</li>
           </ul>
 
+          { isMonitor && <div className={styles.right}>
+            <Image src='/img/index/right-tabs.svg' width={301} height={270}/>
+            <Image src='/img/index/right-email.svg' width={242} height={144}/>
+            <Image src='/img/index/right-ux.svg' width={265} height={220}/>
+
+          </div> }
+
         </div>
       </section>
 
@@ -76,18 +91,19 @@ export default function Home() {
 
           <h1>Contact & Feedback</h1>
 
-
+          { !(isMonitor) && <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p> }
+          
           <div className={styles.left}>
-            <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p>
+            { isMonitor && <p>We're happy to hear from you, please share any feedback or improvements you'd like to see.</p> }
 
             <div className={styles.ideaWrap}>
               {!(isMobile) && <Image src="/img/index/ideas.svg" width={410} height={484} />}
             </div>
           </div>
 
-          <div className={styles.formWrapper}>
-            <ContactForm className={styles.contactForm} />
-          </div>
+            <div className={styles.formWrapper}>
+              <ContactForm className={styles.contactForm} />
+            </div>
           
         </div>
       </section>
