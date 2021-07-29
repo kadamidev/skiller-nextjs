@@ -30,12 +30,15 @@ a {
   box-sizing: border-box;
 }
 
-/* @media screen and (min-width: 1080px) {
+@media screen and (min-width: 1080px) {
   .container {
-    width: 80%;
-    margin: 0 auto;
+    width: 90%;
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+    /* margin-left: 10vw;
+    margin-right: 10vw; */
   }
-} */
+}
 
 /* .container {
   max-width: 1080px;

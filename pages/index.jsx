@@ -35,7 +35,7 @@ export default function Home() {
           </div>
 
           <div className={styles.launchBtn}>
-            { isMobile && <Link href="menu"><LaunchAppBtn textSize='2.4rem'/></Link> }
+            { isMobile && <Link href="menu"><a><LaunchAppBtn textSize='2.4rem'/></a></Link>}
           </div>
 
 
