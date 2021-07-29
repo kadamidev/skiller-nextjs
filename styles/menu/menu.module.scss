@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
+//font-family: 'Noto Sans TC', sans-serif;
+
+
+.container {
+    background: #e5e5e5;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 5vw;
+
+
+        
+        li {
+            a {
+                color: #949494;
+                background: linear-gradient(180deg, #FFFFFF 0%, #ECECEC 100%);
+
+                width: 20vh;
+                height: 20vh;
+                box-shadow: 4px 4px 4px 0px #0000001A;
+                border-radius: 10px;
+                font-size: 0.8em;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.5s;
+
+                
+                span {
+                    color: #949494;
+                    text-align: center;
+
+                }
+
+                &:hover {
+                    z-index: 3;
+                    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25),
+                    inset -10px -10px 100px 20px rgba(82, 233, 197, 0.1),
+                    inset 10px 10px 100px 20px rgba(82, 233, 197, 0.1);
+                }
+            }
+        }
+        
+        li.tasker {
+
+            a {
+                
+
+                .svgCont {
+                    // border: 1px solid black;
+                    // align-self: start;
+                    width: 14vh;
+                    // height: 10vh;
+                    
+                }
+
+                span {
+                    // border: 1px solid black;
+                    color: transparent;
+                    font-family: 'Noto Sans TC', sans-serif;
+    
+                    background: linear-gradient(180deg, #52E9C5 0%, #84F3D9 100%);
+                    background-clip: text;
+                    font-size: 4vh;
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1em;
+
+                    // justify-self: flex-end;
+                }
+            }
+        }
+    }
+
+
+
+}
+
+
+@media screen and (min-width: 1000px) {
+    .container {
+        ul {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+}
