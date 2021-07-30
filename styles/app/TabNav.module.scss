@@ -1,0 +1,14 @@
+.container {
+    background: var(--primary-color);
+    position: fixed;
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
+    color: var(--lightest-aqua);
+    span {
+        
+    }
+}
