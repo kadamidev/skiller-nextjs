@@ -8,7 +8,32 @@
     align-items: center;
     padding: 0 1em;
     color: var(--lightest-aqua);
-    span {
-        
+    z-index: 999;
+
+    .tab {
+        // border: 1px solid black;
+        // height: 100%;
+        display: flex;
+        position: relative;
+        padding: 0px 18px;
+        span {
+            text-align: center;
+        }
+
+        .edit {
+            position: absolute;
+            right: 0px;
+            opacity: 50%;
+            cursor: pointer;
+
+    
+            display: none;
+        }
+
+        &:hover {
+            .edit {
+                display: block;
+            }
+        }
     }
 }

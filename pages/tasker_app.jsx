@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
-import TabNav from '../components/TabNav.jsx'
+import TabNav from '../components/tasker_app/TabNav.jsx'
+import Card from '../components/tasker_app/Card.jsx'
 
 const tasker_app = () => {
     return (
@@ -21,12 +22,7 @@ const tasker_app = () => {
 
             <div className={styles.cardContainer}>
                 <ul className={styles.cards}>
-                    <li className={styles.card}></li>
-                    <li className={styles.card}></li>
-                    <li className={styles.card}></li>
-                    <li className={styles.card}></li>
-                    <li className={styles.card}></li>
-                    <li className={styles.card}></li>
+                    <li className={styles.card}><Card/></li>
                 </ul>
             </div>
         </div>
