@@ -25,6 +25,7 @@
         padding: .5em;
         font-size: 1em;
         position: relative;
+        // font-weight: bold;
         
         .collapseBtn {
             display: flex;
@@ -39,5 +40,19 @@
             }
         }
 
+    }
+
+
+    body {
+        ul {
+            padding: .5em;
+            li {
+                color: #949494;
+                display: grid;
+                grid-template-columns: 16px auto;
+                grid-gap: .2em;
+
+            }
+        }
     }
 }
