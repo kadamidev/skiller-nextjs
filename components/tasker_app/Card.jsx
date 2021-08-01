@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
+import CheckBox from './CheckBox';
 
 const Card = () => {
 
@@ -21,24 +22,20 @@ const Card = () => {
                     <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
                     <div className={styles.collapseBtn}><Image src='/img/app/minus.svg' height={16} width={16} /></div>
                 </header>
-                <body>
+                <section className={styles.cardBody}>
                     <ul>
                         { cardItems.map(item => {
                             return (
                                 <li>
                                     <div className={styles.checkBox}>
-                                        { item.checked ?
-                                        <Image src='/img/app/checked.svg' width={16} height={16}/>
-                                        :
-                                        <Image src='/img/app/unchecked.svg' width={16} height={16}/>
-                                        }
+                                        <CheckBox checked={item.checked || false}/>
                                     </div>
                                     <p className={styles.itemText}>{item.text}</p>
                                 </li>
                             )
                         })}
                     </ul>
-                </body>
+                </section>
             </div>
         </>
     );
