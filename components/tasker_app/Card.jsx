@@ -29,9 +29,9 @@ const Card = (props) => {
                 </header>
                 <section className={styles.cardBody}>
                     <ul>
-                        { cardItems.map(item => {
+                        { cardItems.map((item, index) => {
                             return (
-                                <li>
+                                <li key={index}>
                                     <div className={styles.checkBox}>
                                         <CheckBox checked={item.checked || false}/>
                                     </div>

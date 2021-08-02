@@ -22,7 +22,9 @@ const tasker_app = () => {
 
             <div className={styles.cardContainer}>
                 <ul className={styles.cards}>
+                    <li className={styles.card}><Card collapsed={true}/></li>
                     <li className={styles.card}><Card/></li>
+
                 </ul>
             </div>
         </div>

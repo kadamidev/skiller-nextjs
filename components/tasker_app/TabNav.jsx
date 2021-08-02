@@ -8,9 +8,9 @@ const TabNav = () => {
         <>
         <nav className={styles.container}>
             <div className={styles.homeWrap}>
-                <Link href='menu'><a><Image src="/img/app/home.svg" width={30} height={30}/></a></Link>
+                <Link href='/menu'><a><Image src="/img/app/home.svg" width={30} height={30}/></a></Link>
             </div>  
-            
+
             <div className={styles.tab}>
                 <span>Current Tab</span>
                 <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
