@@ -5,31 +5,41 @@ import CheckBox from './CheckBox';
 
 
 const Card = (props) => {
-
+    // list collapse
     const [collapsed, setCollapsed] = useState(props.collapsed)
-
-    const cardItems = [
-        { checked: false, text: 'New item'},
-        { checked: true, text: 'New item 2'},
-        { checked: true, text: 'New item 3'},
-        { checked: false, text: 'New item 4'},
-    ]
+    // edit and set header
+    const [header, setHeader] = useState(props.header)
+    const [editHeader, setEditHeader] = useState(false)
 
     const toggleCollapsed = () => {
         setCollapsed(!collapsed)
     }
 
+    const editClick = () => {
+        setEditHeader(!editHeader)
+    } 
+
+    const headerInput = (event) => {
+        setHeader(event.target.value)
+    }
+
+    
+
     return (
         <>
             <div className={!collapsed ? styles.cardContainer : [styles.cardContainer, styles.collapsed].join(" ")}>
                 <header>
-                    <span>New Card</span>
-                    <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
+                    { !editHeader ?
+                    <span>{header}</span>
+                    :
+                    <input className={styles.edit} type="text" value={header} onChange={headerInput} onBlur={editClick}/>
+                    }
+                    <div className={styles.editBtn} onClick={editClick}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
                     <div className={styles.collapseBtn} onClick={toggleCollapsed}> <Image src={!collapsed ? '/img/app/minus.svg': '/img/app/plus.svg'} height={16} width={16} /> </div>
                 </header>
                 <section className={styles.cardBody}>
                     <ul>
-                        { cardItems.map((item, index) => {
+                        { props.items.map((item, index) => {
                             return (
                                 <li key={index}>
                                     <div className={styles.checkBox}>
