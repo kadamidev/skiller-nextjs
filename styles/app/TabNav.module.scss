@@ -30,6 +30,11 @@
             display: none;
         }
 
+        .tabInput {
+            background: none;
+            color: var(--lightest-aqua);
+        }
+
         &:hover {
             .edit {
                 display: block;

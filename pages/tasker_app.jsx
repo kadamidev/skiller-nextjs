@@ -29,7 +29,7 @@ const tasker_app = () => {
         <>
         <div className={styles.container}>
             <nav className={styles.tabs}>
-                <TabNav />
+                <TabNav currentTabName='New tab'/>
             </nav>
 
             <div className={styles.settingsWrap}>
