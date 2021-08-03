@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 
 const tasker_app = () => {
-
     
     const cardItems1 = [
         { checked: false, text: 'New item'},
@@ -20,10 +19,17 @@ const tasker_app = () => {
         {checked: false, text: 'Walk dog'},
     ]
 
-    const cards = [
+    const cardsPreset = [
         { header: 'Shopping List', items: cardItems1},
         { header: 'Tasks', items: cardItems2},
     ]
+
+    const [cards, setCards] = useState(cardsPreset)
+
+
+    const addNewCard = () => {
+         setCards(cards => [...cards, {header: 'New Card', items: [{checked: false, text: 'New Item'}]} ]) 
+        }
     
     return (
         <>
@@ -36,7 +42,7 @@ const tasker_app = () => {
                 <Image src="/img/app/settings.svg" width={30} height={30}/>
             </div>
 
-            <div className={styles.newCardWrap}>
+            <div className={styles.newCardWrap} onClick={addNewCard}>
                 <Image src="/img/app/new-card.svg" width={100} height={100}/>
             </div>
 
