@@ -4,7 +4,7 @@ import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 
-const tasker_app = () => {
+const Tasker_app = () => {
     
     const cardItems1 = [
         { checked: false, text: 'Add enter for new item, backspace to delete item'},
@@ -62,4 +62,4 @@ const tasker_app = () => {
     );
 }
 
-export default tasker_app;
+export default Tasker_app;

@@ -10,7 +10,7 @@ const menu = () => {
             <div className={styles.container}>
                 <ul>
                     <li className={styles.tasker}>
-                        <Link href='tasker_app'>
+                        <Link href='Tasker_app'>
                             <a>
                                 <div className={styles.svgCont}>
                                     <Image src='/img/menu/tasker.svg' width={94} height={74} layout='responsive'/>
