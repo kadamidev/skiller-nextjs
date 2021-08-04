@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
 import CheckBox from './CheckBox';
@@ -23,6 +23,9 @@ const Card = (props) => {
 
     const[items, setItems] = useState(props.items)
 
+    // reference to the <ul> item list, used to focus in on new list items
+    const listRef = useRef(null) 
+
     const toggleCollapsed = () => {
         setCollapsed(!collapsed)
     }
@@ -43,6 +46,39 @@ const Card = (props) => {
         setItems(newItems)
     }
 
+    // Add a new item after the parent
+    const addNewItem = (parentIndex) => {
+        let newArr = [...items]
+        newArr.splice(++parentIndex, 0, { checked: false, text: 'New Item' })
+        setItems(newArr)
+    }
+
+    // Listening for enter key and backspace key when inside item edit mode
+    const itemKeyPress = (event) => {
+        // enter keycode = 13
+        // backspace keycode = 8
+        
+        switch (event.keyCode) {
+            case 13: //enter - add items
+            let parentIndex = event.target.attributes.data.value
+            listRef.current = listRef.current.childNodes[parentIndex]
+            addNewItem(parentIndex)
+            let newIdx = 1 + parentIndex
+            listRef.current = listRef.current.nextSibling
+            // console.log(listRef.current.children)
+            // console.log(listRef.current.children[2])
+
+            // listRef.current.focus()
+
+
+            break
+            case 8: //backspace - remove items if cursor at position 0
+
+            break
+        }
+    }
+
+ 
     
 
     return (
@@ -58,18 +94,15 @@ const Card = (props) => {
                     <div className={styles.collapseBtn} onClick={toggleCollapsed}> <Image src={!collapsed ? '/img/app/minus.svg': '/img/app/plus.svg'} height={16} width={16} /> </div>
                 </header>
                 <section className={styles.cardBody}>
-                    <ul>
+                    <ul ref={listRef}>
                         { items.map((item, index) => {
                             return (
                                 <li key={index}>
                                     <div className={styles.checkBox}>
                                         <CheckBox checked={item.checked || false}/>
                                     </div>
-                                    { !editItem ?
-                                    <p onClick={editItemToggle} className={styles.itemText}>{item.text}</p>
-                                    :
-                                    <input className={styles.editText} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} />
-                                    }
+                                    <p onClick={editItemToggle} className={!editItem ? styles.itemText : styles.hide}>{item.text}</p>
+                                    <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} onKeyDown={itemKeyPress} />
                                 </li>
                             )
                         })}
