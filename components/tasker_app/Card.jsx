@@ -59,24 +59,19 @@ const Card = (props) => {
 
     // Listening for enter key and backspace key when inside item edit mode
     const itemKeyPress = (event) => {
-        // enter keycode = 13
-        // backspace keycode = 8
+
         
         switch (event.keyCode) {
             case 13: //enter - add items
             const parentIndex = event.target.attributes.data.value
             addNewItem(parentIndex)
             break
-
-            case 8: //backspace - remove items if cursor at position 0
-            const currentIndex = event.target.attributes.data.value
-            const stringLength = event.target.value.length
-
-            if (stringLength == 0)
-                removeItem(currentIndex)
-
-            break
         }
+    }
+
+    const handleDeleteClick = (event) => {
+        const itemIndex = event.currentTarget.attributes.itemkey.value
+        removeItem(itemIndex)
     }
 
  
@@ -104,6 +99,9 @@ const Card = (props) => {
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? styles.itemText : styles.hide}>{item.text}</p>
                                     <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} onKeyUp={itemKeyPress} />
+                                    <div itemkey={index} className={styles.deleteWrapper} onClick={handleDeleteClick}>
+                                        <Image src='/img/app/delete.svg' height={10} width={10}/>
+                                    </div>
                                 </li>
                             )
                         })}
