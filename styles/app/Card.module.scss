@@ -74,6 +74,10 @@
                 grid-gap: .2em;
                 width: auto;
 
+                .crossed {
+                    text-decoration: line-through;
+                }
+
 
                 input.editText {
                     background: none;
