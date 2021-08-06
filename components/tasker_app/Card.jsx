@@ -44,11 +44,8 @@ const Card = (props) => {
     }
 
 
-    // Add a new item after the parent
-    const addNewItem = (parentIndex) => {
-        let newArr = [...items]
-        newArr.splice(++parentIndex, 0, { checked: false, text: 'New Item' })
-        setItems(newArr)
+    const addNewItem = () => {
+            setItems([...items, { checked: false, text: '' }])
     }
 
     const removeItem = (idx) => {
@@ -57,17 +54,7 @@ const Card = (props) => {
         setItems(newArr)
     }
 
-    // Listening for enter key and backspace key when inside item edit mode
-    const itemKeyPress = (event) => {
 
-        
-        switch (event.keyCode) {
-            case 13: //enter - add items
-            const parentIndex = event.target.attributes.data.value
-            addNewItem(parentIndex)
-            break
-        }
-    }
 
     const handleDeleteClick = (event) => {
         const itemIndex = event.currentTarget.attributes.itemkey.value
@@ -98,7 +85,7 @@ const Card = (props) => {
                                         <CheckBox checked={item.checked || false}/>
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? styles.itemText : styles.hide}>{item.text}</p>
-                                    <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} onKeyUp={itemKeyPress} />
+                                    <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} />
                                     <div itemkey={index} className={styles.deleteWrapper} onClick={handleDeleteClick}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
@@ -106,6 +93,9 @@ const Card = (props) => {
                             )
                         })}
                     </ul>
+                    <div className={styles.addItemWrapper} onClick={addNewItem}>
+                        <Image src='/img/app/plus-item.svg' height={10} width={10}/>
+                    </div>
                 </section>
             </div>
         </>

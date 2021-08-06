@@ -7,7 +7,7 @@ import Card from '../components/tasker_app/Card.jsx'
 const Tasker_app = () => {
     
     const cardItems1 = [
-        { checked: false, text: 'Add enter for new item, backspace to delete item'},
+        { checked: false, text: 'add cross off'},
         { checked: true, text: 'New item 2'},
         { checked: true, text: 'fix item length overflow'},
         { checked: false, text: 'fix header length overflow'},

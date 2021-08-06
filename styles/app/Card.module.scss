@@ -64,7 +64,7 @@
     section.cardBody {
 
         ul {
-            padding: .5em;
+            padding: .5em .5em 0 .5em;
             transition: 2s;
 
             li {
@@ -94,6 +94,23 @@
                         display: block;
                     }
                 }
+            }
+        }
+        .addItemWrapper {
+            display: flex;
+            justify-content: center;
+            padding: .2em;
+            // border: 1px solid black;
+            border-radius: 0 0 15px 15px;
+            height: auto;
+            opacity: 0%;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        &:hover {
+            .addItemWrapper {
+                opacity: 100%;
+                filter: drop-shadow(0px 0px 6px #DDFFF7);
             }
         }
     }
