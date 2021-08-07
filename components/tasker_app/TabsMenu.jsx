@@ -23,7 +23,8 @@ const TabsMenu = (props) => {
         }
 
         const handleDeleteClick = (event) => {
-            
+            const listId = event.currentTarget.attributes.listid.value
+            deleteTab(listId)
         }
 
         const handleNewTabClick = (event) => {
@@ -37,10 +38,10 @@ const TabsMenu = (props) => {
                 <ul className={styles.tabsList}>
                     { tabs.map((tab, idx) => {
                         return (
-                            <li key={idx} className={tab.current ? styles.current : styles.none}>
+                            <li key={idx} listid={idx} className={tab.current ? styles.current : styles.none}>
                                 {tab.name}
                                 <div className={styles.deleteTabWrapper}>
-                                    <Image src='/img/app/delete.svg' height={10} width={10}/>
+                                    <Image listid={idx} src='/img/app/delete.svg' height={10} width={10} onClick={handleDeleteClick}/>
                                 </div>
                             </li>
                         )
