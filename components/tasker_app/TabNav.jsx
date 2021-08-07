@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import styles from '../../styles/app/TabNav.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import TabsMenu from './TabsMenu';
 
 const TabNav = (props) => {
 
     const [currentTabName, setCurrentTabName] = useState(props.currentTabName)
     const [tabEdit, setTabEdit] = useState(false)
-
+    
     const toggleTabEdit = () => { setTabEdit(!tabEdit) }
-
+    
     const handleTabInput = (event) => { setCurrentTabName(event.target.value) }
     
+    const [showTabMenu, setShowTabMenu] = useState(false)
+    
+    const toggleTabMenu = () => setShowTabMenu(!showTabMenu)
     return (
         <>
         <nav className={styles.container}>
@@ -30,10 +33,10 @@ const TabNav = (props) => {
             </div>
             
             <div className={styles.tabsWrap}>
-                <Image src="/img/app/tabs.svg" width={30} height={30}/>
+                <Image src="/img/app/tabs.svg" width={30} height={30} onClick={toggleTabMenu} />
             </div>
-
         </nav>     
+        { showTabMenu && <TabsMenu /> }
         </>
     );
 }
