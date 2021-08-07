@@ -4,13 +4,9 @@ import Image from 'next/image'
 
 
 const TabsMenu = (props) => {
-        const tabPreset = [
-            { name: 'School', current: false },
-            { name: 'Work', current: false },
-            { name: 'Daily', current: true },
-        ]
 
-        const [tabs, setTabs] = useState(tabPreset)
+        const [tabs, setTabs] = useState(props.tabs)
+        const [currentTab, setCurrentTab] = useState(props.currentTab)
         
         const addNewTab = () => {
             setTabs([...tabs, { name: 'Untitled', current: false }])
@@ -49,7 +45,7 @@ const TabsMenu = (props) => {
                     }
                 </ul>
                 <div className={styles.newTabWrapper}>
-                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={handleNewTabClick}/>
+                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={props.onNewTab}/>
                 </div>
             </div>     
         </div> 

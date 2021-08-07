@@ -30,12 +30,45 @@ const Tasker_app = () => {
     const addNewCard = () => {
          setCards(cards => [...cards, {header: 'New Card', items: [{checked: false, text: 'New Item'}]} ]) 
         }
+
+    const tabPreset = [
+        { name: 'School', current: false },
+        { name: 'Work', current: false },
+        { name: 'Daily', current: true },
+        { name: 'Exams', current: false },
+        { name: 'Gym', current: false },
+    ]
+    
+    const [tabs, setTabs] = useState(tabPreset)
+    const [currentTab, setCurrentTab] = useState(2)
+
+    const findCurrentTab = () => {
+        for (let idx = 0; i < tabs.length(); i++) {
+            if (tabs[i].current == true) {
+                setCurrentTab(i)
+                break
+            }
+        }
+    }
+
+
+    const handleTabNameChange = (event) => {
+        const newTabs = [...tabs]
+        newTabs[currentTab].name = event.value
+        setTabs(newTabs)
+        console.log(event.value)
+    }
+
+    const handleNewTab = (event) => {
+        setTabs([...tabs, { name: 'Untitled', current: false }])
+        console.log(tabs)
+    }
     
     return (
         <>
         <div className={styles.container}>
             <nav className={styles.tabs}>
-                <TabNav currentTabName='New tab'/>
+                <TabNav tabs={tabs} currentTab={currentTab} onTabNameChange={handleTabNameChange} onNewTab={handleNewTab}/>
             </nav>
 
             <div className={styles.settingsWrap}>
@@ -57,9 +90,10 @@ const Tasker_app = () => {
                     }
                 </ul>
             </div>
+            
         </div>
         </>
-    );
+    )
 }
 
 export default Tasker_app;

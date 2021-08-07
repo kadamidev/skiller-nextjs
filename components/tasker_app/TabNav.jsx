@@ -8,6 +8,9 @@ const TabNav = (props) => {
 
     const [currentTabName, setCurrentTabName] = useState(props.currentTabName)
     const [tabEdit, setTabEdit] = useState(false)
+
+    const [tabs, setTabs] = useState(props.tabs)
+    const [currentTab, setCurrentTab] = useState(props.currentTab)
     
     const toggleTabEdit = () => { setTabEdit(!tabEdit) }
     
@@ -25,9 +28,9 @@ const TabNav = (props) => {
 
             <div className={styles.tab}>
                 { !tabEdit ?
-                    <span>{currentTabName}</span>
+                    <span>{tabs[props.currentTab].name}</span>
                     :
-                    <input className={styles.tabInput} type="text" value={currentTabName} onChange={handleTabInput} onBlur={toggleTabEdit}/>
+                    <input className={styles.tabInput} type="text" value={tabs[currentTab].name} onChange={ (event) => props.onTabNameChange(event.target) } onBlur={toggleTabEdit}/>
                 }
                 <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
             </div>
@@ -35,9 +38,10 @@ const TabNav = (props) => {
             <div className={styles.tabsWrap}>
                 <Image src="/img/app/tabs.svg" width={30} height={30} onClick={toggleTabMenu} />
             </div>
+
         </nav>     
         <div className={showTabMenu ? styles.showTabMenu : styles.hideTabMenu}>
-            <TabsMenu />
+            <TabsMenu tabs={tabs} currentTab={currentTab} onNewTab={ props.onNewTab }/>
         </div>
         {/* { showTabMenu && <TabsMenu /> } */}
         </>
