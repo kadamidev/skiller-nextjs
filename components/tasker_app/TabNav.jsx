@@ -36,7 +36,10 @@ const TabNav = (props) => {
                 <Image src="/img/app/tabs.svg" width={30} height={30} onClick={toggleTabMenu} />
             </div>
         </nav>     
-        { showTabMenu && <TabsMenu /> }
+        <div className={showTabMenu ? styles.showTabMenu : styles.hideTabMenu}>
+            <TabsMenu />
+        </div>
+        {/* { showTabMenu && <TabsMenu /> } */}
         </>
     );
 }
