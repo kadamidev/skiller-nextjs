@@ -4,27 +4,30 @@ import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 
-const reducer = (tabs, action) => {
+const reducer = (tabsState, action) => {
     switch(action.type) {
         case 'addNewTab':
-            return [...tabs, { id: Date.now(), name: 'Untitled', current: false }]
+            return {tabs: [...tabsState.tabs, { id: Date.now(), name: 'Untitled', current: false }],
+                    currentTabKey: tabsState.currentTabKey}
+                    
         case 'deleteTab':
-            const idx = action.payload.idx
-            const newArr = [...tabs]
+            const newArr = [...tabsState.tabs]
             newArr.splice(idx, 1)
-            return newArr
+            return {tabs: newArr, currentTabKey: tabsState.currentTabKey}
+            
         case 'changeTabName':
-            const id = action.payload.id
-            return tabs.map(tab => {
-                if (tab.id === action.payload.id) {
-                    return { id: tab.id, name: action.payload.name, current: tab.current}
-                }
-                return tab
-            })
+                const nameChangedTabs = [...tabsState.tabs]
+                    nameChangedTabs[tabsState.currentTabKey].name = action.payload.name
+            return {currentTabKey: tabsState.currentTabKey, tabs: nameChangedTabs }
+
         default:
-            return tabs
+            return tabsState
     }
 }
+
+// nameChangedTabs = tabsState.tabs.map(tab => {
+//     if (tab.id === action.payload.id) {
+//         { id: tab.id, name: action.payload.name, current: tab.current}
 
 
 
@@ -38,7 +41,7 @@ const Tasker_app = () => {
         { id: 5, name: 'Gym', current: false },
     ]
 
-    const [tabs, dispatch] = useReducer(reducer, tabPreset)
+    const [tabsState, dispatch] = useReducer(reducer, { currentTabKey: 2, tabs: tabPreset })
 
     const cardItems1 = [
         { checked: false, text: 'add cross off'},
@@ -65,35 +68,14 @@ const Tasker_app = () => {
          setCards(cards => [...cards, {header: 'New Card', items: [{checked: false, text: 'New Item'}]} ]) 
         }
 
-    const [currentTab, setCurrentTab] = useState(2)
-
-    const findCurrentTab = () => {
-        for (let idx = 0; i < tabs.length(); i++) {
-            if (tabs[i].current == true) {
-                setCurrentTab(i)
-                break
-            }
-        }
-    }
 
 
-    // const handleTabNameChange = (event) => {
-    //     const newTabs = [...tabs]
-    //     newTabs[currentTab].name = event.value
-    //     setTabs(newTabs)
-    //     console.log(event.value)
-    // }
-
-    // const handleNewTab = (event) => {
-    //     setTabs([...tabs, { name: 'Untitled', current: false }])
-    //     console.log(tabs)
-    // }
     
     return (
         <>
         <div className={styles.container}>
             <nav className={styles.tabs}>
-                <TabNav tabs={tabs} currentTab={currentTab} dispatch={dispatch} testProp={'yeah'}/>
+                <TabNav tabsState={tabsState} dispatch={dispatch}/>
             </nav>
 
             <div className={styles.settingsWrap}>

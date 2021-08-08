@@ -4,20 +4,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import TabsMenu from './TabsMenu';
 
-const TabNav = ({tabs, dispatch}) => {
-    // const [tabsState, dispatch] = useReducer(reducer, [tabPreset])
+const TabNav = ({tabsState, dispatch}) => {
 
     const [tabEdit, setTabEdit] = useState(false)
 
-    // const [tabs, setTabs] = useState(props.tabs)
-    const [currentTab, setCurrentTab] = useState(2)
     
     const toggleTabEdit = () => { setTabEdit(!tabEdit) }
     
-    const handleTabInput = (event) => { setCurrentTabName(event.target.value) }
-    
     const [showTabMenu, setShowTabMenu] = useState(false)
     const toggleTabMenu = () => setShowTabMenu(!showTabMenu)
+
+    // tabsState.tabs[tabsState.currentTabKey]
     return (
         <>
         <nav className={styles.container}>
@@ -27,9 +24,9 @@ const TabNav = ({tabs, dispatch}) => {
 
             <div className={styles.tab}>
                 { !tabEdit ?
-                    <span>{tabs[currentTab].name}</span>
+                    <span>{tabsState.tabs[tabsState.currentTabKey].name}</span>
                     :
-                    <input className={styles.tabInput} type="text" value={tabs[currentTab].name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { id: tabs[currentTab].id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
+                    <input className={styles.tabInput} type="text" value={tabsState.tabs[tabsState.currentTabKey].name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { id: tabsState.tabs[tabsState.currentTabKey].id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
                 }
                 <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
             </div>
@@ -40,7 +37,7 @@ const TabNav = ({tabs, dispatch}) => {
 
         </nav>     
         <div className={showTabMenu ? styles.showTabMenu : styles.hideTabMenu}>
-            <TabsMenu tabs={tabs} dispatch={dispatch}/>
+            <TabsMenu tabsState={tabsState} dispatch={dispatch}/>
         </div>
         {/* { showTabMenu && <TabsMenu /> } */}
         </>
