@@ -3,10 +3,9 @@ import styles from '../../styles/app/TabsMenu.module.scss'
 import Image from 'next/image'
 
 
-const TabsMenu = (props) => {
+const TabsMenu =  ({tabs, dispatch }) => {
 
-        const [tabs, setTabs] = useState(props.tabs)
-        const [currentTab, setCurrentTab] = useState(props.currentTab)
+        const [currentTab, setCurrentTab] = useState(2)
         
         const addNewTab = () => {
             setTabs([...tabs, { name: 'Untitled', current: false }])
@@ -45,7 +44,8 @@ const TabsMenu = (props) => {
                     }
                 </ul>
                 <div className={styles.newTabWrapper}>
-                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={props.onNewTab}/>
+                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={ () => dispatch({type: 'addNewTab'}) } />
+                        
                 </div>
             </div>     
         </div> 
@@ -54,3 +54,4 @@ const TabsMenu = (props) => {
 }
 
 export default TabsMenu;
+
