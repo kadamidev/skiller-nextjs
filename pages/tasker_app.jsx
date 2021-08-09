@@ -11,9 +11,13 @@ const reducer = (tabsState, action) => {
                     currentTabKey: tabsState.currentTabKey}
                     
         case 'deleteTab':
-            const newArr = [...tabsState.tabs]
-            newArr.splice(idx, 1)
-            return {tabs: newArr, currentTabKey: tabsState.currentTabKey}
+            if (tabsState.tabs.length <= 1)  //can't delete a tab if it's the only one
+                return {currentTabKey: tabsState.currentTabKey, tabs: tabsState.tabs}
+            const newArr = tabsState.tabs.filter(tab => tab.id != action.payload.id)
+            let tabKey = tabsState.currentTabKey
+            if (tabKey == action.payload.tabKey)
+                tabKey = 0
+            return { currentTabKey: tabKey, tabs: newArr }
             
         case 'changeTabName':
                 const nameChangedTabs = [...tabsState.tabs]

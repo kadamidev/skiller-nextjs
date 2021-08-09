@@ -5,20 +5,6 @@ import Image from 'next/image'
 
 const TabsMenu = ({tabsState, dispatch }) => {
 
-        const [currentTab, setCurrentTab] = useState(2)
-        
-
-        // const deleteTab = (idx) => {
-        //     const newArr = [...tabs]
-        //     newArr.splice(idx, 1)
-        //     setTabs(newArr)
-        // }
-
-        const handleDeleteClick = (event) => {
-            const listId = event.currentTarget.attributes.listid.value
-            deleteTab(listId)
-        }
-
     return (
         <>
         <div className={styles.container}>
@@ -26,10 +12,10 @@ const TabsMenu = ({tabsState, dispatch }) => {
                 <ul className={styles.tabsList}>
                     { tabsState.tabs.map((tab, idx) => {
                         return (
-                            <li key={idx} listid={idx} className={tab.current ? styles.current : styles.none}>
+                            <li key={idx} listid={idx} className={(idx == tabsState.currentTabKey) ? styles.current : styles.none}>
                                 {tab.name}
                                 <div className={styles.deleteTabWrapper}>
-                                    <Image listid={idx} src='/img/app/delete.svg' height={10} width={10} onClick={handleDeleteClick}/>
+                                    <Image src='/img/app/delete.svg' height={10} width={10} onClick={() => dispatch({ type: 'deleteTab', payload: {id: tab.id, tabKey: idx} })} />
                                 </div>
                             </li>
                         )
