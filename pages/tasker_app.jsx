@@ -54,9 +54,12 @@ const cardsReducer = (cardsState, action) => {
 
     switch(action.type) {
         case 'addNewCard':
-            const newCards = cardsState
-            newCards[action.payload.tabid] = { id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }]}
-            return { tabIdString: newCards}
+            const newCards = Object.create(cardsState)
+            if (!newCards[tabIdString]) {
+                newCards[tabIdString] = []
+            }
+            newCards[tabIdString].push({ id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }]})
+            return newCards
         default:
             return cardsState
     }
@@ -89,19 +92,11 @@ const Tasker_app = () => {
 
     const cardsPreset = [
         { id: 1, header: 'Shopping List', items: cardItems1},
-        { id: 1, header: 'Tasks', items: cardItems2},
+        { id: 2, header: 'Tasks', items: cardItems2},
     ]
 
-    const [cards, setCards] = useState(cardsPreset)
     // structured tabid: cards Array
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: cardsPreset })
-
-
-    const addNewCard = () => {
-         setCards(cards => [...cards, {header: 'New Card', items: [{checked: false, text: 'New Item'}]} ]) 
-        }
-
-
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
     const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
     return (
