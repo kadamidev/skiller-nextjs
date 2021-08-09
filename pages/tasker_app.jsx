@@ -47,6 +47,21 @@ const tabsReducer = (tabsState, action) => {
     }
 }
 
+// const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 0: cardsPreset })
+
+const cardsReducer = (cardsState, action) => {
+    const tabIdString = `${action.payload.tabid}`
+
+    switch(action.type) {
+        case 'addNewCard':
+            const newCards = cardsState
+            newCards[action.payload.tabid] = { id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }]}
+            return { tabIdString: newCards}
+        default:
+            return cardsState
+    }
+}
+
 const Tasker_app = () => {
 
     const tabPreset = [
@@ -67,17 +82,19 @@ const Tasker_app = () => {
     ]
     
     const cardItems2 = [
-        {checked: true, text: 'Homework'},
-        {checked: false, text: 'Exercise'},
-        {checked: false, text: 'Walk dog'},
+        { checked: true, text: 'Homework'},
+        { checked: false, text: 'Exercise'},
+        { checked: false, text: 'Walk dog'},
     ]
 
     const cardsPreset = [
-        { header: 'Shopping List', items: cardItems1},
-        { header: 'Tasks', items: cardItems2},
+        { id: 1, header: 'Shopping List', items: cardItems1},
+        { id: 1, header: 'Tasks', items: cardItems2},
     ]
 
     const [cards, setCards] = useState(cardsPreset)
+    // structured tabid: cards Array
+    const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: cardsPreset })
 
 
     const addNewCard = () => {
@@ -85,8 +102,8 @@ const Tasker_app = () => {
         }
 
 
-
-    
+    const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
+    const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
     return (
         <>
         <div className={styles.container}>
@@ -98,14 +115,14 @@ const Tasker_app = () => {
                 <Image src="/img/app/settings.svg" width={30} height={30}/>
             </div>
 
-            <div className={styles.newCardWrap} onClick={addNewCard}>
+            <div className={styles.newCardWrap} onClick={() => cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId } })}>
                 <Image src="/img/app/new-card.svg" width={100} height={100}/>
             </div>
 
             <div className={styles.cardContainer}>
                 <ul className={styles.cards}>
                     {
-                        cards.map((card, index) => {
+                        cardsState[currentTabIdStr] && cardsState[currentTabIdStr].map((card, index) => {
                             return (
                             <li key={index} className={styles.card}> <Card header={card.header} items={card.items}/> </li>
                             )
