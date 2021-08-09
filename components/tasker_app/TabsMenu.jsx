@@ -12,10 +12,11 @@ const TabsMenu = ({tabsState, dispatch }) => {
                 <ul className={styles.tabsList}>
                     { tabsState.tabs.map((tab, idx) => {
                         return (
-                            <li key={idx} listid={idx} className={(idx == tabsState.currentTabKey) ? styles.current : styles.none}>
+                            <li key={idx} listid={idx} className={(idx == tabsState.currentTabIdx) ? styles.current : styles.none}>
+                                <div className={styles.tabClickSurface} onClick={ () => dispatch({type: 'changeCurrentTab', payload: {id: tab.id, idx: idx} }) }></div>
                                 {tab.name}
-                                <div className={styles.deleteTabWrapper}>
-                                    <Image src='/img/app/delete.svg' height={10} width={10} onClick={() => dispatch({ type: 'deleteTab', payload: {id: tab.id, tabKey: idx} })} />
+                                <div className={styles.deleteTabWrapper} onClick={() => dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} })}>
+                                    <Image src='/img/app/delete.svg' height={10} width={10}  />
                                 </div>
                             </li>
                         )

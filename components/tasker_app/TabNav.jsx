@@ -14,7 +14,8 @@ const TabNav = ({tabsState, dispatch}) => {
     const [showTabMenu, setShowTabMenu] = useState(false)
     const toggleTabMenu = () => setShowTabMenu(!showTabMenu)
 
-    // tabsState.tabs[tabsState.currentTabKey]
+    const currentTab = tabsState.tabs[tabsState.currentTabIdx]
+    
     return (
         <>
         <nav className={styles.container}>
@@ -24,9 +25,9 @@ const TabNav = ({tabsState, dispatch}) => {
 
             <div className={styles.tab}>
                 { !tabEdit ?
-                    <span>{tabsState.tabs[tabsState.currentTabKey].name}</span>
+                    <span>{currentTab.name}</span>
                     :
-                    <input className={styles.tabInput} type="text" value={tabsState.tabs[tabsState.currentTabKey].name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { id: tabsState.tabs[tabsState.currentTabKey].id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
+                    <input className={styles.tabInput} type="text" value={currentTab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: currentTab.id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
                 }
                 <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
             </div>

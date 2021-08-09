@@ -41,6 +41,14 @@
             opacity: 95%;
             margin-bottom: .3em;
 
+            .tabClickSurface {
+                position: absolute;
+                // border: 1px solid black;
+                width: 100%;
+                min-height: 40px;
+                border-radius: 15px;
+            }
+
             &.current {
                 background: var(--primary-color);
                 color: var(--lightest-aqua);
@@ -50,6 +58,7 @@
                 position: absolute;
                 right: 15px;
                 opacity: 40%;
+                // border: 1px solid black;
             }
         }
     }

@@ -4,36 +4,48 @@ import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 
-const reducer = (tabsState, action) => {
+const tabsReducer = (tabsState, action) => {
     switch(action.type) {
         case 'addNewTab':
-            return {tabs: [...tabsState.tabs, { id: Date.now(), name: 'Untitled', current: false }],
-                    currentTabKey: tabsState.currentTabKey}
+            return {tabs: [...tabsState.tabs, { id: Date.now(), name: 'Untitled'}],
+                    currentTabIdx: tabsState.currentTabIdx}
                     
         case 'deleteTab':
             if (tabsState.tabs.length <= 1)  //can't delete a tab if it's the only one
-                return {currentTabKey: tabsState.currentTabKey, tabs: tabsState.tabs}
+                return {currentTabIdx: tabsState.currentTabIdx, tabs: tabsState.tabs}
+
+            const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id //capture id of currentTab
             const newArr = tabsState.tabs.filter(tab => tab.id != action.payload.id)
-            let tabKey = tabsState.currentTabKey
-            if (tabKey == action.payload.tabKey)
-                tabKey = 0
-            return { currentTabKey: tabKey, tabs: newArr }
+            // maintaining current tab pointer
+            if (action.payload.id == currentTabId) { //if the deleted tab is the currentTab
+                return { tabs: newArr, currentTabIdx: 0 }
+            }
+
+            if (action.payload.idx < tabsState.currentTabIdx) { //check for currentTab pointer shift
+                for (let idx = 0; idx < tabsState.tabs.length; idx++) { //update pointer
+                    if (newArr[idx].id == currentTabId)
+                        return { tabs: newArr, currentTabIdx: idx }
+                }
+            }
+            
+            return { tabs: newArr, currentTabIdx: tabsState.currentTabIdx }
             
         case 'changeTabName':
-                const nameChangedTabs = [...tabsState.tabs]
-                    nameChangedTabs[tabsState.currentTabKey].name = action.payload.name
-            return {currentTabKey: tabsState.currentTabKey, tabs: nameChangedTabs }
+            const nameChangedTabs = tabsState.tabs.map(tab => {
+                if (tab.id == action.payload.tabId)
+                    return { id: tab.id, name: action.payload.name }
+                return tab
+            })
+            return {currentTabIdx: tabsState.currentTabIdx, tabs: nameChangedTabs }
+
+        case 'changeCurrentTab':
+            return {currentTabIdx: action.payload.idx, tabs: tabsState.tabs}
 
         default:
+            console.log('default hit')
             return tabsState
     }
 }
-
-// nameChangedTabs = tabsState.tabs.map(tab => {
-//     if (tab.id === action.payload.id) {
-//         { id: tab.id, name: action.payload.name, current: tab.current}
-
-
 
 const Tasker_app = () => {
 
@@ -45,7 +57,7 @@ const Tasker_app = () => {
         { id: 5, name: 'Gym', current: false },
     ]
 
-    const [tabsState, dispatch] = useReducer(reducer, { currentTabKey: 2, tabs: tabPreset })
+    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
 
     const cardItems1 = [
         { checked: false, text: 'add cross off'},
