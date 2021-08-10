@@ -50,15 +50,13 @@ const tabsReducer = (tabsState, action) => {
 // const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 0: cardsPreset })
 
 const cardsReducer = (cardsState, action) => {
-    const tabIdString = `${action.payload.tabid}`
-
     switch(action.type) {
         case 'addNewCard':
             const newCards = Object.create(cardsState)
-            if (!newCards[tabIdString]) {
-                newCards[tabIdString] = []
+            if (!newCards[action.payload.tabid]) {
+                newCards.[action.payload.tabid] = new Array
             }
-            newCards[tabIdString].push({ id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }]})
+            newCards[action.payload.tabid] = [...newCards[action.payload.tabid], { id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }] }]
             return newCards
         default:
             return cardsState
@@ -75,7 +73,7 @@ const Tasker_app = () => {
         { id: 5, name: 'Gym', current: false },
     ]
 
-    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
+    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 3  })
 
     const cardItems1 = [
         { checked: false, text: 'add cross off'},
@@ -118,8 +116,9 @@ const Tasker_app = () => {
                 <ul className={styles.cards}>
                     {
                         cardsState[currentTabIdStr] && cardsState[currentTabIdStr].map((card, index) => {
+                            console.log(card)
                             return (
-                            <li key={index} className={styles.card}> <Card header={card.header} items={card.items}/> </li>
+                            <li key={card.id} className={styles.card}> <Card header={card.header} items={card.items}/> </li>
                             )
                         })
                     }
