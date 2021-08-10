@@ -93,7 +93,7 @@ const Tasker_app = () => {
         { id: 2, header: 'Tasks', items: cardItems2},
     ]
 
-    // structured tabid: cards Array
+
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: cardsPreset })
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
     const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
