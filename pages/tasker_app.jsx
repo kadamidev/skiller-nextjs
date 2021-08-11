@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
@@ -54,11 +54,43 @@ const cardsReducer = (cardsState, action) => {
         case 'addNewCard':
             const newCards = Object.create(cardsState)
             if (!newCards[action.payload.tabid]) {
-                newCards.[action.payload.tabid] = new Array
+                newCards[action.payload.tabid] = new Array
             }
             newCards[action.payload.tabid] = [...newCards[action.payload.tabid], { id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }] }]
             return newCards
+
+        case 'newCardItem':
+            const updatedCards = Object.create(cardsState)
+            for (let i = 0; i < updatedCards[action.payload.tabid].length; i++) {
+                if (updatedCards[action.payload.tabid][i].id == action.payload.id) {
+                    updatedCards[action.payload.tabid][i]['items'].push({ checked: false, text:'' })
+                    return updatedCards
+                }
+            }
+
+        case 'removeCardItem':
+            const removedCards = Object.create(cardsState)
+            for (let i = 0; i < removedCards[action.payload.tabid].length; i++) {
+                if (removedCards[action.payload.tabid][i].id == action.payload.id) {
+                    removedCards[action.payload.tabid][i]['items'].splice(action.payload.idx, 1)
+                    return removedCards
+                }
+            }
+
+        case 'toggleCardItem':
+            const toggledCards = Object.create(cardsState)
+            for (let i = 0; i < toggledCards[action.payload.tabid].length; i++) {
+                if (toggledCards[action.payload.tabid][i].id == action.payload.id) {
+                    const currentToggle = toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked']
+                    toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'] = !currentToggle
+                    console.log(toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'])
+                    return toggledCards
+                }
+            }
+
         default:
+            console.log('default')
+
             return cardsState
     }
 }
@@ -73,7 +105,7 @@ const Tasker_app = () => {
         { id: 5, name: 'Gym', current: false },
     ]
 
-    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 3  })
+    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
 
     const cardItems1 = [
         { checked: false, text: 'add cross off'},
@@ -116,9 +148,8 @@ const Tasker_app = () => {
                 <ul className={styles.cards}>
                     {
                         cardsState[currentTabIdStr] && cardsState[currentTabIdStr].map((card, index) => {
-                            console.log(card)
                             return (
-                            <li key={card.id} className={styles.card}> <Card header={card.header} items={card.items}/> </li>
+                            <li key={card.id} className={styles.card}> <Card header={card.header} items={card.items} cardid ={card.id} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }

@@ -55,10 +55,9 @@ const Card = (props) => {
     }
 
     const handleCheckboxClick = (event) => {
-        const newArr = [...items]
-        const idx = event.currentTarget.attributes.index.value
-        newArr[idx] = { checked: !items[idx].checked, text:items[idx].text }
-
+        let newArr = [...items]
+        const idx = event.target.attributes.index.value
+        newArr[idx]['checked'] = !items[idx].checked
         setItems(newArr)
     }
 
@@ -82,25 +81,25 @@ const Card = (props) => {
                         { items.map((item, index) => {
                             let pClass = !item.checked ? styles.itemText : [styles.itemText, styles.crossed].join(' ')
                             return (
-                                <li key={index}>
+                                <li key={Date.now() + index}>
                                     <div className={styles.checkBox}>
                                         { item.checked ?
-                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} onClick={handleCheckboxClick} />
+                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload:{id: props.cardid, tabid: props.tabid, idx: index} })} />
                                         :
-                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={handleCheckboxClick} />
+                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload:{id: props.cardid, tabid: props.tabid, idx: index} })} />
                                         }
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? pClass : styles.hide}>{item.text}</p>
                                     <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} />
-                                    <div itemkey={index} className={styles.deleteWrapper} onClick={handleDeleteClick}>
+                                    <div itemkey={index} className={styles.deleteWrapper} onClick={() => props.cardsDispatch({ type: 'removeCardItem', payload:{id: props.cardid, tabid: props.tabid, idx: index} })}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
-                                    {/* <CardItem handleCheckboxClick={handleCheckboxClick} editItemToggle={editItemToggle} checked={item.checked} itemtext={item.text} itemInput={itemInput} itemKey={index} handleDeleteClick={handleDeleteClick} editItem={editItem} /> */}
                                 </li>
                             )
                         })}
                     </ul>
-                    <div className={styles.addItemWrapper} onClick={addNewItem}>
+                    <div className={styles.addItemWrapper} onClick={() => props.cardsDispatch({type: 'newCardItem', payload: {id:props.cardid, tabid: props.tabid} })}>
+                    {/* <div className={styles.addItemWrapper} onClick={addNewItem}> */}
                         <Image src='/img/app/plus-item.svg' height={10} width={10}/>
                     </div>
                 </section>
