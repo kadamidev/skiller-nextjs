@@ -45,6 +45,13 @@
             overflow: hidden;
         }
 
+        .deleteCardBtn {
+            display: flex;
+            opacity: 50%;
+            position: absolute;
+            right: 25px;
+        }
+
         .collapseBtn {
             display: flex;
             position: absolute;

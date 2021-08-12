@@ -50,6 +50,8 @@ const Card = (props) => {
                     }
                     <div className={styles.editBtn} onClick={editClick}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
                     <div className={styles.collapseBtn} onClick={toggleCollapsed}> <Image src={!collapsed ? '/img/app/minus.svg': '/img/app/plus.svg'} height={16} width={16} /> </div>
+                    <div className={styles.deleteCardBtn} onClick={() => props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })} > <Image src={'/img/app/circled-x.svg'} height={16} width={16} /> </div>
+
                 </header>
                 <section className={styles.cardBody}>
                     <ul>
@@ -59,21 +61,21 @@ const Card = (props) => {
                                 <li key={item.id}>
                                     <div className={styles.checkBox}>
                                         { item.checked ?
-                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {cardid: props.card.id, tabid: props.tabid, idx: index, checked: item.checked} })} />
+                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })} />
                                         :
-                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {cardid: props.card.id, tabid: props.tabid, idx: index} })} />
+                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })} />
                                         }
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? pClass : styles.hide}>{item.text}</p>
-                                    <input className={editItem ? styles.editText : styles.hide} data={index} type="text" onBlur={editItemToggle} value={item.text} onChange={itemInput} />
-                                    <div className={styles.deleteWrapper} onClick={() => props.cardsDispatch({ type: 'removeCardItem', payload:{cardid: props.card.id, tabid: props.tabid, itemid: item.id} })}>
+                                    <input className={editItem ? styles.editText : styles.hide} type="text" onBlur={editItemToggle} value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } />
+                                    <div className={styles.deleteWrapper} onClick={() => props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: item.id} })}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
                                 </li>
                             )
                         })}
                     </ul>
-                    <div className={styles.addItemWrapper} onClick={() => props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid} })}>
+                    <div className={styles.addItemWrapper} onClick={() => props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx} })}>
                     {/* <div className={styles.addItemWrapper} onClick={addNewItem}> */}
                         <Image src='/img/app/plus-item.svg' height={10} width={10}/>
                     </div>

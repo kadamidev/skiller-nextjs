@@ -4,6 +4,7 @@ import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 import  {v4 as uuidv4 } from 'uuid'
+import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
 
 const tabsReducer = (tabsState, action) => {
     switch(action.type) {
@@ -53,11 +54,10 @@ const tabsReducer = (tabsState, action) => {
 const cardsReducer = (cardsState, action) => {
     switch(action.type) {
         case 'addNewCard':
-            console.log(cardsState)
 
             const newCards = {...cardsState}
             if (!newCards[action.payload.tabid]) {
-                newCards[action.payload.tabid] = new Array
+                newCards[action.payload.tabid] = []
             }
 
             newCards[action.payload.tabid] = [...newCards[action.payload.tabid], {
@@ -72,7 +72,9 @@ const cardsReducer = (cardsState, action) => {
             return newCards
 
         case 'deleteCard':
-            return cardsState
+            const deletedCards = {...cardsState}
+            deletedCards[action.payload.tabid].splice(action.payload.cardidx, 1)
+            return deletedCards
 
         case 'changeHeader':
             const changedCards = {...cardsState}
@@ -80,46 +82,34 @@ const cardsReducer = (cardsState, action) => {
             return changedCards
 
 
-        case 'newCardItem': //recode passing card idx
-            console.log(cardsState)
-
+        case 'newCardItem':
             const updatedCards = {...cardsState}
-
-            for (let i = 0; i < updatedCards[action.payload.tabid].length; i++) {    //finding the card idx
-                if (updatedCards[action.payload.tabid][i].id == action.payload.id) {
-                    updatedCards[action.payload.tabid][i]['items'] = [...updatedCards[action.payload.tabid][i]['items'],
-                     { 
-                        id: uuidv4(),
-                        checked: false,
-                        text:''
-                     }]
-                     break
-                }
-            }
+            updatedCards[action.payload.tabid][action.payload.cardidx]['items'] = [...updatedCards[action.payload.tabid][action.payload.cardidx]['items'],
+                {  
+                id: uuidv4(),
+                checked: false,
+                text:''
+                }]
             return updatedCards
 
 
-        case 'removeCardItem': //recode passing card idx
+        case 'removeCardItem': 
             const removedCards = {...cardsState}
-            for (let i = 0; i < removedCards[action.payload.tabid].length; i++) {
-                if (removedCards[action.payload.tabid][i].id == action.payload.cardid) {
-                    removedCards[action.payload.tabid][i]['items'] = removedCards[action.payload.tabid][i]['items'].filter((item) => item.id != action.payload.itemid)
-                    return removedCards
-                }
-            }
+            removedCards[action.payload.tabid][action.payload.cardidx]['items'] = removedCards[action.payload.tabid][action.payload.cardidx]['items'].filter((item) => item.id != action.payload.itemid)
+            return removedCards
 
-        case 'toggleCardItem': //recode passing card idx
+
+        case 'toggleCardItem': 
             const toggledCards = {...cardsState}
-            console.log(`card id:${action.payload.cardid} tabid:${action.payload.tabid} itemidx:${action.payload.idx}`)
-            for (let i = 0; i < toggledCards[action.payload.tabid].length; i++) { //find correct card
-                if (toggledCards[action.payload.tabid][i].id == action.payload.cardid) {
-                    toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'] = !action.payload.checked
-                    return toggledCards
-                }
-            }
+            // console.log(`card idx:${action.payload.cardidx} tabid:${action.payload.tabid} itemidx:${action.payload.idx}`)
+            toggledCards[action.payload.tabid][action.payload.cardidx]['items'][action.payload.idx]['checked'] = !action.payload.checked
+            return toggledCards
+        
 
-        case 'editCardItem' : //recode passing card idx
-            return cardsState
+        case 'editCardItem':
+            const edittedItems = {...cardsState}
+            edittedItems[action.payload.tabid][action.payload.cardidx]['items'][action.payload.idx]['text'] = action.payload.value
+            return edittedItems
 
         default:
             console.log('default')
