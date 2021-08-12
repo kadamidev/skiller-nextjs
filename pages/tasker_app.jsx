@@ -3,11 +3,12 @@ import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
+import  {v4 as uuidv4 } from 'uuid'
 
 const tabsReducer = (tabsState, action) => {
     switch(action.type) {
         case 'addNewTab':
-            return {tabs: [...tabsState.tabs, { id: Date.now(), name: 'Untitled'}],
+            return {tabs: [...tabsState.tabs, { id: uuidv4(), name: 'Untitled'}],
                     currentTabIdx: tabsState.currentTabIdx}
                     
         case 'deleteTab':
@@ -52,41 +53,73 @@ const tabsReducer = (tabsState, action) => {
 const cardsReducer = (cardsState, action) => {
     switch(action.type) {
         case 'addNewCard':
-            const newCards = Object.create(cardsState)
+            console.log(cardsState)
+
+            const newCards = {...cardsState}
             if (!newCards[action.payload.tabid]) {
                 newCards[action.payload.tabid] = new Array
             }
-            newCards[action.payload.tabid] = [...newCards[action.payload.tabid], { id: Date.now(), header: 'New Card', items: [{ checked: false, text:'New Item' }] }]
+
+            newCards[action.payload.tabid] = [...newCards[action.payload.tabid], {
+                id: uuidv4(),
+                header: 'New Card',
+                items: [{
+                         id: uuidv4(),
+                         checked: false,
+                         text:'New Item' 
+                        }]
+                }]
             return newCards
 
-        case 'newCardItem':
-            const updatedCards = Object.create(cardsState)
-            for (let i = 0; i < updatedCards[action.payload.tabid].length; i++) {
+        case 'deleteCard':
+            return cardsState
+
+        case 'changeHeader':
+            const changedCards = {...cardsState}
+            changedCards[action.payload.tabid][action.payload.cardidx].header = action.payload.value
+            return changedCards
+
+
+        case 'newCardItem': //recode passing card idx
+            console.log(cardsState)
+
+            const updatedCards = {...cardsState}
+
+            for (let i = 0; i < updatedCards[action.payload.tabid].length; i++) {    //finding the card idx
                 if (updatedCards[action.payload.tabid][i].id == action.payload.id) {
-                    updatedCards[action.payload.tabid][i]['items'].push({ checked: false, text:'' })
-                    return updatedCards
+                    updatedCards[action.payload.tabid][i]['items'] = [...updatedCards[action.payload.tabid][i]['items'],
+                     { 
+                        id: uuidv4(),
+                        checked: false,
+                        text:''
+                     }]
+                     break
                 }
             }
+            return updatedCards
 
-        case 'removeCardItem':
-            const removedCards = Object.create(cardsState)
+
+        case 'removeCardItem': //recode passing card idx
+            const removedCards = {...cardsState}
             for (let i = 0; i < removedCards[action.payload.tabid].length; i++) {
-                if (removedCards[action.payload.tabid][i].id == action.payload.id) {
-                    removedCards[action.payload.tabid][i]['items'].splice(action.payload.idx, 1)
+                if (removedCards[action.payload.tabid][i].id == action.payload.cardid) {
+                    removedCards[action.payload.tabid][i]['items'] = removedCards[action.payload.tabid][i]['items'].filter((item) => item.id != action.payload.itemid)
                     return removedCards
                 }
             }
 
-        case 'toggleCardItem':
-            const toggledCards = Object.create(cardsState)
-            for (let i = 0; i < toggledCards[action.payload.tabid].length; i++) {
-                if (toggledCards[action.payload.tabid][i].id == action.payload.id) {
-                    const currentToggle = toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked']
-                    toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'] = !currentToggle
-                    console.log(toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'])
+        case 'toggleCardItem': //recode passing card idx
+            const toggledCards = {...cardsState}
+            console.log(`card id:${action.payload.cardid} tabid:${action.payload.tabid} itemidx:${action.payload.idx}`)
+            for (let i = 0; i < toggledCards[action.payload.tabid].length; i++) { //find correct card
+                if (toggledCards[action.payload.tabid][i].id == action.payload.cardid) {
+                    toggledCards[action.payload.tabid][i]['items'][action.payload.idx]['checked'] = !action.payload.checked
                     return toggledCards
                 }
             }
+
+        case 'editCardItem' : //recode passing card idx
+            return cardsState
 
         default:
             console.log('default')
@@ -108,21 +141,21 @@ const Tasker_app = () => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
 
     const cardItems1 = [
-        { checked: false, text: 'add cross off'},
-        { checked: true, text: 'New item 2'},
-        { checked: true, text: 'fix item length overflow'},
-        { checked: false, text: 'fix header length overflow'},
+        { id: 1, checked: false, text: 'add cross off'},
+        { id: 2, checked: true, text: 'New item 2'},
+        { id: 3, checked: true, text: 'fix item length overflow'},
+        { id: 4, checked: false, text: 'fix header length overflow'},
     ]
     
     const cardItems2 = [
-        { checked: true, text: 'Homework'},
-        { checked: false, text: 'Exercise'},
-        { checked: false, text: 'Walk dog'},
+        { id: 5, checked: true, text: 'Homework'},
+        { id: 6, checked: false, text: 'Exercise'},
+        { id: 7, checked: false, text: 'Walk dog'},
     ]
 
     const cardsPreset = [
-        { id: 1, header: 'Shopping List', items: cardItems1},
-        { id: 2, header: 'Tasks', items: cardItems2},
+        { id: 111, header: 'Shopping List', items: cardItems1},
+        { id: 222, header: 'Tasks', items: cardItems2},
     ]
 
 
@@ -147,9 +180,9 @@ const Tasker_app = () => {
             <div className={styles.cardContainer}>
                 <ul className={styles.cards}>
                     {
-                        cardsState[currentTabIdStr] && cardsState[currentTabIdStr].map((card, index) => {
+                        cardsState[currentTabIdStr] && cardsState[currentTabId].map((card, index) => {
                             return (
-                            <li key={card.id} className={styles.card}> <Card header={card.header} items={card.items} cardid ={card.id} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
+                            <li key={card.id} className={styles.card}> <Card card={card} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }
