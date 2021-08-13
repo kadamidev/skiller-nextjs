@@ -1,10 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 import  {v4 as uuidv4 } from 'uuid'
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
+import Settings from '../components/tasker_app/Settings.jsx'
 
 const tabsReducer = (tabsState, action) => {
     switch(action.type) {
@@ -49,7 +49,6 @@ const tabsReducer = (tabsState, action) => {
     }
 }
 
-// const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 0: cardsPreset })
 
 const cardsReducer = (cardsState, action) => {
     switch(action.type) {
@@ -148,6 +147,10 @@ const Tasker_app = () => {
         { id: 222, header: 'Tasks', items: cardItems2},
     ]
 
+    const [showSettings, setShowSettings] = useState(false)
+    const toggleShowSettings = () => { setShowSettings(!showSettings) }
+    const [layoutSetting, setLayoutSetting] = useState(2)
+
 
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: cardsPreset })
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
@@ -159,8 +162,11 @@ const Tasker_app = () => {
                 <TabNav tabsState={tabsState} dispatch={dispatch}/>
             </nav>
 
-            <div className={styles.settingsWrap}>
+            <div className={styles.settingsWrap} onClick={toggleShowSettings}>
                 <Image src="/img/app/settings.svg" width={30} height={30}/>
+            </div>
+            <div className={showSettings ? styles.settingsPanelWrapper : styles.hideSettingsPanel}>
+                { <Settings layoutSetting={layoutSetting} setLayoutSetting={setLayoutSetting} /> }
             </div>
 
             <div className={styles.newCardWrap} onClick={() => cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId } })}>

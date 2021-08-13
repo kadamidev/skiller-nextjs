@@ -1,0 +1,67 @@
+.settingsContainer {
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 1em;
+    background: radial-gradient(56.41% 56.41% at 47.13% 43.59%, rgba(253, 253, 253, 0.95) 0%, rgba(241, 241, 241, 0.95) 100%);
+    border-radius: 15px;
+    opacity: 95%;
+    transition: opacity 0.2s ease-out;
+
+    li {
+        color: #949494;
+    }
+
+
+    ul.optionsList {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        // border: 1px solid black;
+
+        &>li {
+            margin: 5px 2px;
+        }
+
+        li.darkModeOption {
+            // border: 1px solid black;
+            display: flex;
+            span {
+                margin-left: .2em;
+            }
+
+        }
+        
+        li.layoutSettingContainer {
+            // border: 1px solid black;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                text-align: center;
+            }
+            ul.layoutModes {
+                display: flex;
+                // border: 1px solid black;
+
+                li {
+                    // border: 1px solid black;
+                    margin: 3px 3px;
+                    transition: 0.5s;
+                    width: 32px;
+                    height: 28px;
+
+                    &:hover {
+                    filter: drop-shadow(0px 0px 5px rgba(82, 233, 197, 0.5));
+                    }
+
+                    &.currentLayout {
+                        filter: brightness(0) saturate(100%) invert(80%) sepia(75%) saturate(384%) hue-rotate(97deg) brightness(100%) contrast(83%);
+                    }
+                }
+
+            }
+        }
+    }
+}
+

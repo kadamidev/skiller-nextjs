@@ -6,6 +6,7 @@
 
     .tabs {
         height: 50px;
+        z-index: 999999;
     }
 
 
@@ -14,6 +15,27 @@
         bottom: .5em;
         left: .5em;
         cursor: pointer;
+    }
+
+    .hideSettingsPanel {
+        position: fixed;
+        bottom: 40px;
+        left: 30px;
+        opacity: 0%;
+        pointer-events: none;
+        transition: opacity 0.2s ease-out;
+        z-index: 500;
+    }
+    
+
+    .settingsPanelWrapper {
+        position: fixed;
+        bottom: 40px;
+        left: 30px;
+        z-index: 100;
+        opacity: 95%;
+        transition: opacity 0.2s ease-out;
+        z-index: 500;
     }
 
     .newCardWrap {

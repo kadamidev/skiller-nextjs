@@ -5,10 +5,10 @@
 }
 
 .showTabMenu {
-    opacity: 100%;
+    opacity: 95%;
     transition: opacity 0.2s ease-out;
-    z-index: 15;
-
+    z-index: 10000;
+    position: relative;
 }
 
 .container {
