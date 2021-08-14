@@ -174,7 +174,7 @@ const Tasker_app = () => {
             </div>
 
             <div className={styles.cardContainer}>
-                <ul className={styles.cards}>
+                <ul className={styles.cards} style={{columnCount: layoutSetting}}>
                     {
                         cardsState[currentTabIdStr] && cardsState[currentTabId].map((card, index) => {
                             return (
