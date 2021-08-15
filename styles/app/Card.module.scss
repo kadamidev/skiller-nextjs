@@ -5,28 +5,14 @@
     height: auto;
     border-radius: 0 0 15px 15px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-
+    z-index: 1;
 
     .hide {
         display: none;
     }
     
-    .editBtn {
-        margin-top: .1em;
-        margin-left: 0.1em;
-        opacity: 50%;
-        cursor: pointer;
 
-        display: none;
-    }
 
-    .edit {
-        width: auto;
-        max-width: 80%;
-        background: transparent;
-        color: #949494;
-
-    }
 
     header {
         height: 30px;
@@ -40,9 +26,39 @@
         // font-weight: bold;
         
 
-        span {
-            max-width: 80%;
+        div.headerTextContainer {
+            max-width: calc(100% - 35px);
+            position: relative;
+            // border: 1px solid black;
+            display: flex;
             overflow: hidden;
+
+
+            div.headerText {
+                position: relative;
+                max-width: Calc(100% - 16px); //fix here 100% looks at the text size first, maybe 100vw
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+            }
+            
+            div.editBtn {
+                opacity: 0%;
+                cursor: pointer;
+                transition: opacity 0.2s;
+            }
+
+            .edit {
+                background: none;
+                color: #949494;
+                width: calc(100vw - 16px);
+        
+                &:focus {
+                    outline: none;
+                }
+            }
+            
         }
 
         .deleteCardBtn {
@@ -62,8 +78,12 @@
         }
 
         &:hover {
-            .editBtn {
-                display: block;
+            div.headerTextContainer {
+                div.editBtn {
+                    // display: block;
+                    transition: opacity 0.2s;
+                    opacity: 50%;
+                }
             }
         }
 

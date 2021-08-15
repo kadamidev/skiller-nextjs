@@ -20,19 +20,9 @@ const Card = (props) => {
 
     const editItemToggle = () => { setEditItem(!editItem) }
 
-    const editClick = () => {
+    const editHeaderToggle = () => {
         setEditHeader(!editHeader)
     } 
-
-    const headerInput = (event) => {
-        setHeader(event.target.value)
-    }
-
-    const itemInput = (event) => {
-        let newItems = [...items]
-        newItems[event.target.attributes.data.value]['text'] = event.target.value
-        setItems(newItems)
-    }
 
 
 
@@ -43,12 +33,17 @@ const Card = (props) => {
         <>
             <div className={!collapsed ? styles.cardContainer : [styles.cardContainer, styles.collapsed].join(" ")}>
                 <header>
-                    { !editHeader ?
-                    <span>{props.card.header}</span>
+                    { (props.layoutSetting && !editHeader) ?
+                    <div className={styles.headerTextContainer}>
+                        <div className={styles.headerText}>{props.card.header}</div>
+                        <div className={styles.editBtn} onClick={editHeaderToggle}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
+                    </div>
                     :
-                    <input className={styles.edit} type="text" value={props.card.header} onChange={(event) => props.cardsDispatch({ type: 'changeHeader', payload:{ tabid: props.tabid, cardidx: props.cardidx, value: event.target.value} }) } onBlur={editClick}/>
+                    <div className={styles.headerTextContainer}>
+                        <input className={styles.edit} type="text" value={props.card.header} onChange={(event) => props.cardsDispatch({ type: 'changeHeader', payload:{ tabid: props.tabid, cardidx: props.cardidx, value: event.target.value} }) } onBlur={editHeaderToggle}/>
+                    </div>
                     }
-                    <div className={styles.editBtn} onClick={editClick}><Image src='/img/app/edit.svg' height={16} width={16} /></div>
+
                     <div className={styles.collapseBtn} onClick={toggleCollapsed}> <Image src={!collapsed ? '/img/app/minus.svg': '/img/app/plus.svg'} height={16} width={16} /> </div>
                     <div className={styles.deleteCardBtn} onClick={() => props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })} > <Image src={'/img/app/circled-x.svg'} height={16} width={16} /> </div>
 

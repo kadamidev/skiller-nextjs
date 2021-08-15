@@ -2,7 +2,7 @@
     height: 100vh;
     width: 100vw;
     position: relative;
-
+    will-change: transform;
 
     .tabs {
         height: 50px;
@@ -54,7 +54,6 @@
             margin-top: 2.5vw;
             display: flex;
             justify-content: center;
-
         .cards {
             // column-count: 2;
             column-gap: .8em;
@@ -64,13 +63,6 @@
             display: inline-block;
             width: 100%;
             margin-bottom: .8em;
-            
         }
     }
-
-    .layoutCardContainer1 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-
 }

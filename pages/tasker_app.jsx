@@ -131,7 +131,7 @@ const Tasker_app = () => {
 
     const cardItems1 = [
         { id: 1, checked: false, text: 'add cross off'},
-        { id: 2, checked: true, text: 'New item 2'},
+        { id: 2, checked: true, text: 'fix header state'},
         { id: 3, checked: true, text: 'fix item length overflow'},
         { id: 4, checked: false, text: 'fix header length overflow'},
     ]
@@ -174,11 +174,11 @@ const Tasker_app = () => {
             </div>
 
             <div className={styles.cardContainer}>
-                <ul className={styles.cards} style={{columnCount: layoutSetting}}>
+                <ul className={styles.cards} style={{columnCount: layoutSetting}}> 
                     {
                         cardsState[currentTabIdStr] && cardsState[currentTabId].map((card, index) => {
                             return (
-                            <li key={card.id} className={styles.card}> <Card card={card} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
+                            <li key={card.id} className={styles.card}> <Card card={card} layoutSetting={layoutSetting} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }
