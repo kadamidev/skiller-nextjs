@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
 
@@ -24,9 +24,19 @@ const Card = (props) => {
         setEditHeader(!editHeader)
     } 
 
+    const textAreaGrandParent = useRef(null) //pointing to the ul with all the card items
 
+    const handleTextareaResizeAll = () => { //setting the textarea size to fit the content
+        textAreaGrandParent.current.childNodes.forEach((li) => {
+            let textAreaNode = li.childNodes[2]
+            textAreaNode.style.height = `${textAreaNode.scrollHeight}px`
+        })
 
- 
+    }
+
+    const handleTextareaResize = (e) => { //increases the size of the text area as more text is added to fit
+        e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
+    }
     
 
     return (
@@ -49,9 +59,10 @@ const Card = (props) => {
 
                 </header>
                 <section className={styles.cardBody}>
-                    <ul>
+                    <ul ref={textAreaGrandParent}>
                         { props.card.items.map((item, index) => {
                             let pClass = !item.checked ? styles.itemText : [styles.itemText, styles.crossed].join(' ')
+                            let textAreaClass = !item.checked ? styles.editText : [styles.editText, styles.crossed].join(" ")
                             return (
                                 <li key={item.id}>
                                     <div className={styles.checkBox}>
@@ -62,7 +73,7 @@ const Card = (props) => {
                                         }
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? pClass : styles.hide}>{item.text}</p>
-                                    <input className={editItem ? styles.editText : styles.hide} type="text" onBlur={editItemToggle} value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } />
+                                    <textarea onInput={handleTextareaResize} className={editItem ? textAreaClass : styles.hide} type="text" onBlur={editItemToggle} value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } onFocus={handleTextareaResizeAll}/>
                                     <div className={styles.deleteWrapper} onClick={() => props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: item.id} })}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
