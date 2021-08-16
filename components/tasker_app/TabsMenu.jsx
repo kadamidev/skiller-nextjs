@@ -14,7 +14,7 @@ const TabsMenu = ({tabsState, dispatch }) => {
                         return (
                             <li key={idx} listid={idx} className={(idx == tabsState.currentTabIdx) ? styles.current : styles.none}>
                                 <div className={styles.tabClickSurface} onClick={ () => dispatch({type: 'changeCurrentTab', payload: {id: tab.id, idx: idx} }) }></div>
-                                {tab.name}
+                                <span>{tab.name}</span>
                                 <div className={styles.deleteTabWrapper} onClick={() => dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} })}>
                                     <Image src='/img/app/delete.svg' height={10} width={10}  />
                                 </div>
