@@ -130,8 +130,8 @@ const Tasker_app = () => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
 
     const cardItems1 = [
-        { id: 1, checked: false, text: 'add cross off'},
-        { id: 2, checked: true, text: 'fix header state'},
+        { id: 1, checked: false, text: 'fix tab header styling'},
+        { id: 2, checked: true, text: 'fix tabmenu header overflow'},
         { id: 3, checked: true, text: 'fix item length overflow'},
         { id: 4, checked: false, text: 'fix header length overflow'},
     ]

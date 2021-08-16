@@ -25,11 +25,14 @@ const TabNav = ({tabsState, dispatch}) => {
 
             <div className={styles.tab}>
                 { !tabEdit ?
+                    <>
                     <span>{currentTab.name}</span>
+                    <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
+                    </>
                     :
                     <input className={styles.tabInput} type="text" value={currentTab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: currentTab.id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
                 }
-                <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
+                {/* <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div> */}
             </div>
             
             <div className={styles.tabsWrap}>
