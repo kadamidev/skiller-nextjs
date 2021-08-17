@@ -178,6 +178,9 @@ div.collapsed {
         ul>li {
             color: var(--lightest-aqua);
             transition: 0.3s;
+            textarea.editText {
+                color: var(--lightest-aqua);
+            }
 
         }
     }
