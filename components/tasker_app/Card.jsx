@@ -38,10 +38,13 @@ const Card = (props) => {
         e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
     }
     
-
+    let cardClass = styles.cardContainer 
+    if (props.darkMode)
+        cardClass = [styles.cardContainer, styles.darkMode].join (" ")
+        
     return (
         <>
-            <div className={!collapsed ? styles.cardContainer : [styles.cardContainer, styles.collapsed].join(" ")}>
+            <div className={!collapsed ? cardClass : [styles.cardContainer, styles.collapsed].join(" ") }>
                 <header>
                     { (props.layoutSetting && !editHeader) ?
                     <div className={styles.headerTextContainer}>

@@ -104,6 +104,7 @@
                 width: auto;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                transition: color 0.3s;
 
                 .crossed {
                     text-decoration: line-through;
@@ -165,5 +166,19 @@ div.collapsed {
 
     section.cardBody {
         display: none;
+    }
+}
+
+
+.darkMode {
+    background: linear-gradient(180deg, #527A71 0%, #455652 100%);
+    transition: 0.3s;
+
+    section.cardBody {
+        ul>li {
+            color: var(--lightest-aqua);
+            transition: 0.3s;
+
+        }
     }
 }

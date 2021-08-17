@@ -5,17 +5,20 @@ import Image from 'next/image'
 
 const Settings = (props) => {
 
-
     const handleLayoutClick = (e) => {
         props.setLayoutSetting(e.currentTarget.attributes.mode.value)
     }
     
     return (
         <div>
-            <div className={styles.settingsContainer}>
+            <div className={props.darkMode ? [styles.settingsContainer, styles.darkMode].join(" ") : styles.settingsContainer}>
                 <ul className={styles.optionsList}>
                     <li className={styles.darkModeOption}>
-                        <Image src="/img/app/unchecked.svg" width={16} height={16}/>
+                        { !props.darkMode ? 
+                        <Image src="/img/app/unchecked.svg" width={16} height={16} onClick={props.toggleDarkMode}/>
+                        :
+                        <Image src="/img/app/checked.svg" width={16} height={16} onClick={props.toggleDarkMode}/>
+                        }
                         <span>Dark Mode</span>
                     </li>
 

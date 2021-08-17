@@ -3,6 +3,7 @@
     width: 100vw;
     position: relative;
     will-change: transform;
+    transition: background 0.3s;
 
     .tabs {
         height: 50px;
@@ -65,4 +66,12 @@
             margin-bottom: .8em;
         }
     }
+}
+
+
+.darkMode {
+    background: #284941;
+    transition: 0.3s;
+
+
 }

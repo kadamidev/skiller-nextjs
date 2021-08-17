@@ -6,6 +6,9 @@
     border-radius: 15px;
     opacity: 95%;
     transition: opacity 0.2s ease-out;
+    transition: background 0.3s;
+
+
     li {
         color: #949494;
     }
@@ -64,3 +67,14 @@
     }
 }
 
+
+.darkMode {
+    background: radial-gradient(56.41% 56.41% at 47.13% 43.59%, rgba(82, 122, 113, 0.95) 0%, rgba(69, 86, 82, 0.95) 100%);
+    transition: 0.3s;
+    li {
+        color: var(--lightest-aqua);
+        transition: 0.3s;
+
+    }
+
+}

@@ -3,12 +3,12 @@ import styles from '../../styles/app/TabsMenu.module.scss'
 import Image from 'next/image'
 
 
-const TabsMenu = ({tabsState, dispatch }) => {
+const TabsMenu = ({darkMode, tabsState, dispatch }) => {
 
     return (
         <>
         <div className={styles.container}>
-            <div className={styles.tabsContainer}>
+            <div className={darkMode ? [styles.tabsContainer, styles.darkMode].join(" ") : styles.tabsContainer}>
                 <ul className={styles.tabsList}>
                     { tabsState.tabs.map((tab, idx) => {
                         return (

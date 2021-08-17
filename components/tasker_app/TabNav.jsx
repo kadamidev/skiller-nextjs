@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import TabsMenu from './TabsMenu';
 
-const TabNav = ({tabsState, dispatch}) => {
+const TabNav = ({darkMode, tabsState, dispatch}) => {
 
     const [tabEdit, setTabEdit] = useState(false)
 
@@ -41,7 +41,7 @@ const TabNav = ({tabsState, dispatch}) => {
 
         </nav>     
         <div className={showTabMenu ? styles.showTabMenu : styles.hideTabMenu}>
-            <TabsMenu tabsState={tabsState} dispatch={dispatch}/>
+            <TabsMenu darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
         </div>
         {/* { showTabMenu && <TabsMenu /> } */}
         </>

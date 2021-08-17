@@ -12,6 +12,8 @@
     flex-direction: column;
     justify-content: space-between;
     // border: 1px solid black;
+    transition: background 0.3s;
+
 
 
     ul {
@@ -46,7 +48,7 @@
                 width: Calc(100% - 60px);
                 text-overflow: ellipsis;
                 overflow: hidden;
-                height: 1em;
+                height: 1.2em;
             }
 
             .tabClickSurface {
@@ -81,5 +83,12 @@
     }
 
 
+
+}
+
+
+.darkMode {
+    background: radial-gradient(56.41% 56.41% at 47.13% 43.59%, rgba(82, 122, 113, 0.95) 0%, rgba(69, 86, 82, 0.95) 100%);
+    transition: 0.3s;
 
 }
