@@ -5,6 +5,8 @@ import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 import  {v4 as uuidv4 } from 'uuid'
 import Settings from '../components/tasker_app/Settings.jsx'
+import { getTabsData } from '../lib/tabs';
+import { getCardsData } from '../lib/cards';
 
 const tabsReducer = (tabsState, action) => {
     switch(action.type) {
@@ -117,36 +119,27 @@ const cardsReducer = (cardsState, action) => {
     }
 }
 
-const Tasker_app = () => {
+export async function getStaticProps() {
+    const allTabsData = getTabsData()
+    const allCardsData = getCardsData()
 
-    const tabPreset = [
-        { id: 1, name: 'School', current: false },
-        { id: 2, name: 'Work', current: false },
-        { id: 3, name: 'Daily', current: true },
-        { id: 4, name: 'Exams', current: false },
-        { id: 5, name: 'Gym', current: false },
-    ]
+    return {
+      props: {
+        allTabsData,
+        allCardsData
+      }
+    }
+  }
 
-    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: tabPreset, currentTabIdx: 0  })
-
-    const cardItems1 = [
-        { id: 1, checked: false, text: 'fix tab header styling'},
-        { id: 2, checked: true, text: 'fix tabmenu header overflow'},
-        { id: 3, checked: true, text: 'fix item length overflow'},
-        { id: 4, checked: false, text: 'fix header length overflow'},
-    ]
+const Tasker_app = ({ allTabsData, allCardsData }) => {
+    const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
+    const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
     
-    const cardItems2 = [
-        { id: 5, checked: true, text: 'Homework'},
-        { id: 6, checked: false, text: 'Exercise'},
-        { id: 7, checked: false, text: 'Walk dog'},
-    ]
+    const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
+    const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
 
-    const cardsPreset = [
-        { id: 111, header: 'Shopping List', items: cardItems1},
-        { id: 222, header: 'Tasks', items: cardItems2},
-    ]
 
+    //ui state
     const [showSettings, setShowSettings] = useState(false)
     const toggleShowSettings = () => { setShowSettings(!showSettings) }
     const [layoutSetting, setLayoutSetting] = useState(2)
@@ -154,9 +147,7 @@ const Tasker_app = () => {
     const [darkMode, setDarkMode] = useState(false)
     const toggleDarkMode = () => { setDarkMode(!darkMode) }
 
-    const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: cardsPreset })
-    const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
-    const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
+
     return (
         <>
         <div className={darkMode ? [styles.container, styles.darkMode].join(" ") : styles.container}>
