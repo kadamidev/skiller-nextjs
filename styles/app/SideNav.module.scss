@@ -1,0 +1,22 @@
+.sideNavContainer {
+    width: 80px;
+    height: 100vh;
+    background: linear-gradient(90deg, #E3E3E3 0%, #EFEFEF 100%);
+    // border-right: 1px solid #9696950a;
+    position: fixed;
+    margin-right: 80px;
+    z-index: 100;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.3s;
+
+}
+
+
+
+.darkMode {
+    background: linear-gradient(90deg, #455652 0%, #527A71 100%);
+    transition: 0.3s;
+    border: none;
+}
+
+
