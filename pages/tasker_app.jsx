@@ -58,7 +58,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 </aside>
             }
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
-                <Image src="/img/app/settings.svg" width={30} height={30}/>
+                <Image src="/img/app/settings.svg" width={30} height={30} layout="responsive" />
             </div>
             <div className={showSettings ? styles.settingsPanelWrapper : styles.hideSettingsPanel}>
                 { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={layoutSetting} setLayoutSetting={setLayoutSetting} /> }
