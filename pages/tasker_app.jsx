@@ -9,6 +9,8 @@ import { getCardsData } from '../lib/cards';
 import { tabsReducer } from '../reducers/tabsReducer';
 import { cardsReducer } from '../reducers/cardsReducer';
 import SideNav from '../components/tasker_app/SideNav';
+import { useMediaQuery } from '../lib/useMediaQuery'
+
 
 
 export async function getStaticProps() {
@@ -39,6 +41,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [darkMode, setDarkMode] = useState(false)
     const toggleDarkMode = () => { setDarkMode(!darkMode) }
 
+    const isDesktop = useMediaQuery('(min-width: 769px')
+
 
     return (
         <>
@@ -48,11 +52,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             <nav className={styles.tabs}>
                 <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
-
-            <aside className={styles.sideNavWrapper}>
-                <SideNav darkMode={darkMode} />
-            </aside>
-
+            { isDesktop &&
+                <aside className={styles.sideNavWrapper}>
+                    <SideNav darkMode={darkMode} />
+                </aside>
+            }
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
                 <Image src="/img/app/settings.svg" width={30} height={30}/>
             </div>
