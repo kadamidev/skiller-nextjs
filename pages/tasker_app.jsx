@@ -41,7 +41,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     return (
         <>
-        <div className={darkMode ? [styles.container, styles.darkMode].join(" ") : styles.container}>
+        <div className={darkMode ? [styles.bkgContainer, styles.darkMode].join(" ") : styles.bkgContainer}>
+        </div>
+        <div className={styles.container}>
             <nav className={styles.tabs}>
                 <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
@@ -68,7 +70,6 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     }
                 </ul>
             </div>
-            
         </div>
         </>
     )
