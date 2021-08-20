@@ -80,8 +80,18 @@
             max-width: Calc(80vw);
             display: flex;
             overflow: auto;
+            color: #949494;
 
-            .desktopTab {
+            div.tabClickBox {
+                border: 1px solid black;
+                height: 100%;
+                min-width: 100px;
+                width: 150px;
+                max-width: 150px;
+                // position: absolute;
+            }
+
+            li.desktopTab {
                 // border: 1px solid #949494;
                 height: 100%;
                 min-width: 100px;
@@ -92,19 +102,50 @@
                 align-items: flex-end;
                 border-right: 0.5px solid rgba(0, 0, 0, 0.1);
                 padding: 0 0 0.2em 0.5em;
+                position: relative;
+
+                .tabInput {
+                    background: none;
+                    color: inherit;
+                    font-size: 1.4em;
+                    // font-family: rubiks;
+
+                    // width: Calc(100vw - 170px);
+                    // text-align: center;
+        
+                    &:focus {
+                        outline: none;
+                    }
+                }
 
     
                 span {
                     color: #949494;
                     font-size: 1.4em;
                 }
+
+                &:hover {
+                    .tabButtons {
+                        opacity: 50%;
+                        transition: 0.4s;
+                    }
+                }
             }
     
-            .desktopCurrent {
+            li.desktopCurrent {
                 background: #84F3D9;
+                color: var(--lightest-aqua);
+
                 span {
                     color: var(--lightest-aqua);
                 }
+            }
+
+            .tabButtons {
+                position: absolute;
+                right: 4px;
+                opacity: 0%;
+                z-index: 10;
             }
 
         }

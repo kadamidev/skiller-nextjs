@@ -30,6 +30,14 @@ a {
   box-sizing: border-box;
 }
 
+textarea {
+  font-family: 'Rubik', sans-serif;
+}
+
+input {
+  font-family: 'Rubik', sans-serif;
+}
+
 @media screen and (min-width: 1080px) {
   .container {
     width: 90%;
