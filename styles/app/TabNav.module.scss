@@ -108,10 +108,7 @@
                     background: none;
                     color: inherit;
                     font-size: 1.4em;
-                    // font-family: rubiks;
-
-                    // width: Calc(100vw - 170px);
-                    // text-align: center;
+                    width: Calc(100% - 20px);
         
                     &:focus {
                         outline: none;
@@ -122,6 +119,9 @@
                 span {
                     color: #949494;
                     font-size: 1.4em;
+                    width: Calc(100% - 5px);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 &:hover {
