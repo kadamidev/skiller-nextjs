@@ -77,10 +77,15 @@
             margin-left: 80px;
             align-self: flex-end;
             height: 100%;
-            max-width: Calc(80vw);
+            max-width: Calc(100% - 125px);
             display: flex;
             overflow: auto;
             color: #949494;
+            scrollbar-width: thin;
+            scrollbar-color: #00000010;
+            &::-webkit-scrollbar{
+                display: none;
+            }
 
             div.tabClickBox {
                 border: 1px solid black;
