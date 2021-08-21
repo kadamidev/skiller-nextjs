@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from '../../styles/app/TabNav.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,16 +9,24 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
     
     const [tabEdit, setTabEdit] = useState(false)
     const [editableTabIdx, setEditableTabIdx] = useState(false)
-    const editNode = useRef(null)
     
     const toggleTabEdit = () => { setTabEdit(!tabEdit) }
     
     const [showTabMenu, setShowTabMenu] = useState(false)
     const toggleTabMenu = () => setShowTabMenu(!showTabMenu)
-
+    
     const currentTab = tabsState.tabs[tabsState.currentTabIdx]
-
+    
     const isDesktop = useMediaQuery('(min-width: 769px)')
+    
+    const editNode = useRef(null)
+    const [editNodeVisible, setEditNodeVisible] = useState(false)
+
+    useEffect(() => {
+        if (!editNodeVisible)
+            return
+        editNode.current.focus()
+      }, [editNodeVisible]);
 
     
     return (
@@ -51,7 +59,7 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
                     return (
                     <li key={tab.id} className={(tabsState.currentTabIdx == index) ? [styles.desktopTab, styles.desktopCurrent].join(" ") : styles.desktopTab } onClick={ () => dispatch({type: 'changeCurrentTab', payload: {id: tab.id, idx: index} }) } >
                         { (tabEdit && editableTabIdx == index) ?
-                        <input ref={editNode} className={styles.tabInput} type="text" value={tab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: tab.id, name: event.target.value} }) } onBlur={toggleTabEdit} onClick={(e) => {e.stopPropagation()}}/>
+                        <input ref={el => { editNode.current = el; setEditNodeVisible(!!el);}} className={styles.tabInput} type="text" value={tab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: tab.id, name: event.target.value} }) } onBlur={toggleTabEdit} onClick={(e) => {e.stopPropagation()}}/>
                         :
                         <span>{tab.name}</span>
                         }
@@ -67,8 +75,6 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
                                     e.stopPropagation()
                                     toggleTabEdit()
                                     setEditableTabIdx(index)
-                                    console.log(editNode)
-                                    // editNode.current.focus()
                                 }} />
                             </div>
                         </div>
