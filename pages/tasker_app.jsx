@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
@@ -25,10 +25,19 @@ export async function getStaticProps() {
     }
   }
 
+
+
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
+
+    useEffect(() => {
+        localStorage.setItem('tabs', JSON.stringify(tabsState.tabs))
+        localStorage.setItem('tabsIdx', tabsState.currentTabIdx)
+
+    }, [tabsState])
     
+
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
     const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
 
@@ -52,7 +61,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             <nav className={styles.tabs}>
                 <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
-            
+
             <aside className={styles.sideNavWrapper}>
                 <SideNav darkMode={darkMode} />
             </aside>
