@@ -52,11 +52,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             <nav className={styles.tabs}>
                 <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
-            { isDesktop &&
-                <aside className={styles.sideNavWrapper}>
-                    <SideNav darkMode={darkMode} />
-                </aside>
-            }
+            
+            <aside className={styles.sideNavWrapper}>
+                <SideNav darkMode={darkMode} />
+            </aside>
+            
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
                 <Image src="/img/app/settings.svg" width={30} height={30} layout="responsive" />
             </div>
