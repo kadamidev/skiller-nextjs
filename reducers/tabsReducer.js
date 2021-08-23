@@ -3,6 +3,9 @@ import  {v4 as uuidv4 } from 'uuid'
 
 export const tabsReducer = (tabsState, action) => {
     switch(action.type) {
+        case 'setTabs':
+            return {tabs: action.payload.tabs, currentTabIdx: action.payload.currentTabIdx}
+
         case 'addNewTab':
             return {tabs: [...tabsState.tabs, { id: uuidv4(), name: 'Untitled'}],
                     currentTabIdx: tabsState.currentTabIdx}

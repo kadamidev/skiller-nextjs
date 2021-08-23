@@ -3,6 +3,8 @@ import  {v4 as uuidv4 } from 'uuid'
 
 export const cardsReducer = (cardsState, action) => {
     switch(action.type) {
+        case 'setCards':
+            return action.payload.cards
         case 'addNewCard':
 
             const newCards = {...cardsState}

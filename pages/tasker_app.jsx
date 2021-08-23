@@ -31,11 +31,23 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
 
-    useEffect(() => {
+    useEffect(() => { //setting states from localStore
+        const tabsData = JSON.parse(localStorage.getItem('tabs')) || []
+        const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx')) || 0
+        const cardsData = JSON.parse(localStorage.getItem('cards')) || {}
+        dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
+        cardsDispatch({type: 'setCards', payload: {cards: cardsData}})
+    }, [])
+    
+    useEffect(() => { //localstoring tabs data
         localStorage.setItem('tabs', JSON.stringify(tabsState.tabs))
         localStorage.setItem('tabsIdx', tabsState.currentTabIdx)
 
     }, [tabsState])
+
+    useEffect(() => { //localstoring card data
+        localStorage.setItem('cards', JSON.stringify(cardsState))
+    }, [cardsState])
     
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
