@@ -32,11 +32,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
 
     useEffect(() => { //setting states from localStore
-        const tabsData = JSON.parse(localStorage.getItem('tabs')) || []
-        const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx')) || 0
-        const cardsData = JSON.parse(localStorage.getItem('cards')) || {}
-        dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
-        cardsDispatch({type: 'setCards', payload: {cards: cardsData}})
+        const tabsData = JSON.parse(localStorage.getItem('tabs'))
+        const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx'))
+        const cardsData = JSON.parse(localStorage.getItem('cards'))
+        if (tabsData && tabIdxData && cardsData) {
+            dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
+            cardsDispatch({type: 'setCards', payload: {cards: cardsData}})
+        }
     }, [])
     
     useEffect(() => { //localstoring tabs data
@@ -51,7 +53,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
-    const currentTabIdStr = `${tabsState.tabs[tabsState.currentTabIdx].id}`
+
 
 
     //ui state
@@ -92,7 +94,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             <div className={styles.cardContainer}>
                 <ul className={styles.cards} style={{columnCount: layoutSetting}}> 
                     {
-                        cardsState[currentTabIdStr] && cardsState[currentTabId].map((card, index) => {
+                        cardsState[currentTabId] && cardsState[currentTabId].map((card, index) => {
                             return (
                             <li key={card.id} className={styles.card}> <Card darkMode={darkMode} card={card} layoutSetting={layoutSetting} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
