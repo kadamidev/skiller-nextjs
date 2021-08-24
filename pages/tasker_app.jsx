@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect, useRef } from 'react';
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
@@ -29,30 +29,46 @@ export async function getStaticProps() {
 
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
-    const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
+    const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
+    // const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
+
+
 
     useEffect(() => { //setting states from localStore
         const tabsData = JSON.parse(localStorage.getItem('tabs'))
         const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx'))
         const cardsData = JSON.parse(localStorage.getItem('cards'))
-        if (tabsData && tabIdxData && cardsData) {
+
+        if (tabsData) {
             dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
-            cardsDispatch({type: 'setCards', payload: {cards: cardsData}})
+            cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) //fix card persistence 
         }
     }, [])
     
+
+    const firstRunTabs = useRef(true)
     useEffect(() => { //localstoring tabs data
+        if (firstRunTabs.current) {
+            firstRunTabs.current = false
+            return
+        }
         localStorage.setItem('tabs', JSON.stringify(tabsState.tabs))
         localStorage.setItem('tabsIdx', tabsState.currentTabIdx)
 
     }, [tabsState])
 
+    const firstRunCards = useRef(true)
     useEffect(() => { //localstoring card data
+        if (firstRunCards.current) {
+            firstRunCards.current = false
+            return
+        }
         localStorage.setItem('cards', JSON.stringify(cardsState))
     }, [cardsState])
     
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
+
 
 
 
@@ -72,7 +88,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         <div className={darkMode ? [styles.bkgContainer, styles.darkMode].join(" ") : styles.bkgContainer}>
         </div>
         <div className={styles.container}>
-            <nav className={styles.tabs}>
+            <nav ref={firstRunTabs} className={styles.tabs}>
                 <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
 
@@ -92,7 +108,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             </div>
 
             <div className={styles.cardContainer}>
-                <ul className={styles.cards} style={{columnCount: layoutSetting}}> 
+                <ul ref={firstRunCards} className={styles.cards} style={{columnCount: layoutSetting}}> 
                     {
                         cardsState[currentTabId] && cardsState[currentTabId].map((card, index) => {
                             return (
