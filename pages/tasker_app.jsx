@@ -8,6 +8,7 @@ import { getTabsData } from '../lib/tabs';
 import { getCardsData } from '../lib/cards';
 import { tabsReducer } from '../reducers/tabsReducer';
 import { cardsReducer } from '../reducers/cardsReducer';
+import { settingsReducer } from '../reducers/settingsReducer';
 import SideNav from '../components/tasker_app/SideNav';
 import { useMediaQuery } from '../lib/useMediaQuery'
 
@@ -26,11 +27,10 @@ export async function getStaticProps() {
   }
 
 
-
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
-    // const [cardsState, cardsDispatch] = useReducer(cardsReducer, { 1: allCardsData })
+    const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
 
 
 
@@ -38,10 +38,14 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         const tabsData = JSON.parse(localStorage.getItem('tabs'))
         const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx'))
         const cardsData = JSON.parse(localStorage.getItem('cards'))
+        const settingsString = localStorage.getItem('settings')
+        const settingsData = JSON.parse(settingsString)
 
-        if (tabsData) {
+        console.log(`pre dispatch settings: ${settingsData} tabs: ${tabsData} cards: ${cardsData}`)
+        if (tabsData && settingsData) {
             dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
             cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) //fix card persistence 
+            settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
         }
     }, [])
     
@@ -66,19 +70,29 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         localStorage.setItem('cards', JSON.stringify(cardsState))
     }, [cardsState])
     
+    const firstRunSettings = useRef(true)
+    useEffect(() => {
+        if (firstRunSettings.current) {
+            firstRunSettings.current = false
+            console.log('avoided first settings run')
+            return
+        }
+        console.log('stored settings')
+        localStorage.setItem('settings', JSON.stringify(settings))
+    }, [settings])
+
+
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
-
-
-
 
     //ui state
     const [showSettings, setShowSettings] = useState(false)
     const toggleShowSettings = () => { setShowSettings(!showSettings) }
-    const [layoutSetting, setLayoutSetting] = useState(2)
 
-    const [darkMode, setDarkMode] = useState(false)
-    const toggleDarkMode = () => { setDarkMode(!darkMode) }
+
+
+    const darkMode = settings.darkMode
+    const toggleDarkMode = () => { settingsDispatch({type: 'toggleDarkMode'}) }
 
     const isDesktop = useMediaQuery('(min-width: 769px')
 
@@ -99,8 +113,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
                 <Image src="/img/app/settings.svg" width={30} height={30} layout="responsive" />
             </div>
-            <div className={showSettings ? styles.settingsPanelWrapper : styles.hideSettingsPanel}>
-                { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={layoutSetting} setLayoutSetting={setLayoutSetting} /> }
+            <div ref={firstRunSettings} className={showSettings ? styles.settingsPanelWrapper : styles.hideSettingsPanel}>
+                { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={settings.layout} setLayoutSetting={(layout) => {settingsDispatch({type: 'setLayout', payload: {layout: layout}})} } /> }
             </div>
 
             <div className={styles.newCardWrap} onClick={() => cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId } })}>
@@ -108,11 +122,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             </div>
 
             <div className={styles.cardContainer}>
-                <ul ref={firstRunCards} className={styles.cards} style={{columnCount: layoutSetting}}> 
+                <ul ref={firstRunCards} className={styles.cards} style={{columnCount: settings.layout}}> 
                     {
                         cardsState[currentTabId] && cardsState[currentTabId].map((card, index) => {
                             return (
-                            <li key={card.id} className={styles.card}> <Card darkMode={darkMode} card={card} layoutSetting={layoutSetting} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
+                            <li key={card.id} className={styles.card}> <Card darkMode={darkMode} card={card} layoutSetting={settings.layout} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }
