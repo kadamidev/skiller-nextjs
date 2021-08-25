@@ -35,18 +35,19 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
 
     useEffect(() => { //setting states from localStore
-        const tabsData = JSON.parse(localStorage.getItem('tabs'))
-        const tabIdxData = JSON.parse(localStorage.getItem('tabsIdx'))
-        const cardsData = JSON.parse(localStorage.getItem('cards'))
-        const settingsString = localStorage.getItem('settings')
-        const settingsData = JSON.parse(settingsString)
+        async function getLocalData() {
+        let tabsData = await JSON.parse(localStorage.getItem('tabs'))
+        let tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+        if (tabsData) dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
 
-        console.log(`pre dispatch settings: ${settingsData} tabs: ${tabsData} cards: ${cardsData}`)
-        if (tabsData && settingsData) {
-            dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
-            cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) //fix card persistence 
-            settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
+        let cardsData = await JSON.parse(localStorage.getItem('cards'))
+        if (cardsData) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
+
+        let settingsData = await localStorage.getItem('settings')
+        settingsData = await JSON.parse(settingsData)
+        if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
         }
+        getLocalData()
     }, [])
     
 
