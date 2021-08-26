@@ -10,6 +10,10 @@ const Settings = (props) => {
     const handleLayoutClick = (e) => {
         props.setLayoutSetting(e.currentTarget.attributes.mode.value)
     }
+        
+    const handleDropdownChange = (e) => {
+        props.setLayoutSetting(e.target.value)
+    }
     
     return (
         <div>
@@ -27,12 +31,12 @@ const Settings = (props) => {
                     <li className={styles.layoutSettingContainer}>
                         { isDesktop ? <>
                         <label htmlFor='column-selector'>Card Columns</label>
-                        <select id='column-selector' name="layout">
+                        <select id='column-selector' name="layout" onChange={handleDropdownChange} value={props.layoutSetting}>
                             {
                                 [...Array(12)].map((e, i) => {
                                     let val = i + 1
                                     return (
-                                        <option key={i} mode={val} value={val} onClick={handleLayoutClick}>{val}</option>
+                                        <option key={i} mode={val} value={val} >{val}</option>
                                     )
                                 })
                             }
