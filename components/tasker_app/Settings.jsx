@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from '../../styles/app/Settings.module.scss'
 import Image from 'next/image'
-
+import { useMediaQuery } from '../../lib/useMediaQuery';
 
 const Settings = (props) => {
 
+    const isDesktop = useMediaQuery('(min-width: 769px)')
+    
     const handleLayoutClick = (e) => {
         props.setLayoutSetting(e.currentTarget.attributes.mode.value)
     }
@@ -23,13 +25,27 @@ const Settings = (props) => {
                     </li>
 
                     <li className={styles.layoutSettingContainer}>
-                        <span>Layout</span>
+                        { isDesktop ? <>
+                        <label htmlFor='column-selector'>Card Columns</label>
+                        <select id='column-selector' name="layout">
+                            {
+                                [...Array(12)].map((e, i) => {
+                                    let val = i + 1
+                                    return (
+                                        <option key={i} mode={val} value={val} onClick={handleLayoutClick}>{val}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                        </>
+                        :
+                        <><span>Layout</span>
                         <ul className={styles.layoutModes}>
                             <li className={(props.layoutSetting == 1) ? styles.currentLayout : styles.layoutSvgWrap} mode={1} onClick={handleLayoutClick}><Image src="/img/app/Single.svg" width={32} height={28}/></li>
                             <li className={(props.layoutSetting == 2) ? styles.currentLayout : styles.layoutSvgWrap} mode={2} onClick={handleLayoutClick}><Image src="/img/app/Double.svg" width={32} height={28}/></li>
                             <li className={(props.layoutSetting == 3) ? styles.currentLayout : styles.layoutSvgWrap} mode={3} onClick={handleLayoutClick}><Image src="/img/app/Tripple.svg" width={32} height={28}/></li>
                         </ul>
-
+                        </>}
                     </li>
 
 
