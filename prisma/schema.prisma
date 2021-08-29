@@ -2,10 +2,44 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  username String
+  email String
+  avatar String
+  createdAt DateTime @default(now())
+}
+
+model Tab {
+  id Int @id @default(autoincrement())
+  user_id Int
+  name String
+  createdAt DateTime @default(now())
+
+}
+
+model Card {
+  id Int @id @default(autoincrement())
+  tab_id Int
+  header String
+  collapsed Boolean
+  createdAt DateTime @default(now())
+}
+
+model cardItem {
+  id Int @id @default(autoincrement())
+  card_id Int
+  checked Boolean
+  text String
+  createdAt DateTime @default(now())
 }

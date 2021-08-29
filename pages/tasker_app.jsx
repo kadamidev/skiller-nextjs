@@ -26,6 +26,15 @@ export async function getStaticProps() {
     }
   }
 
+//   export async function getServerSideProps() {
+//     //   const tabs = await prisma.tab.getTabs()
+//       return {
+//           props: {
+              
+//           }
+//       }
+//   }
+
 
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
