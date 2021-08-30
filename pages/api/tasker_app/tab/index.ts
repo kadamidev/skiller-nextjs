@@ -6,7 +6,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     const prisma = new PrismaClient({ log: ["query"] })
 
     try {
-        const tabs = await prisma.tab.findMany()
+        const {tab: tabData} = req.body
+        const tabs = await prisma.tab.findMany({
+            where: {
+                user_id: tabData.user_id
+            }
+        })
         res.status(200)
         res.json({ tabs })
     } catch(e) {

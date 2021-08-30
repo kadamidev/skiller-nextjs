@@ -14,16 +14,16 @@ generator client {
 
 model User {
   id Int @id @default(autoincrement())
-  username String
-  email String
-  avatar String
+  username String @unique
+  email String? @unique
+  avatar String?
   createdAt DateTime @default(now())
 }
 
 model Tab {
   id Int @id @default(autoincrement())
   user_id Int
-  name String
+  name String?
   createdAt DateTime @default(now())
 
 }
@@ -31,15 +31,15 @@ model Tab {
 model Card {
   id Int @id @default(autoincrement())
   tab_id Int
-  header String
-  collapsed Boolean
+  header String?
+  collapsed Boolean? @default(false)
   createdAt DateTime @default(now())
 }
 
 model cardItem {
   id Int @id @default(autoincrement())
   card_id Int
-  checked Boolean
-  text String
+  checked Boolean? @default(false)
+  text String?
   createdAt DateTime @default(now())
 }
