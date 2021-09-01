@@ -4,9 +4,30 @@ import Image from 'next/image'
 import Link from 'next/link'
 import TabsMenu from './TabsMenu';
 import { useMediaQuery } from '../../lib/useMediaQuery';
+// import { useQuery, useMutation, queryCache } from 'react-query'
+import { PrismaClient } from '@prisma/client'
+
+
+const fetchTabsRequest = async (id) => {
+    try {
+        const response = await fetch(`/api/tasker_app/tab/${id}}`, {
+        })
+        const data = await response.json()
+        const { tabs } = data
+        return tabs
+    } catch(error) {
+        console.log(`failed fetching tabs: ${error}`)
+    }
+}
+
+async function saveTabRequest() {
+    const response = await fetch('/api/tasker_app/tab', {
+
+    })
+}
 
 const TabNav = ({darkMode, tabsState, dispatch}) => {
-    
+
     const [tabEdit, setTabEdit] = useState(false)
     const [editableTabIdx, setEditableTabIdx] = useState(false)
     
@@ -22,12 +43,18 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
     const editNode = useRef(null)
     const [editNodeVisible, setEditNodeVisible] = useState(false)
 
+
+
+    // const {data: tabs, error, status} = useQuery('userId', fetchTabsRequest)
+
     useEffect(() => {
         if (!editNodeVisible)
             return
         editNode.current.focus()
       }, [editNodeVisible]);
 
+
+      console.log(fetchTabsRequest(1))
     
     return (
         <>

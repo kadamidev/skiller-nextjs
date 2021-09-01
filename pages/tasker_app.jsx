@@ -1,16 +1,18 @@
-import React, { useReducer, useState, useEffect, useRef } from 'react';
+import React, { useReducer, useState, useEffect, useRef } from 'react'
 import styles from '../styles/app/tasker_app.module.scss'
 import Image from 'next/image'
 import TabNav from '../components/tasker_app/TabNav.jsx'
 import Card from '../components/tasker_app/Card.jsx'
 import Settings from '../components/tasker_app/Settings.jsx'
-import { getTabsData } from '../lib/tabs';
-import { getCardsData } from '../lib/cards';
-import { tabsReducer } from '../reducers/tabsReducer';
-import { cardsReducer } from '../reducers/cardsReducer';
-import { settingsReducer } from '../reducers/settingsReducer';
-import SideNav from '../components/tasker_app/SideNav';
+import { getTabsData } from '../lib/tabs'
+import { getCardsData } from '../lib/cards'
+import { tabsReducer } from '../reducers/tabsReducer'
+import { cardsReducer } from '../reducers/cardsReducer'
+import { settingsReducer } from '../reducers/settingsReducer'
+import SideNav from '../components/tasker_app/SideNav'
 import { useMediaQuery } from '../lib/useMediaQuery'
+import { ReactQueryDevtools } from 'react-query-devtools'
+// import { useQuery, useMutation, queryCache } from 'react-query'
 
 
 
@@ -92,6 +94,18 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     }, [settings])
 
 
+    async function saveTab(tab) {
+        const response = await fetch('/api/tasker_app/tab', {
+            method: 'POST',
+            body: JSON.stringify(tab)
+        })
+
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
+        return await response.json() 
+    }
+
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
 
@@ -113,7 +127,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         </div>
         <div className={styles.container}>
             <nav ref={firstRunTabs} className={styles.tabs}>
-                <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
+                <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch} dbsave={saveTab}/>
             </nav>
 
             <aside className={styles.sideNavWrapper}>
@@ -143,6 +157,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 </ul>
             </div>
         </div>
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </>
     )
 }
