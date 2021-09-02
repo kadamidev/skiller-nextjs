@@ -37,6 +37,19 @@ export async function getStaticProps() {
 //       }
 //   }
 
+const fetchTabsRequest = async (id) => {
+    try {
+        const response = await fetch(`/api/tasker_app/tab/${id}`)
+        console.log('sent fetch')
+
+        const { tabs: tabsData } = await response.json()
+        console.log(tabsData)
+        return await tabsData
+    } catch(error) {
+        console.log(`failed fetching tabs: ${error}`)
+    }
+}
+
 
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
@@ -105,6 +118,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         }
         return await response.json() 
     }
+
+    useEffect( () => {
+        (async () => {
+            const dbTabs = await fetchTabsRequest(1)
+            dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 1 }})
+        })()
+    }, [])
 
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id

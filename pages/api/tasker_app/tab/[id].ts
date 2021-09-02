@@ -4,12 +4,11 @@ import { PrismaClient } from "@prisma/client";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
     const prisma = new PrismaClient({ log: ["query"] })
-
+    const { userId } = req.query
     try {
-        const {tab: tabData} = req.body
         const tabs = await prisma.tab.findMany({
             where: {
-                user_id: tabData.user_id
+                user_id: userId
             }
         })
         res.status(200)

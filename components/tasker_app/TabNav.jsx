@@ -10,11 +10,12 @@ import { PrismaClient } from '@prisma/client'
 
 const fetchTabsRequest = async (id) => {
     try {
-        const response = await fetch(`/api/tasker_app/tab/${id}}`, {
-        })
-        const data = await response.json()
-        const { tabs } = data
-        return tabs
+        const response = await fetch(`/api/tasker_app/tab/${id}`)
+        console.log('sent fetch')
+
+        const { tabs: tabsData } = await response.json()
+        console.log(tabsData)
+        return await tabsData
     } catch(error) {
         console.log(`failed fetching tabs: ${error}`)
     }
@@ -54,7 +55,7 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
       }, [editNodeVisible]);
 
 
-      console.log(fetchTabsRequest(1))
+    //   console.log(fetchTabsRequest(1))
     
     return (
         <>
@@ -109,6 +110,7 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
                     )
                 })}
             </ul>
+
             <div className={styles.newTabWrapper}>
                 <Image src='/img/app/new-tab.svg' height={30} width={30} onClick={ () => dispatch({type: 'addNewTab'}) } />
             </div>
