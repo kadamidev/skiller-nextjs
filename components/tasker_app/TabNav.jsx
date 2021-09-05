@@ -21,13 +21,16 @@ const fetchTabsRequest = async (id) => {
     }
 }
 
-async function saveTabRequest() {
-    const response = await fetch('/api/tasker_app/tab', {
-
+async function createTabRequest(user_id) {
+    const tab = { tab: { user_id: user_id } }
+    const response = await fetch('/api/tasker_app/tab/create', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tab),
     })
 }
 
-const TabNav = ({darkMode, tabsState, dispatch}) => {
+const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
 
     const [tabEdit, setTabEdit] = useState(false)
     const [editableTabIdx, setEditableTabIdx] = useState(false)
@@ -44,6 +47,12 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
     const editNode = useRef(null)
     const [editNodeVisible, setEditNodeVisible] = useState(false)
 
+    function handleNewTabClick() {
+        dispatch({type: 'addNewTab'}) //optimistically add a new tab
+        if (!guestMode) { //persist tab to db
+        createTabRequest(user_id)
+        }
+    }
 
 
     // const {data: tabs, error, status} = useQuery('userId', fetchTabsRequest)
@@ -112,7 +121,7 @@ const TabNav = ({darkMode, tabsState, dispatch}) => {
             </ul>
 
             <div className={styles.newTabWrapper}>
-                <Image src='/img/app/new-tab.svg' height={30} width={30} onClick={ () => dispatch({type: 'addNewTab'}) } />
+                <Image src='/img/app/new-tab.svg' height={30} width={30} onClick={handleNewTabClick} />
             </div>
             </>}
 

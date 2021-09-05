@@ -29,7 +29,11 @@ export async function getStaticProps() {
   }
 
 //   export async function getServerSideProps() {
-//     //   const tabs = await prisma.tab.getTabs()
+//       const tabs = await prisma.tab.findMany({
+//           where: {
+//               user_id: user_id //update with session id
+//           }
+//       })
 //       return {
 //           props: {
               
@@ -56,13 +60,32 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
     const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
 
+    const [guestMode, setGuestMode] = useState(false)
 
+    const user_id = 1
 
-    useEffect(() => { //setting states from localStore
-        async function getLocalData() {
-        let tabsData = await JSON.parse(localStorage.getItem('tabs'))
-        let tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-        if (tabsData) dispatch({type: 'setTabs', payload: {tabs: tabsData, currentTabIdx: tabIdxData}})
+    // data persistence process
+    // 1. loading data check if guestMode
+        //  yes - load data from local store
+        //  no - load data from db getServerSideProps
+    // 2. updating data if guestmode
+        //  yes - save to local storage
+        //  no - add debouncer on data changes to not constantly request
+    
+    useEffect(() => { //Load data
+        async function getData() {
+        let tabData = null
+        let tabIdxData = 0
+        if (guestMode) { 
+            tabData = await JSON.parse(localStorage.getItem('tabs'))
+            tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+        } else { //fetch from db
+            console.log('not guestmode')
+            tabData = await JSON.parse(localStorage.getItem('tabs'))
+            tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+            tabData = await fetchTabsRequest(user_id)
+        }
+        if (tabData) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
 
         let cardsData = await JSON.parse(localStorage.getItem('cards'))
         if (cardsData) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
@@ -71,10 +94,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         settingsData = await JSON.parse(settingsData)
         if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
         }
-        getLocalData()
+        getData()
     }, [])
-    
 
+
+    ////localstoring updates //////////////////////////////////////////////////////////////////
     const firstRunTabs = useRef(true)
     useEffect(() => { //localstoring tabs data
         if (firstRunTabs.current) {
@@ -105,7 +129,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         console.log('stored settings')
         localStorage.setItem('settings', JSON.stringify(settings))
     }, [settings])
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 
     async function saveTab(tab) {
         const response = await fetch('/api/tasker_app/tab', {
@@ -147,7 +171,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         </div>
         <div className={styles.container}>
             <nav ref={firstRunTabs} className={styles.tabs}>
-                <TabNav darkMode={darkMode} tabsState={tabsState} dispatch={dispatch} dbsave={saveTab}/>
+                <TabNav guestMode={guestMode} user_id={user_id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch} dbsave={saveTab}/>
             </nav>
 
             <aside className={styles.sideNavWrapper}>

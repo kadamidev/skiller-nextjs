@@ -28,7 +28,7 @@ const api_test = () => {
     return (
         <div>
             hello world
-            <ul>
+            {/* <ul>
                 {
                 tabs.map(tab => {
                     return <li key={tab.id}>{tab.name}</li>
@@ -39,8 +39,7 @@ const api_test = () => {
                 const newTabs = await fetchTabsRequest(1)
                 setTabs(newTabs)
             }
-            }>Fetch tabs</button>
-            {/* {tabs} */}
+            }>Fetch tabs</button> */}
         </div>
     );
 }

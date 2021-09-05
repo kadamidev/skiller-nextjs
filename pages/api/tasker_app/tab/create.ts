@@ -8,12 +8,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if(req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' })
     }
-    
+
     try {
-        const { tab: tabData } = req.body
+        const {tab: tabData} = req.body
+        console.log(req.body)
         const tab = await prisma.tab.create({
             data: {
-                name: tabData.name,
+                name: 'Untitled',
                 user_id: tabData.user_id,
             },
         })
