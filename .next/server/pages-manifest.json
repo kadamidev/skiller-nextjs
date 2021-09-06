@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/tasker_app/tab/create": "pages/api/tasker_app/tab/create.js",
-  "/api/tasker_app/tab/[id]": "pages/api/tasker_app/tab/[id].js",
-  "/tasker_app": "pages/tasker_app.js"
+  "/tasker_app": "pages/tasker_app.js",
+  "/api/tasker_app/tab/create": "pages/api/tasker_app/tab/create.js"
 }

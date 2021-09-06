@@ -3,7 +3,7 @@ import styles from '../../styles/app/TabsMenu.module.scss'
 import Image from 'next/image'
 
 
-const TabsMenu = ({darkMode, tabsState, dispatch }) => {
+const TabsMenu = ({ handleDeleteTabClick, handleNewTabClick, darkMode, tabsState, dispatch }) => {
 
     return (
         <>
@@ -15,7 +15,7 @@ const TabsMenu = ({darkMode, tabsState, dispatch }) => {
                             <li key={idx} listid={idx} className={(idx == tabsState.currentTabIdx) ? styles.current : styles.none}>
                                 <div className={styles.tabClickSurface} onClick={ () => dispatch({type: 'changeCurrentTab', payload: {id: tab.id, idx: idx} }) }></div>
                                 <span>{tab.name}</span>
-                                <div className={styles.deleteTabWrapper} onClick={() => dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} })}>
+                                <div className={styles.deleteTabWrapper} onClick={() => handleDeleteTabClick(tab, idx)}>
                                     <Image src='/img/app/delete.svg' height={10} width={10}  />
                                 </div>
                             </li>
@@ -24,7 +24,7 @@ const TabsMenu = ({darkMode, tabsState, dispatch }) => {
                     }
                 </ul>
                 <div className={styles.newTabWrapper}>
-                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={ () => dispatch({type: 'addNewTab'}) } />
+                        <Image src='/img/app/new-tab.svg' height={35} width={35} onClick={handleNewTabClick} />
                         
                 </div>
             </div>     

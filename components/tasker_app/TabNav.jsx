@@ -163,7 +163,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
 
         </nav>     
         <div className={showTabMenu ? styles.showTabMenu : styles.hideTabMenu}>
-            <TabsMenu darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
+            <TabsMenu handleNewTabClick={handleNewTabClick} handleDeleteTabClick={handleDeleteTabClick} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
         </div>
         </>
     );
