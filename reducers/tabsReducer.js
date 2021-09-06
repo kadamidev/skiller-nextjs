@@ -8,9 +8,16 @@ export const tabsReducer = (tabsState, action) => {
             return {tabs: action.payload.tabs, currentTabIdx: action.payload.currentTabIdx}
 
         case 'addNewTab':
-            return {tabs: [...tabsState.tabs, { id: uuidv4(), name: 'Untitled'}],
+            return {tabs: [...tabsState.tabs, action.payload.tab],
                     currentTabIdx: tabsState.currentTabIdx}
-                    
+
+        case 'updateTabId':
+            const updatedIdTabs = [...tabsState.tabs]
+            const updatedTab = {...tabsState.tabs[action.payload.newTabIdx]}
+            updatedTab.id = action.payload.tabDbId
+            updatedIdTabs[action.payload.newTabIdx] = updatedTab
+            return {tabs: updatedIdTabs, currentTabIdx: tabsState.currentTabIdx}
+            
         case 'deleteTab':
             if (tabsState.tabs.length <= 1)  //can't delete a tab if it's the only one
                 return {currentTabIdx: tabsState.currentTabIdx, tabs: tabsState.tabs}

@@ -11,7 +11,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
     try {
         const {tab: tabData} = req.body
-        console.log(req.body)
         const tab = await prisma.tab.create({
             data: {
                 name: 'Untitled',
@@ -20,7 +19,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         })
         
         res.status(201)
-        res.json({tab})
+        res.json({dbid: tab.id})
+        // res.json()
     } catch(e) {
         res.status(500)
         res.json({error: "unable to save tab to the database"})

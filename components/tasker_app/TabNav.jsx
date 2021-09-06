@@ -6,6 +6,8 @@ import TabsMenu from './TabsMenu';
 import { useMediaQuery } from '../../lib/useMediaQuery';
 // import { useQuery, useMutation, queryCache } from 'react-query'
 import { PrismaClient } from '@prisma/client'
+import  {v4 as uuidv4 } from 'uuid'
+
 
 
 const fetchTabsRequest = async (id) => {
@@ -22,12 +24,32 @@ const fetchTabsRequest = async (id) => {
 }
 
 async function createTabRequest(user_id) {
+    try {
     const tab = { tab: { user_id: user_id } }
     const response = await fetch('/api/tasker_app/tab/create', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tab),
     })
+    return await response.json()
+    } catch(e) {
+        console.log(`failed persisting new tab to db: ${e}`)
+    }
+}
+
+async function deleteTabRequest(user_id, tab) {
+    try {
+    const response = await fetch('/api/tasker_app/tab/delete', {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            tab: { user_id: user_id, id: tab.id }
+        }),
+    })
+    if (response.ok) console.log('successfully deleted')
+    } catch(e) {
+        console.log(`failed to delete tab from db, error: ${e}`)
+    }
 }
 
 const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
@@ -47,10 +69,24 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
     const editNode = useRef(null)
     const [editNodeVisible, setEditNodeVisible] = useState(false)
 
-    function handleNewTabClick() {
-        dispatch({type: 'addNewTab'}) //optimistically add a new tab
+    async function handleNewTabClick() {
+        const newTabIndex = tabsState.tabs.length
+        const newTab = {
+            id: uuidv4(),
+            name: 'Untitled'
+        }
+        dispatch({type: 'addNewTab', payload: {tab: newTab}}) //optimistically add a new tab
         if (!guestMode) { //persist tab to db
-        createTabRequest(user_id)
+        const tab = await createTabRequest(user_id)
+        console.log(tab)
+        dispatch({type: 'updateTabId', payload: {newTabIdx: newTabIndex, tabDbId: tab.dbid}})
+        }
+    }
+
+    function handleDeleteTabClick (tab, idx) {
+        dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} }) // optimistic delete
+        if (!guestMode) { //delete tab in db
+            deleteTabRequest(user_id, tab)
         }
     }
 
@@ -103,7 +139,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
                         <div className={styles.tabButtons}>
                             <div className={styles.deleteTabWrapper} onClick={(e) => {
                                 e.stopPropagation()
-                                dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: index} })
+                                handleDeleteTabClick(tab, index)
                             }}>
                                 <Image src='/img/app/circled-x.svg' height={20} width={20}  />
                             </div>

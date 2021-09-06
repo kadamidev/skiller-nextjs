@@ -47,4 +47,4 @@ model CardItem {
   text String?
   Card Card @relation(fields: [card_id], references: [id])
   createdAt DateTime @default(now())
-}
+} 
