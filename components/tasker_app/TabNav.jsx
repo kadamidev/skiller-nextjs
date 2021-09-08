@@ -7,6 +7,7 @@ import { useMediaQuery } from '../../lib/useMediaQuery';
 // import { useQuery, useMutation, queryCache } from 'react-query'
 import { PrismaClient } from '@prisma/client'
 import  {v4 as uuidv4 } from 'uuid'
+import useDebounce from '../../lib/useDebounce';
 
 
 
@@ -52,6 +53,23 @@ async function deleteTabRequest(user_id, tab) {
     }
 }
 
+async function updateTabRequest(tab) {
+    try {
+        const response = await fetch('api/tasker_app/tab/update', {
+            method: 'PATCH',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                tab: {
+                    id: tab.id,
+                    name: tab.name
+                }
+            })
+        })
+    } catch(e) {
+        console.log(`failed to update tab in the db, error: ${e}`)
+    }
+}
+
 const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
 
     const [tabEdit, setTabEdit] = useState(false)
@@ -90,8 +108,11 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
         }
     }
 
+    function handleTabUpdate(tab) {
+        updateTabRequest(tab)
+        console.log('tab db save triggered')
+    }
 
-    // const {data: tabs, error, status} = useQuery('userId', fetchTabsRequest)
 
     useEffect(() => {
         if (!editNodeVisible)
@@ -117,7 +138,10 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
                     <div className={styles.edit}><Image src='/img/app/edit.svg' height={16} width={16} onClick={toggleTabEdit} /></div>
                     </>
                     :
-                    <input className={styles.tabInput} type="text" value={currentTab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: currentTab.id, name: event.target.value} }) } onBlur={toggleTabEdit}/>
+                    <input className={styles.tabInput} type="text" value={currentTab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: currentTab.id, name: event.target.value} }) } onBlur={() => {
+                        toggleTabEdit
+                        handleTabUpdate(currentTab)}
+                    }/>
                 }
             </div>
             
@@ -132,7 +156,10 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
                     return (
                     <li key={tab.id} className={(tabsState.currentTabIdx == index) ? [styles.desktopTab, styles.desktopCurrent].join(" ") : styles.desktopTab } onClick={ () => dispatch({type: 'changeCurrentTab', payload: {id: tab.id, idx: index} }) } >
                         { (tabEdit && editableTabIdx == index) ?
-                        <input ref={el => { editNode.current = el; setEditNodeVisible(!!el);}} className={styles.tabInput} type="text" value={tab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: tab.id, name: event.target.value} }) } onBlur={toggleTabEdit} onClick={(e) => {e.stopPropagation()}}/>
+                        <input ref={el => { editNode.current = el; setEditNodeVisible(!!el);}} className={styles.tabInput} type="text" value={tab.name} onChange={ (event) => dispatch({type: 'changeTabName', payload: { tabId: tab.id, name: event.target.value} }) } onBlur={() => {
+                            toggleTabEdit
+                            handleTabUpdate(tab)
+                        } } onClick={(e) => {e.stopPropagation()}}/>
                         :
                         <span>{tab.name}</span>
                         }
