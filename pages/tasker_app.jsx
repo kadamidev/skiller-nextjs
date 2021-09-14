@@ -55,6 +55,7 @@ const fetchTabsRequest = async (id) => {
 }
 
 
+
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
@@ -76,19 +77,32 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         async function getData() {
         let tabData = null
         let tabIdxData = 0
+        let cardsData = {}
         if (guestMode) { 
             tabData = await JSON.parse(localStorage.getItem('tabs'))
             tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+            cardsData = await JSON.parse(localStorage.getItem('cards'))
+
         } else { //fetch from db
             console.log('not guestmode')
             tabData = await JSON.parse(localStorage.getItem('tabs'))
             tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-            tabData = await fetchTabsRequest(user_id)
-        }
-        if (tabData) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
 
-        let cardsData = await JSON.parse(localStorage.getItem('cards'))
+
+            tabData = await fetchTabsRequest(user_id)
+            await tabData.forEach((tab) => {
+                cardsData[tab.id] = tab.Card
+            })
+            console.log(await tabData)
+            console.log(await cardsData)
+
+        }
+        if (tabData) {
+            dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
+        }
+        ///////////rename cardItem
         if (cardsData) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
+
 
         let settingsData = await localStorage.getItem('settings')
         settingsData = await JSON.parse(settingsData)

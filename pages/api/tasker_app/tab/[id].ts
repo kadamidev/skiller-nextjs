@@ -13,6 +13,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         const tabs = await prisma.tab.findMany({
             where: {
                 user_id: userId
+            },
+            include: {
+                Card: { include: { items: true } }
             }
         })
         res.status(200)
@@ -24,3 +27,5 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         await prisma.$disconnect()
     }
 }
+
+// findOne({ include: { post: { include: {  author: true } } } })

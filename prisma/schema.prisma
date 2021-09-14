@@ -36,7 +36,7 @@ model Card {
   header String?
   collapsed Boolean? @default(false)
   Tab Tab @relation(fields: [tab_id], references: [id])
-  CardItem CardItem[]
+  items CardItem[]
   createdAt DateTime @default(now())
 }
 
@@ -44,7 +44,7 @@ model CardItem {
   id Int @id @default(autoincrement())
   card_id Int
   checked Boolean? @default(false)
-  text String?
+  text String
   Card Card @relation(fields: [card_id], references: [id])
   createdAt DateTime @default(now())
 } 
