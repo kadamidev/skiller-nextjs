@@ -4,71 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import TabsMenu from './TabsMenu';
 import { useMediaQuery } from '../../lib/useMediaQuery';
-// import { useQuery, useMutation, queryCache } from 'react-query'
-import { PrismaClient } from '@prisma/client'
 import  {v4 as uuidv4 } from 'uuid'
-import useDebounce from '../../lib/useDebounce';
+import { createTabRequest, deleteTabRequest, updateTabRequest } from '../../lib/tasker_api_requests';
 
 
 
-const fetchTabsRequest = async (id) => {
-    try {
-        const response = await fetch(`/api/tasker_app/tab/${id}`)
-        console.log('sent fetch')
-
-        const { tabs: tabsData } = await response.json()
-        console.log(tabsData)
-        return await tabsData
-    } catch(error) {
-        console.log(`failed fetching tabs: ${error}`)
-    }
-}
-
-async function createTabRequest(user_id) {
-    try {
-    const tab = { tab: { user_id: user_id } }
-    const response = await fetch('/api/tasker_app/tab/create', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tab),
-    })
-    return await response.json()
-    } catch(e) {
-        console.log(`failed persisting new tab to db: ${e}`)
-    }
-}
-
-async function deleteTabRequest(user_id, tab) {
-    try {
-    const response = await fetch('/api/tasker_app/tab/delete', {
-        method: 'DELETE',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            tab: { user_id: user_id, id: tab.id }
-        }),
-    })
-    if (response.ok) console.log('successfully deleted')
-    } catch(e) {
-        console.log(`failed to delete tab from db, error: ${e}`)
-    }
-}
-
-async function updateTabRequest(tab) {
-    try {
-        const response = await fetch('api/tasker_app/tab/update', {
-            method: 'PATCH',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                tab: {
-                    id: tab.id,
-                    name: tab.name
-                }
-            })
-        })
-    } catch(e) {
-        console.log(`failed to update tab in the db, error: ${e}`)
-    }
-}
 
 const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
 
@@ -120,8 +60,6 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
         editNode.current.focus()
       }, [editNodeVisible]);
 
-
-    //   console.log(fetchTabsRequest(1))
     
     return (
         <>

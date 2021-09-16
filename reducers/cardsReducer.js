@@ -12,16 +12,28 @@ export const cardsReducer = (cardsState, action) => {
                 newCards[action.payload.tabid] = []
             }
 
-            newCards[action.payload.tabid] = [...newCards[action.payload.tabid], {
-                id: uuidv4(),
-                header: 'New Card',
-                items: [{
-                         id: uuidv4(),
-                         checked: false,
-                         text:'New Item' 
-                        }]
-                }]
+            // newCards[action.payload.tabid] = [...newCards[action.payload.tabid], {
+            //     id: uuidv4(),
+            //     header: 'New Card',
+            //     items: [{
+            //              id: uuidv4(),
+            //              checked: false,
+            //              text:'New Item' 
+            //             }]
+            //     }]
+            newCards[action.payload.tabid] = [...newCards[action.payload.tabid], action.payload.card]
             return newCards
+
+        case 'updateCardId':
+            const updatedCardsId = {...cardsState}
+            updatedCardsId[action.payload.tabid][action.payload.idx].id = action.payload.newid
+            return updatedCardsId
+
+        case 'updateItemId':
+            const updatedItemIds = {...cardsState}
+            updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx].id = action.payload.newid
+            return updatedItemIds
+
 
         case 'deleteCard':
             const deletedCards = {...cardsState}

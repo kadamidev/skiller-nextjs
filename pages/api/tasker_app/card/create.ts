@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import card from ".";
 
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -12,12 +13,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                 header: cardData.header,
                 tab_id: cardData.tab_id,
                 collapsed: cardData.collapsed,
-
             },
         })
         
         res.status(201)
-        res.json({card})
+        res.json({dbid: card.id})
     } catch(e) {
         res.status(500)
         res.json({error: "unable to save card to the database"})

@@ -11,8 +11,11 @@ import { cardsReducer } from '../reducers/cardsReducer'
 import { settingsReducer } from '../reducers/settingsReducer'
 import SideNav from '../components/tasker_app/SideNav'
 import { useMediaQuery } from '../lib/useMediaQuery'
-import { ReactQueryDevtools } from 'react-query-devtools'
+// import { ReactQueryDevtools } from 'react-query-devtools'
 // import { useQuery, useMutation, queryCache } from 'react-query'
+import  {v4 as uuidv4 } from 'uuid'
+import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/tasker_api_requests'
+
 
 
 
@@ -27,33 +30,6 @@ export async function getStaticProps() {
       }
     }
   }
-
-//   export async function getServerSideProps() {
-//       const tabs = await prisma.tab.findMany({
-//           where: {
-//               user_id: user_id //update with session id
-//           }
-//       })
-//       return {
-//           props: {
-              
-//           }
-//       }
-//   }
-
-const fetchTabsRequest = async (id) => {
-    try {
-        const response = await fetch(`/api/tasker_app/tab/${id}`)
-        console.log('sent fetch')
-
-        const { tabs: tabsData } = await response.json()
-        console.log(tabsData)
-        return await tabsData
-    } catch(error) {
-        console.log(`failed fetching tabs: ${error}`)
-    }
-}
-
 
 
 const Tasker_app = ({ allTabsData, allCardsData }) => {
@@ -87,20 +63,12 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             console.log('not guestmode')
             tabData = await JSON.parse(localStorage.getItem('tabs'))
             tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-
-
             tabData = await fetchTabsRequest(user_id)
             await tabData.forEach((tab) => {
                 cardsData[tab.id] = tab.Card
             })
-            console.log(await tabData)
-            console.log(await cardsData)
-
         }
-        if (tabData) {
-            dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
-        }
-        ///////////rename cardItem
+        if (tabData) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
         if (cardsData) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
 
 
@@ -145,17 +113,6 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     }, [settings])
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    async function saveTab(tab) {
-        const response = await fetch('/api/tasker_app/tab', {
-            method: 'POST',
-            body: JSON.stringify(tab)
-        })
-
-        if (!response.ok) {
-            throw new Error(response.statusText)
-        }
-        return await response.json() 
-    }
 
     useEffect( () => {
         (async () => {
@@ -164,6 +121,29 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         })()
     }, [])
 
+    async function handleNewCardClick() {
+        const newCardIndex = cardsState[currentTabId].length
+        const snapshotTabId = currentTabId
+        const newItem = {
+            id: uuidv4(),
+            checked: false,
+            text:'' 
+           }
+        const newCard = {
+            id: uuidv4(),
+            header: 'New Card',
+            items: [newItem],
+        }
+        cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId, card: newCard } })
+        if (!guestMode) {
+            const card = await createCardRequest(snapshotTabId, newCard)
+            const item = await createItemRequest(card.dbid, newItem)
+            console.log(card)
+            console.log(item)
+            cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.dbid }}) //update id after db returns
+            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: item.dbid }})
+        }
+    }
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
 
@@ -185,7 +165,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         </div>
         <div className={styles.container}>
             <nav ref={firstRunTabs} className={styles.tabs}>
-                <TabNav guestMode={guestMode} user_id={user_id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch} dbsave={saveTab}/>
+                <TabNav guestMode={guestMode} user_id={user_id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
 
             <aside className={styles.sideNavWrapper}>
@@ -199,7 +179,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={settings.layout} setLayoutSetting={(layout) => {settingsDispatch({type: 'setLayout', payload: {layout: layout}})} } /> }
             </div>
 
-            <div className={styles.newCardWrap} onClick={() => cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId } })}>
+            <div className={styles.newCardWrap} onClick={handleNewCardClick}>
                 <Image src="/img/app/new-card.svg" width={100} height={100}/>
             </div>
 
@@ -208,7 +188,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     {
                         cardsState[currentTabId] && cardsState[currentTabId].map((card, index) => {
                             return (
-                            <li key={card.id} className={styles.card}> <Card darkMode={darkMode} card={card} layoutSetting={settings.layout} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
+                            <li key={card.id} className={styles.card}> <Card guestMode={guestMode} darkMode={darkMode} card={card} layoutSetting={settings.layout} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }

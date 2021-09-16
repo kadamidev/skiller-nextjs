@@ -24,7 +24,7 @@ model User {
 model Tab {
   id Int @id @default(autoincrement())
   user_id Int
-  name String?
+  name String
   User User @relation(fields: [user_id], references: [id])
   Card Card[]
   createdAt DateTime @default(now())
@@ -33,7 +33,7 @@ model Tab {
 model Card {
   id Int @id @default(autoincrement())
   tab_id Int
-  header String?
+  header String
   collapsed Boolean? @default(false)
   Tab Tab @relation(fields: [tab_id], references: [id])
   items CardItem[]

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
+import { deleteCardRequest } from '../../lib/tasker_api_requests';
 
 
 
@@ -38,6 +39,14 @@ const Card = (props) => {
         e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
     }
     
+
+    function handleDeleteCardClick() {
+        props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })
+        if (!props.guestMode) { //delete tab in db
+            deleteCardRequest(props.card.id)
+        }
+    }
+    
     let cardClass = styles.cardContainer 
     if (props.darkMode)
         cardClass = [styles.cardContainer, styles.darkMode].join (" ")
@@ -58,7 +67,7 @@ const Card = (props) => {
                     }
 
                     <div className={styles.collapseBtn} onClick={toggleCollapsed}> <Image src={!collapsed ? '/img/app/minus.svg': '/img/app/plus.svg'} height={16} width={16} /> </div>
-                    <div className={styles.deleteCardBtn} onClick={() => props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })} > <Image src={'/img/app/circled-x.svg'} height={16} width={16} /> </div>
+                    <div className={styles.deleteCardBtn} onClick={handleDeleteCardClick} > <Image src={'/img/app/circled-x.svg'} height={16} width={16} /> </div>
 
                 </header>
                 <section className={styles.cardBody}>
