@@ -12,7 +12,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                 id: cardData.id
             },
             data: {
-                header: cardData.header
+                header: cardData.header,
+                collapsed: cardData.collapsed
             }
         })
         

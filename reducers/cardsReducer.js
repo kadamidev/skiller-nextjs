@@ -11,16 +11,6 @@ export const cardsReducer = (cardsState, action) => {
             if (!newCards[action.payload.tabid]) {
                 newCards[action.payload.tabid] = []
             }
-
-            // newCards[action.payload.tabid] = [...newCards[action.payload.tabid], {
-            //     id: uuidv4(),
-            //     header: 'New Card',
-            //     items: [{
-            //              id: uuidv4(),
-            //              checked: false,
-            //              text:'New Item' 
-            //             }]
-            //     }]
             newCards[action.payload.tabid] = [...newCards[action.payload.tabid], action.payload.card]
             return newCards
 
@@ -52,7 +42,7 @@ export const cardsReducer = (cardsState, action) => {
                 {  
                 id: uuidv4(),
                 checked: false,
-                text:''
+                text:'',
                 }]
             return updatedCards
 

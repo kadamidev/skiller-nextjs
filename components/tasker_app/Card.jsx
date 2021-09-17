@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
-import { deleteCardRequest } from '../../lib/tasker_api_requests';
+import { deleteCardRequest, deleteItemRequest, updateCardRequest,
+        updateItemRequest, createItemRequest } from '../../lib/tasker_api_requests';
+import  {v4 as uuidv4 } from 'uuid'
+
 
 
 
@@ -42,10 +45,47 @@ const Card = (props) => {
 
     function handleDeleteCardClick() {
         props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })
-        if (!props.guestMode) { //delete tab in db
+        if (!props.guestMode) { //delete card in db
             deleteCardRequest(props.card.id)
         }
     }
+
+    function handleDeleteItemClick(id) {
+        props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: id}})
+        if (!props.guestMode) { //delete item in db
+            deleteItemRequest(id)
+        }
+    }
+
+    function handleCardUpdate() {
+        updateCardRequest(props.card)
+    }
+
+    function handleItemUpdate(item) {
+        updateItemRequest(item)
+    }
+
+    function handleItemToggle(item) {
+        item.checked = !item.checked
+        console.log(item)
+        updateItemRequest(item)
+    }
+
+    async function handleNewItemClick() {
+        props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx} })
+        if (!props.guestMode) {
+            const newItemIndex = props.card.items.length
+            const newItem = {
+                id: uuidv4(),
+                checked: false,
+                text:'' 
+            }
+            const item = await createItemRequest(props.card.id, newItem)
+            console.log(item)
+            props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
+        }
+    }
+
     
     let cardClass = styles.cardContainer 
     if (props.darkMode)
@@ -62,7 +102,11 @@ const Card = (props) => {
                     </div>
                     :
                     <div className={styles.headerTextContainer}>
-                        <input className={styles.edit} type="text" value={props.card.header} onChange={(event) => props.cardsDispatch({ type: 'changeHeader', payload:{ tabid: props.tabid, cardidx: props.cardidx, value: event.target.value} }) } onBlur={editHeaderToggle}/>
+                        <input className={styles.edit} type="text" value={props.card.header} onChange={(event) => props.cardsDispatch({ type: 'changeHeader', payload:{ tabid: props.tabid, cardidx: props.cardidx, value: event.target.value} }) } 
+                        onBlur={() => {
+                            editHeaderToggle()
+                            if (!props.guestMode) handleCardUpdate()
+                        }}/>
                     </div>
                     }
 
@@ -79,22 +123,35 @@ const Card = (props) => {
                                 <li key={item.id}>
                                     <div className={styles.checkBox}>
                                         { item.checked ?
-                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })} />
+                                        <Image src='/img/app/checked.svg' width={16} height={16} index={index} 
+                                        onClick={() =>  {
+                                            props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
+                                            if (!props.guestMode) handleItemToggle(item)
+                                        }} />
                                         :
-                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })} />
+                                        <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => {
+                                            props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
+                                            if (!props.guestMode) handleItemToggle(item)
+                                        }} />
                                         }
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? pClass : styles.hide}>{item.text}</p>
-                                    <textarea onInput={handleTextareaResize} className={editItem ? textAreaClass : styles.hide} type="text" onBlur={editItemToggle} value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } onFocus={handleTextareaResizeAll}/>
-                                    <div className={styles.deleteWrapper} onClick={() => props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: item.id} })}>
+                                    <textarea onInput={handleTextareaResize} className={editItem ? textAreaClass : styles.hide} type="text" 
+                                    onBlur={() => {
+                                        editItemToggle()
+                                        if (!props.guestMode) handleItemUpdate(item)
+                                    }}
+                                    value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } 
+                                    onFocus={handleTextareaResizeAll}/>
+
+                                    <div className={styles.deleteWrapper} onClick={() => handleDeleteItemClick(item.id)}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
                                 </li>
                             )
                         })}
                     </ul>
-                    <div className={styles.addItemWrapper} onClick={() => props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx} })}>
-                    {/* <div className={styles.addItemWrapper} onClick={addNewItem}> */}
+                    <div className={styles.addItemWrapper} onClick={() => handleNewItemClick()}>
                         <Image src='/img/app/plus-item.svg' height={10} width={10}/>
                     </div>
                 </section>
