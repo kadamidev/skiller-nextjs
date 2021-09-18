@@ -12,10 +12,6 @@
     width: 100vw;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 
-    // box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-
-    // position: fixed;
-
     .container {
         // display: flex;
         position: relative;
@@ -28,7 +24,6 @@
 
     .navItems {
         background: linear-gradient(90.46deg, #52E9C5 2.3%, #CFFCF1 99.6%);
-        // height: calc(100vh - 80px);
         height: 100vh;
         display: grid;
         position: fixed;
@@ -40,6 +35,7 @@
 
     h1 {
         // border: 1px solid black;
+        // display: flex;
         margin: 0;
         color: black;
         font-family: 'Sulphur Point', sans-serif;
@@ -49,6 +45,7 @@
         padding: 0;
         padding-left: 10px;
         padding-top: 20px;
+        align-self: flex-end;
 
         // margin-right: auto;
     }
@@ -61,7 +58,6 @@
         font-size: 3em;
         color: #CFFCF1;
         
-        // margin-bottom: auto;
 
         li {
             margin: 0;
@@ -122,7 +118,7 @@
             display: none;
         }
 
-        h1 {
+        h1.logo {
             font-size: 4rem;
             height: 100px;
             // border: 1px solid black;
@@ -132,13 +128,10 @@
         
         .grid {
             display: flex;
-            flex-direction: row;
             justify-content: space-between;
             align-items: flex-end;
             height: 100px;
-
-            // align-content: ;
-            // height: 0;
+            // border: 1px solid black;
         }
         
         ul {
@@ -151,8 +144,6 @@
             // border: 1px solid red;
             margin-left: 3em;
             margin-bottom: .75em;
-            // height: auto;
-            // margin-left: 10%;
 
             
             li {
@@ -165,7 +156,6 @@
         .navItems {
             background: none;
             display: block;
-            // border: 1px solid yellow;
             height: 100px;
             position: unset;
         }
@@ -173,50 +163,23 @@
             display: flex;
         }
 
-        // .launchBtnWrap {
-        //     display: block;
-        //     // border: 1px solid black;
-        //     margin-bottom: 1rem;
-        //     margin-right: 1rem;
-        //     width: auto;
-        //     justify-self: unset;
-        //     align-self: unset;
-        //     // height: 100px;
-        // }
 
         .launchBtnWrap {
             display: block;
             // border: 1px solid black;
-            // position: absolute;
-            // bottom: 1em;
-            // right: 1em;
-            // width: auto;
-            justify-self: unset;
+            margin-bottom: 15px;
+            margin-right: 0.5em;
             align-self: unset;
-
-            // height: 100px;
         }
     }
 }
     
 
 
-// margin-bottom: 5%;
-// width: auto;
-// justify-self: center;
-// align-self: end;
-
 
 @media screen and (min-width: 1080px) {
     .container {
-        // width: 80vw;
-        width: 75vw;
+        max-width: 75vw;
         margin-left: 12.5vw;
     }
-
-    .navbar {
-        // width: 75vw;
-        // margin-left: 12.5vw;
-    }
-
 }

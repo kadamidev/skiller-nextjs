@@ -28,7 +28,7 @@ const IndexNav = () => {
         <>
         <nav className={showNav ? [styles.fixed, styles.navbar].join(" ") : styles.navbar}>
                 <div className={styles.container}>
-                    <h1 className="logo">Skiller</h1>
+                    <h1 className={styles.logo}>Skiller</h1>
 
                     <div className={[(showNav ? styles.show : styles.hide), styles.navItems].join(' ')}>
                         <div className={styles.grid}>
