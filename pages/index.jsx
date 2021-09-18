@@ -71,14 +71,14 @@ export default function Home() {
             <li>Checklist</li>
             <li>Tabs</li>
             <li>Progress Bars</li>
-            <li>Reminders</li>
+            <li>Night Mode</li>
             <li>Mobile Friendly</li>
             <li>Intuitive UX</li>
           </ul>
 
           { isMonitor && <div className={styles.right}>
             <Image src='/img/index/right-tabs.svg' width={301} height={270}/>
-            <Image src='/img/index/right-email.svg' width={242} height={144}/>
+            <Image src='/img/index/right-darkmode.svg' width={206} height={145}/>
             <Image src='/img/index/right-ux.svg' width={265} height={220}/>
 
           </div> }

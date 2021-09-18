@@ -14,7 +14,7 @@ const ContactForm = () => {
                 
                 <div className={styles.submitContainer}>
                     {/* <span className={styles.sendSvg}>.</span> */}
-                    <input className={styles.sendBtn} type="submit" value='FULL SEND'/>
+                    <input className={styles.sendBtn} type="submit" value='SEND'/>
                     <div className={styles.submitWrap}>
                         <input className={styles.sendSvg} type="submit" value=''/>
                     </div>
