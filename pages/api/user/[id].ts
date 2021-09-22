@@ -12,11 +12,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     try {
         const userData = await prisma.tab.findUnique({
             where: {
-                user_id: userId,
+                id: userId,
             }
         })
         res.status(200)
-        res.json({ userData })
+        // res.json({'ok'})
     } catch(e) {
         res.status(500)
         res.json({ error: "Unable to fetch tabs" })

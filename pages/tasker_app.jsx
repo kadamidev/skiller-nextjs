@@ -117,7 +117,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     useEffect( () => {
         (async () => {
             const dbTabs = await fetchTabsRequest(1)
-            dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 1 }})
+            dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 0 }})
         })()
     }, [])
 

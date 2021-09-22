@@ -20,7 +20,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         res.status(500)
         res.json({ error: 'Unable to delete user from the database' })
     } finally {
-        await prisma.$disconnect
+        await prisma.$disconnect()
     }
   }
   
