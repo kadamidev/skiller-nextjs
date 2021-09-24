@@ -28,20 +28,20 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             if (!err && result) {
                 const claims = {sub: user.id}
                 const jwt = sign(claims, process.env.JWT_SECRET, { expiresIn: '30d'})
-                res.status(201)
-                res.setHeader('Set-Cookie', cookie.serialize('auth', jwt,{
+                const cookieSettings = {
                     httpOnly: true, 
                     secure: process.env.NODE_ENV !== 'development',
                     sameSite: 'strict',
-                    maxAge: (3600 * 24 * 30), //30 days
                     path: '/'
-                }))
-                res.json({message: `Welcome back ${user.username}`})
+                }
+                // persist cookie past session if remember me
+                if (userData.remember) cookieSettings['maxAge'] = (3600 * 24 * 30) //30 days
+
+                res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, cookieSettings))
+                res.status(201).json({message: `Welcome back ${user.username}`})
             } else {
                 res.json({message: 'Incorrect username/pw combination'})
             }
-
-
         })
     } catch(e) {
         res.status(500)
