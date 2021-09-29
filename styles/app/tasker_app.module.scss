@@ -67,6 +67,14 @@
             margin-bottom: .8em;
         }
     }
+
+    .guestModeMessage {
+        position: fixed;
+        bottom: 1rem;
+        right: 50%;
+        transform: translateX(50%);
+        // transform: translateX(Calc(100vw/2));
+    }
 }
 
 .bkgContainer {
@@ -85,6 +93,8 @@
 .sideNavWrapper {
     display: none;
 }
+
+
 
 @media screen and (min-width: 769px){
     .container {
@@ -117,4 +127,6 @@
     .darkMode {
 
     }
+
+
 }

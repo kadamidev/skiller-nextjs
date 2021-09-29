@@ -15,6 +15,7 @@ import { useMediaQuery } from '../lib/useMediaQuery'
 // import { useQuery, useMutation, queryCache } from 'react-query'
 import  {v4 as uuidv4 } from 'uuid'
 import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/tasker_api_requests'
+import Dialog from '../components/Dialog'
 
 
 
@@ -38,6 +39,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
 
     const [guestMode, setGuestMode] = useState(false)
+    const [showGuestDialog, setShowGuestDialog] = useState(true)
 
     const user_id = 1
 
@@ -194,8 +196,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     }
                 </ul>
             </div>
+            {showGuestDialog && <div className={styles.guestModeMessage}>
+                <Dialog darkMode={darkMode} show={showGuestDialog} setShow={setShowGuestDialog}>
+                    <span style={{color: '#e77777'}}>Warning!</span><br></br>
+                    You're using the app in Guest Mode, you may lose all your progress.</Dialog>
+            </div>
+            }
         </div>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </>
     )
 }
