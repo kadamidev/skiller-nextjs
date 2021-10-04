@@ -9,6 +9,13 @@
         z-index: 999999;
     }
 
+    .userPanelWrap {
+        position: fixed;
+        bottom: 45px;
+        left: 7px;
+        z-index: 1000;
+
+    }
 
     .settingsWrap {
         position: fixed;
@@ -73,6 +80,8 @@
         bottom: 1rem;
         right: 50%;
         transform: translateX(50%);
+        z-index: 100000;
+
         // transform: translateX(Calc(100vw/2));
     }
 }
@@ -103,6 +112,13 @@
             height: 60px;
         }
 
+        .userPanelWrap {
+            position: absolute;
+            bottom: 100px;
+            left: 15px;
+            z-index: 100;
+        }
+        
         .settingsWrap {
             bottom: 1em;
             left: 0.8em;
@@ -123,6 +139,8 @@
         }
         
     }
+
+    
 
     .darkMode {
 

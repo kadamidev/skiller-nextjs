@@ -16,7 +16,7 @@ import { useMediaQuery } from '../lib/useMediaQuery'
 import  {v4 as uuidv4 } from 'uuid'
 import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/tasker_api_requests'
 import Dialog from '../components/Dialog'
-
+import UserPanel from '../components/UserPanel'
 
 
 
@@ -174,6 +174,10 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 <SideNav darkMode={darkMode} />
             </aside>
             
+            <div className={styles.userPanelWrap}>
+                <UserPanel guestMode={false} />
+            </div>
+
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
                 <Image src="/img/app/settings.svg" width={30} height={30} layout="responsive" />
             </div>

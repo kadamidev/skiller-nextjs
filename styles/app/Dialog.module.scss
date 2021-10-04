@@ -6,6 +6,9 @@
     // height: 100px;
     padding: 1rem;
     color: #949494;
+    z-index: 100000;
+    opacity: 97%;
+    backdrop-filter: blur(10px);
 }
 
 .closeButton {
