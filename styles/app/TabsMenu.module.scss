@@ -1,18 +1,19 @@
 .tabsContainer {
     max-height: calc(85vh - 75px);
     width: 90vw;
-    background: purple;
     margin-left: 5vw;
-    z-index: 999;
+    z-index: 99999;
     position: fixed;
     top: 75px;
     border-radius: 15px;
     background: radial-gradient(56.41% 56.41% at 47.13% 43.59%, rgba(253, 253, 253, 0.95) 0%, rgba(241, 241, 241, 0.95) 100%);
+    backdrop-filter: blur(5px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     // border: 1px solid black;
     transition: background 0.3s;
+
 
 
 
@@ -25,6 +26,7 @@
         // height: 50%;
         overflow: auto;
         margin-top: 1em;
+
 
         li {
             background: var(--lightest-aqua);
@@ -43,6 +45,7 @@
             opacity: 95%;
             margin-bottom: .3em;
             position: relative;
+
 
             span {
                 width: Calc(100% - 60px);

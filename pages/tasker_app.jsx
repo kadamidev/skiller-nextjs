@@ -17,7 +17,7 @@ import  {v4 as uuidv4 } from 'uuid'
 import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/tasker_api_requests'
 import Dialog from '../components/Dialog'
 import UserPanel from '../components/UserPanel'
-
+import Login from '../components/Login'
 
 
 export async function getStaticProps() {
@@ -40,6 +40,12 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     const [guestMode, setGuestMode] = useState(false)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
+
+    const [showLogin, setShowLogin] = useState(false)
+    function toggleShowLogin() { setShowLogin(!showLogin) }
+
+    const [showSignup, setShowSignup] = useState(false)
+    function toggleShowSignup() { setShowSignup(!showSignup) }
 
     const user_id = 1
 
@@ -175,7 +181,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             </aside>
             
             <div className={styles.userPanelWrap}>
-                <UserPanel guestMode={false} />
+                <UserPanel guestMode={true} darkMode={darkMode} username={'testing'} toggleLogin={toggleShowLogin} toggleSignup={toggleShowSignup} />
             </div>
 
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
@@ -206,6 +212,10 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     You're using the app in Guest Mode, you may lose all your progress.</Dialog>
             </div>
             }
+
+            <div className={showLogin ? styles.loginWrapper : styles.loginWrapperHide}>
+                <Login toggleShow={toggleShowLogin} darkMode={darkMode} />
+            </div>
         </div>
         </>
     )

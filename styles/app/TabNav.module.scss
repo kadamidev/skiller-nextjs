@@ -8,7 +8,9 @@
     opacity: 95%;
     transition: opacity 0.2s ease-out;
     z-index: 10000;
-    position: relative;
+    position: fixed;
+    backdrop-filter: blur(5px);
+
 }
 
 .container {

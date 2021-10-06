@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import styles from '../styles/app/Login.module.scss'
+import Image from 'next/image'
 
 
-const login = ({darkMode}) => {
+const login = ({darkMode, toggleShow}) => {
 
     const username = useRef(null)
     const password = useRef(null)
@@ -31,6 +32,9 @@ const login = ({darkMode}) => {
             <div className={darkMode ? [styles.loginContainer, styles.darkMode].join(' ') : styles.loginContainer }>
                 <section className={styles.header}>
                     <span>Login</span>
+                    <div className={styles.closeButton} onClick={toggleShow}>
+                    <Image src='/img/app/delete.svg' height={10} width={10}/>
+                    </div>
                 </section>
                 <form className={styles.userForm} action="/api/user/login" method="POST">
                     <label htmlFor="username">Username</label>
