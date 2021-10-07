@@ -4,9 +4,13 @@ import  {v4 as uuidv4 } from 'uuid'
 export const cardsReducer = (cardsState, action) => {
     switch(action.type) {
         case 'setCards':
-            return action.payload.cards
-        case 'addNewCard':
+            console.log(`preset cards ${cardsState}`)
+            console.log(`postset cards ${action.payload.cards}`)
 
+            return action.payload.cards
+
+        case 'addNewCard':
+            console.log('add new card hit')
             const newCards = {...cardsState}
             if (!newCards[action.payload.tabid]) {
                 newCards[action.payload.tabid] = []

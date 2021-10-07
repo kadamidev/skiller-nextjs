@@ -38,7 +38,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
     const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
 
-    const [guestMode, setGuestMode] = useState(false)
+    const [guestMode, setGuestMode] = useState(true)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
 
     const [showLogin, setShowLogin] = useState(false)
@@ -47,26 +47,21 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [showSignup, setShowSignup] = useState(false)
     function toggleShowSignup() { setShowSignup(!showSignup) }
 
+    const [user, setUser] = useState(null)
     const user_id = 1
-
-    // data persistence process
-    // 1. loading data check if guestMode
-        //  yes - load data from local store
-        //  no - load data from db getServerSideProps
-    // 2. updating data if guestmode
-        //  yes - save to local storage
-        //  no - add debouncer on data changes to not constantly request
     
     useEffect(() => { //Load data
-        async function getData() {
+        const getData = async () => {
         let tabData = null
         let tabIdxData = 0
         let cardsData = {}
         if (guestMode) { 
-            tabData = await JSON.parse(localStorage.getItem('tabs'))
-            tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-            cardsData = await JSON.parse(localStorage.getItem('cards'))
-
+            console.log('guestmode')
+            if (localStorage.getItem('tabs') !== null) {
+                tabData = await JSON.parse(localStorage.getItem('tabs'))
+                tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+                cardsData = await JSON.parse(localStorage.getItem('cards'))
+            }
         } else { //fetch from db
             console.log('not guestmode')
             tabData = await JSON.parse(localStorage.getItem('tabs'))
@@ -76,8 +71,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 cardsData[tab.id] = tab.Card
             })
         }
-        if (tabData) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
-        if (cardsData) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
+        if (tabData && tabData !== null) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
+        if (cardsData && cardsData !== null) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
 
 
         let settingsData = await localStorage.getItem('settings')
@@ -122,14 +117,17 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    useEffect( () => {
-        (async () => {
-            const dbTabs = await fetchTabsRequest(1)
-            dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 0 }})
-        })()
-    }, [])
+    // useEffect( () => {          fetch from db
+    //     (async () => {
+    //         const dbTabs = await fetchTabsRequest(1)
+    //         dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 0 }})
+    //     })()
+    // }, [])
 
-    async function handleNewCardClick() {
+
+
+    
+    async function handleNewCardClick(currentTabId) {
         const newCardIndex = cardsState[currentTabId].length
         const snapshotTabId = currentTabId
         const newItem = {
@@ -191,7 +189,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={settings.layout} setLayoutSetting={(layout) => {settingsDispatch({type: 'setLayout', payload: {layout: layout}})} } /> }
             </div>
 
-            <div className={styles.newCardWrap} onClick={handleNewCardClick}>
+            <div className={styles.newCardWrap} onClick={() => handleNewCardClick(currentTabId)}>
                 <Image src="/img/app/new-card.svg" width={100} height={100}/>
             </div>
 
@@ -214,7 +212,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             }
 
             <div className={showLogin ? styles.loginWrapper : styles.loginWrapperHide}>
-                <Login toggleShow={toggleShowLogin} darkMode={darkMode} />
+                <Login toggleShow={toggleShowLogin} darkMode={darkMode} setUser={setUser} />
             </div>
         </div>
         </>

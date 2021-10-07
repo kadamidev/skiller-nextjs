@@ -3,7 +3,7 @@ import styles from '../styles/app/Login.module.scss'
 import Image from 'next/image'
 
 
-const login = ({darkMode, toggleShow}) => {
+const login = ({darkMode, toggleShow, setUser}) => {
 
     const username = useRef(null)
     const password = useRef(null)
@@ -24,6 +24,8 @@ const login = ({darkMode, toggleShow}) => {
             })
         })
         const json = await response.json()
+        setUser(json)
+        console.log(json)
         setMessage(json)
     }
 
