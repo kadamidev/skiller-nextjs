@@ -20,6 +20,7 @@ import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
 
 
+
 export async function getStaticProps() {
     const allTabsData = getTabsData()
     const allCardsData = getCardsData()
@@ -47,8 +48,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [showSignup, setShowSignup] = useState(false)
     function toggleShowSignup() { setShowSignup(!showSignup) }
 
-    const [user, setUser] = useState(null)
-    const user_id = 1
+    const [user, setUser] = useState({username: 'guest', id: 0})
+    // const user_id = 1 //change this to update when user is set
     
     useEffect(() => { //Load data
         const getData = async () => {
@@ -66,7 +67,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             console.log('not guestmode')
             tabData = await JSON.parse(localStorage.getItem('tabs'))
             tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-            tabData = await fetchTabsRequest(user_id)
+            tabData = await fetchTabsRequest(user.id)
             await tabData.forEach((tab) => {
                 cardsData[tab.id] = tab.Card
             })
@@ -117,15 +118,23 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    // useEffect( () => {          fetch from db
-    //     (async () => {
-    //         const dbTabs = await fetchTabsRequest(1)
-    //         dispatch({type: 'setTabs', payload: { tabs: dbTabs, currentTabIdx: 0 }})
-    //     })()
-    // }, [])
+    function loginUser(user) {
+        setUser(user)
+        setGuestMode(false)
+    }
 
+    function logoutUser() {
+        //remove cookie thats httponly
+        setUser({username: 'guest', id: 0})
+        setGuestMode(true)
+    }
 
-
+    // {
+    //     httpOnly: true, 
+    //     secure: process.env.NODE_ENV !== 'development',
+    //     sameSite: 'strict',
+    //     path: '/'
+    // }
     
     async function handleNewCardClick(currentTabId) {
         const newCardIndex = cardsState[currentTabId].length
@@ -171,7 +180,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         </div>
         <div className={styles.container}>
             <nav ref={firstRunTabs} className={styles.tabs}>
-                <TabNav guestMode={guestMode} user_id={user_id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
+                <TabNav guestMode={guestMode} user_id={user.id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
             </nav>
 
             <aside className={styles.sideNavWrapper}>
@@ -179,7 +188,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             </aside>
             
             <div className={styles.userPanelWrap}>
-                <UserPanel guestMode={true} darkMode={darkMode} username={'testing'} toggleLogin={toggleShowLogin} toggleSignup={toggleShowSignup} />
+                <UserPanel guestMode={guestMode} darkMode={darkMode} username={user.username} toggleLogin={toggleShowLogin} toggleSignup={toggleShowSignup} logoutUser={logoutUser}/>
             </div>
 
             <div className={styles.settingsWrap} onClick={toggleShowSettings}>
@@ -212,7 +221,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             }
 
             <div className={showLogin ? styles.loginWrapper : styles.loginWrapperHide}>
-                <Login toggleShow={toggleShowLogin} darkMode={darkMode} setUser={setUser} />
+                <Login loginUser={loginUser} toggleShow={toggleShowLogin} darkMode={darkMode} setUser={setUser} />
             </div>
         </div>
         </>

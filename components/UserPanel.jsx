@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/app/UserPanel.module.scss'
 
 
-const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup}) => {
+const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup, logoutUser}) => {
     const [showPopup, setShowPopup] = useState(false)
 
     function toggleShowPopup() { setShowPopup(!showPopup) }
@@ -11,6 +11,11 @@ const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup}) =
 
     function handleLoginClick() {
         toggleLogin()
+        toggleShowPopup()
+    }
+    
+    function handleLogoutClick() {
+        logoutUser()
         toggleShowPopup()
     }
     
@@ -33,7 +38,7 @@ const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup}) =
                         </>
                         :
                         <>
-                            <button>Logout</button>
+                            <button onClick={handleLogoutClick}>Logout</button>
                         </>
                         }
                     </div>

@@ -3,7 +3,7 @@ import styles from '../styles/app/Login.module.scss'
 import Image from 'next/image'
 
 
-const login = ({darkMode, toggleShow, setUser}) => {
+const login = (props) => {
 
     const username = useRef(null)
     const password = useRef(null)
@@ -24,17 +24,16 @@ const login = ({darkMode, toggleShow, setUser}) => {
             })
         })
         const json = await response.json()
-        setUser(json)
-        console.log(json)
+        if (response.ok) props.loginUser(json.user)
         setMessage(json)
     }
 
     return (
         <div>
-            <div className={darkMode ? [styles.loginContainer, styles.darkMode].join(' ') : styles.loginContainer }>
+            <div className={props.darkMode ? [styles.loginContainer, styles.darkMode].join(' ') : styles.loginContainer }>
                 <section className={styles.header}>
                     <span>Login</span>
-                    <div className={styles.closeButton} onClick={toggleShow}>
+                    <div className={styles.closeButton} onClick={props.toggleShow}>
                     <Image src='/img/app/delete.svg' height={10} width={10}/>
                     </div>
                 </section>
