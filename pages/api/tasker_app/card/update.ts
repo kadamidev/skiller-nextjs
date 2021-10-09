@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { authenticated } from "../../../../lib/auth";
 
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse) {
     const prisma = new PrismaClient( {log: ["query"] })
-
     try {
         const { card: cardData } = req.body
         const card = await prisma.card.update({
@@ -26,4 +27,4 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         await prisma.$disconnect()
     }
 
-}
+})

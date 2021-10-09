@@ -10,6 +10,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
         return res.status(405).json({ message: 'Method not allowed' })
     }
 
+
     const prisma = new PrismaClient({ log: ["query"] })
     const { userId } = req.query
     try {

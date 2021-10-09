@@ -18,7 +18,7 @@ import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/t
 import Dialog from '../components/Dialog'
 import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
-
+import Cookies from 'js-cookie'
 
 
 export async function getStaticProps() {
@@ -65,8 +65,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             }
         } else { //fetch from db
             console.log('not guestmode')
-            tabData = await JSON.parse(localStorage.getItem('tabs'))
-            tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+            tabData = await JSON.parse(localStorage.getItem(`[${user.id}]tabs`))
+            const storedTabIdx = await JSON.parse(localStorage.getItem(`[${user.id}]tabsIdx`))
+            if (storedTabIdx !== null) {
+                tabIdxData = storedTabIdx
+            } else {
+                tabIdxData = 0
+            }
             tabData = await fetchTabsRequest(user.id)
             await tabData.forEach((tab) => {
                 cardsData[tab.id] = tab.Card
@@ -81,7 +86,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
         }
         getData()
-    }, [])
+    }, [guestMode])
+
 
 
     ////localstoring updates //////////////////////////////////////////////////////////////////
@@ -89,6 +95,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     useEffect(() => { //localstoring tabs data
         if (firstRunTabs.current) {
             firstRunTabs.current = false
+            return
+        }
+        if (!guestMode) {
+            localStorage.setItem(`[${user.id}]tabs`, JSON.stringify(tabsState.tabs))
+            localStorage.setItem(`[${user.id}]tabsIdx`, tabsState.currentTabIdx)
             return
         }
         localStorage.setItem('tabs', JSON.stringify(tabsState.tabs))
@@ -100,6 +111,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     useEffect(() => { //localstoring card data
         if (firstRunCards.current) {
             firstRunCards.current = false
+            return
+        }
+
+        if (!guestMode) {
+            localStorage.setItem(`[${user.id}]cards`, JSON.stringify(cardsState))
             return
         }
         localStorage.setItem('cards', JSON.stringify(cardsState))
@@ -127,6 +143,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         //remove cookie thats httponly
         setUser({username: 'guest', id: 0})
         setGuestMode(true)
+        Cookies.remove('auth')
     }
 
     // {
@@ -137,7 +154,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     // }
     
     async function handleNewCardClick(currentTabId) {
-        const newCardIndex = cardsState[currentTabId].length
+        let newCardIndex = 0
+        if (cardsState[currentTabId]) newCardIndex = cardsState[currentTabId].length
+        // const newCardIndex = cardsState[currentTabId].length
         const snapshotTabId = currentTabId
         const newItem = {
             id: uuidv4(),
