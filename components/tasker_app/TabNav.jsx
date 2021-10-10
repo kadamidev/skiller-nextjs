@@ -49,8 +49,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
     }
 
     function handleTabUpdate(tab) {
-        updateTabRequest(tab)
-        console.log('tab db save triggered')
+        if (!guestMode) updateTabRequest(tab)
     }
 
 

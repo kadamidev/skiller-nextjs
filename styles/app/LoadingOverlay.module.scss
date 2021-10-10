@@ -1,0 +1,33 @@
+.hide {
+    opacity: 0%;
+    backdrop-filter: blur(0px);
+    transition: 0.5s ease-out;
+    // pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlayContainer {
+    opacity: 100%;
+    backdrop-filter: blur(50px);
+    transition: 0.5s ease-in;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    .loaderWrapper {
+    }
+}
+
+
+.darkMode {
+    background: #2A5248;
+}

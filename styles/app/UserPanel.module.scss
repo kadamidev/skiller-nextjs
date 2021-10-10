@@ -5,7 +5,7 @@
     transition: opacity 0.2s ease-out;
     background: linear-gradient(180deg, #f3f3f370 0%, #EAEAEA70 100%);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    width: 250px;
+    min-width: 250px;
     height: 90px;
     padding: 10px;
     border-radius: 15px;
@@ -42,6 +42,7 @@
 
 .container {
     position: relative;
+
 }
 
 
@@ -58,6 +59,8 @@
     border-radius: 50%;
     border: 2px solid var(--primary-color);
     user-select: none;
+    z-index: 10001;
+
 
     h1 {
         font-size: 35px;
@@ -79,7 +82,7 @@
 .popupContainer {
     background: linear-gradient(180deg, #f3f3f370 0%, #EAEAEA70 100%);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    width: 250px;
+    min-width: 250px;
     height: 90px;
     padding: 10px;
     border-radius: 15px;
@@ -94,6 +97,7 @@
     color: #949494;
     opacity: 100%;
     transition: opacity 0.2s ease-in;
+    z-index: 10001;
 
     
     h1 {
@@ -157,19 +161,22 @@
         }
     }
 
-    .popupContainer {
-        left: 50px;
-        bottom: 20px;
-        width: 250px;
-        height: 80px;
-    }
-
     .hide {
         left: 50px;
         bottom: 20px;
-        width: 250px;
+        min-width: 250px;
         height: 80px;
     }
+
+    .popupContainer {
+        left: 50px;
+        bottom: 20px;
+        min-width: 250px;
+        height: 80px;
+        z-index: 10001;
+
+    }
+
 }
 
 

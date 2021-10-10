@@ -1,3 +1,17 @@
+.loadingOverlayWrapper {
+    position: fixed;
+    z-index: 99999999;
+    // backdrop-filter: blur(5px);
+    pointer-events: none;
+}
+
+.toggleBtn {
+    position: fixed;
+    z-index: 999999999;
+    top: 100px;
+    left: 100px;
+}
+
 .container {
     height: 100vh;
     width: 100vw;
@@ -13,8 +27,7 @@
         position: fixed;
         bottom: 75px;
         left: 7px;
-        z-index: 1000;
-
+        z-index: 10000;
     }
 
     .settingsWrap {
@@ -86,7 +99,7 @@
         bottom: 1rem;
         right: 50%;
         transform: translateX(50%);
-        z-index: 100000;
+        z-index: 50;
 
         // transform: translateX(Calc(100vw/2));
     }

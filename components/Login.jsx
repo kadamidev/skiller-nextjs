@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styles from '../styles/app/Login.module.scss'
 import Image from 'next/image'
+import Loader from '../components/Loader'
+
 
 
 const login = (props) => {
@@ -8,10 +10,13 @@ const login = (props) => {
     const username = useRef(null)
     const password = useRef(null)
     const remember = useRef(null)
-    const [message, setMessage] = useState()
+    const [message, setMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     
     async function handleFormSubmit(e) {
         e.preventDefault()
+        setMessage('')
+        setLoading(true)
         const response =  await fetch('/api/user/login', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -24,8 +29,17 @@ const login = (props) => {
             })
         })
         const json = await response.json()
-        if (response.ok) props.loginUser(json.user)
-        setMessage(json)
+        setLoading(false)
+        if (response.ok) {
+            props.loginUser(json.user)
+            props.toggleShow()
+            return
+        }
+
+        if (!response.ok) {
+            setMessage('Wrong user/pw combination, try again')
+            return
+        }
     }
 
     return (
@@ -37,7 +51,12 @@ const login = (props) => {
                     <Image src='/img/app/delete.svg' height={10} width={10}/>
                     </div>
                 </section>
-                <form className={styles.userForm} action="/api/user/login" method="POST">
+
+                <div className={loading ? styles.loadingWrapper : styles.loadingWrapperHide}>
+                    <Loader />
+                </div>
+
+                <form className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
                     <label htmlFor="username">Username</label>
                     <input ref={username} type="text" name="user[username]" id="username" />
 
@@ -54,7 +73,7 @@ const login = (props) => {
                     {/* <input type="submit" value="Login" /> */}
                     </div>
                 </form>
-                <span>{JSON.stringify(message)}</span>
+                <span className={styles.errorMsg}>{message}</span>
             </div>
         </div>
     );

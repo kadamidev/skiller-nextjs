@@ -19,6 +19,7 @@ import Dialog from '../components/Dialog'
 import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
 import Cookies from 'js-cookie'
+import LoadingOverlay from '../components/LoadingOverlay'
 
 
 export async function getStaticProps() {
@@ -41,6 +42,8 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     const [guestMode, setGuestMode] = useState(true)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
+
+    const [loadingOverlay, setLoadingOverlay] = useState(false)
 
     const [showLogin, setShowLogin] = useState(false)
     function toggleShowLogin() { setShowLogin(!showLogin) }
@@ -137,21 +140,19 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     function loginUser(user) {
         setUser(user)
         setGuestMode(false)
+        setShowGuestDialog(false)
     }
 
     function logoutUser() {
-        //remove cookie thats httponly
+        //clear local storage
+        localStorage.removeItem(`[${user.id}]cards`)
+        localStorage.removeItem(`[${user.id}]tabs`)
+        localStorage.removeItem(`[${user.id}]tabsIdx`)
+
         setUser({username: 'guest', id: 0})
         setGuestMode(true)
         Cookies.remove('auth')
     }
-
-    // {
-    //     httpOnly: true, 
-    //     secure: process.env.NODE_ENV !== 'development',
-    //     sameSite: 'strict',
-    //     path: '/'
-    // }
     
     async function handleNewCardClick(currentTabId) {
         let newCardIndex = 0
@@ -195,6 +196,14 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     return (
         <>
+        <div className={styles.toggleBtn}>
+            <button onClick={() => { setLoadingOverlay(!loadingOverlay) }}>toggle overlay</button>
+        </div>
+        
+        <div className={styles.loadingOverlayWrapper}>
+            <LoadingOverlay show={loadingOverlay} darkMode={darkMode} />
+        </div>
+
         <div className={darkMode ? [styles.bkgContainer, styles.darkMode].join(" ") : styles.bkgContainer}>
         </div>
         <div className={styles.container}>
@@ -232,12 +241,14 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     }
                 </ul>
             </div>
+            
             {showGuestDialog && <div className={styles.guestModeMessage}>
                 <Dialog darkMode={darkMode} show={showGuestDialog} setShow={setShowGuestDialog}>
                     <span style={{color: '#e77777'}}>Warning!</span><br></br>
                     You're using the app in Guest Mode, you may lose all your progress.</Dialog>
             </div>
             }
+        
 
             <div className={showLogin ? styles.loginWrapper : styles.loginWrapperHide}>
                 <Login loginUser={loginUser} toggleShow={toggleShowLogin} darkMode={darkMode} setUser={setUser} />

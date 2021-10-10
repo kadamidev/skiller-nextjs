@@ -1,0 +1,42 @@
+.loaderContainer {
+    height: 50px;
+    transform-origin: bottom  center;
+    display: flex;
+    animation: rotate 2.5s linear infinite;
+
+    .circle {
+        // display: inline-block;
+        width: 30px;
+        height: 30px;
+        background: var(--primary-color); 
+        border-radius: 50% ;
+        transform: scale(0);
+        margin: -10px;
+        animation: grow 1.5s linear infinite;
+
+        &:nth-child(2) {
+            background: #84F3D9;
+            animation-delay: 0.33s;
+        }
+
+        &:nth-child(3) {
+            background: var(--lightest-aqua);
+            animation-delay: 0.66s;
+
+        }
+
+    }
+}
+
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes grow {
+    50% {
+        transform: scale(1); 
+    }
+}
