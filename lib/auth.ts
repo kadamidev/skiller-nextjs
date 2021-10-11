@@ -3,7 +3,7 @@ import { verify } from "jsonwebtoken"
 
 
 
-export const authenticated = ( fn: NextApiHandler ) => async (req: NextApiRequest, res: NextApiResponse) => {
+export const authenticated = ( fn: NextApiHandler ) => async (req: any, res: NextApiResponse) => {
     try {
         const decodedHttp = verify(req.cookies.authHttp!, process.env.JWT_SECRET)
         const decoded = verify(req.cookies.auth!, process.env.JWT_SECRET)
