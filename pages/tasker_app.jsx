@@ -56,37 +56,39 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     
     useEffect(() => { //Load data
         const getData = async () => {
-        let tabData = null
-        let tabIdxData = 0
-        let cardsData = {}
-        if (guestMode) { 
-            console.log('guestmode')
-            if (localStorage.getItem('tabs') !== null) {
-                tabData = await JSON.parse(localStorage.getItem('tabs'))
-                tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
-                cardsData = await JSON.parse(localStorage.getItem('cards'))
+            setLoadingOverlay(true)
+            let tabData = null
+            let tabIdxData = 0
+            let cardsData = {}
+            if (guestMode) { 
+                console.log('guestmode')
+                if (localStorage.getItem('tabs') !== null) {
+                    tabData = await JSON.parse(localStorage.getItem('tabs'))
+                    tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
+                    cardsData = await JSON.parse(localStorage.getItem('cards'))
+                }
+            } else { //fetch from db
+                console.log('not guestmode')
+                tabData = await JSON.parse(localStorage.getItem(`[${user.id}]tabs`))
+                const storedTabIdx = await JSON.parse(localStorage.getItem(`[${user.id}]tabsIdx`))
+                if (storedTabIdx !== null) {
+                    tabIdxData = storedTabIdx
+                } else {
+                    tabIdxData = 0
+                }
+                tabData = await fetchTabsRequest(user.id)
+                await tabData.forEach((tab) => {
+                    cardsData[tab.id] = tab.Card
+                })
             }
-        } else { //fetch from db
-            console.log('not guestmode')
-            tabData = await JSON.parse(localStorage.getItem(`[${user.id}]tabs`))
-            const storedTabIdx = await JSON.parse(localStorage.getItem(`[${user.id}]tabsIdx`))
-            if (storedTabIdx !== null) {
-                tabIdxData = storedTabIdx
-            } else {
-                tabIdxData = 0
-            }
-            tabData = await fetchTabsRequest(user.id)
-            await tabData.forEach((tab) => {
-                cardsData[tab.id] = tab.Card
-            })
-        }
-        if (tabData && tabData !== null) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
-        if (cardsData && cardsData !== null) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
+            if (tabData && tabData !== null) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
+            if (cardsData && cardsData !== null) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
 
 
-        let settingsData = await localStorage.getItem('settings')
-        settingsData = await JSON.parse(settingsData)
-        if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
+            let settingsData = await localStorage.getItem('settings')
+            settingsData = await JSON.parse(settingsData)
+            if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
+            setLoadingOverlay(false)
         }
         getData()
     }, [guestMode])
