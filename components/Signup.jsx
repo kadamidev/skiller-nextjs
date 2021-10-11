@@ -7,9 +7,8 @@ import Loader from '../components/Loader'
 
 const login = (props) => {
 
-    const username = useRef(null)
-    const password = useRef(null)
-    const remember = useRef(null)
+    const Username = useRef(null)
+    const Password = useRef(null)
     const [message, setMessage] = useState({color: '#52E9C5', msg: ''})
     const [loading, setLoading] = useState(false)
     
@@ -22,8 +21,8 @@ const login = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 user: {
-                    username: username.current.value,
-                    password: password.current.value,
+                    username: Username.current.value,
+                    password: Password.current.value,
                 }
             })
         })
@@ -57,10 +56,10 @@ const login = (props) => {
 
                 <form className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
                     <label htmlFor="username">Username</label>
-                    <input ref={username} type="text" name="user[username]" id="username" />
+                    <input ref={Username} type="text" name="user[username]" id="username" />
 
                     <label htmlFor="password">Password</label>
-                    <input ref={password} type="password" name="user[password]" id="password" />
+                    <input ref={Password} type="password" name="user[password]" id="password" />
 
                     <div className={styles.bottomRow}>
 

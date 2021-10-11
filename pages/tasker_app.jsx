@@ -254,7 +254,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             {showGuestDialog && <div className={styles.guestModeMessage}>
                 <Dialog darkMode={darkMode} show={showGuestDialog} setShow={setShowGuestDialog}>
                     <span style={{color: '#e77777'}}>Warning!</span><br></br>
-                    You're using the app in Guest Mode, you may lose all your progress.</Dialog>
+                    You&apos;re using the app in Guest Mode, you may lose all your progress.</Dialog>
             </div>
             }
         

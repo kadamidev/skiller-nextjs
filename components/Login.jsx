@@ -7,9 +7,9 @@ import Loader from '../components/Loader'
 
 const login = (props) => {
 
-    const username = useRef(null)
-    const password = useRef(null)
-    const remember = useRef(null)
+    const Username = useRef(null)
+    const Password = useRef(null)
+    const Remember = useRef(null)
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
     
@@ -22,9 +22,9 @@ const login = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 user: {
-                    username: username.current.value,
-                    password: password.current.value,
-                    remember: remember.current.checked
+                    username: Username.current.value,
+                    password: Password.current.value,
+                    remember: Remember.current.checked
                 }
             })
         })
@@ -58,14 +58,14 @@ const login = (props) => {
 
                 <form className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
                     <label htmlFor="username">Username</label>
-                    <input ref={username} type="text" name="user[username]" id="username" />
+                    <input ref={Username} type="text" name="user[username]" id="username" />
 
                     <label htmlFor="password">Password</label>
-                    <input ref={password} type="password" name="user[password]" id="password" />
+                    <input ref={Password} type="password" name="user[password]" id="password" />
 
                     <div className={styles.bottomRow}>
                         <div className={styles.checkContainer}>
-                            <input ref={remember} className={styles.checkbox} id="rememberCheck" type="checkbox"/>
+                            <input ref={Remember} className={styles.checkbox} id="rememberCheck" type="checkbox"/>
                             <label className={styles.customCheckbox} htmlFor="rememberCheck">Remember Me</label>
                         </div>
 
