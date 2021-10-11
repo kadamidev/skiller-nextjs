@@ -25,6 +25,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                     password: hash,
                 }
             })
+
+            if (user) {
+                const tab = await prisma.tab.create({
+                    data: {
+                        name: 'Untitled',
+                        user_id: user.id,
+                    },
+                })
+            }
+            
             res.status(201)
             res.json({user})
         })

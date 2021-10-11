@@ -18,6 +18,11 @@ const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup, lo
         logoutUser()
         toggleShowPopup()
     }
+
+    function handleSignupClick() {
+        toggleSignup()
+        toggleShowPopup()
+    }
     
     return (
         <div>
@@ -34,7 +39,7 @@ const UserPanel = ({username, guestMode, darkMode, toggleLogin, toggleSignup, lo
                         {guestMode ? 
                         <>
                             <button onClick={handleLoginClick}>Login</button>
-                            <button>Signup</button>
+                            <button onClick={handleSignupClick}>Signup</button>
                         </>
                         :
                         <>

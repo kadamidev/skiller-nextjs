@@ -20,6 +20,7 @@ import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
 import Cookies from 'js-cookie'
 import LoadingOverlay from '../components/LoadingOverlay'
+import Signup from '../components/Signup'
 
 
 export async function getStaticProps() {
@@ -46,10 +47,16 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [loadingOverlay, setLoadingOverlay] = useState(false)
 
     const [showLogin, setShowLogin] = useState(false)
-    function toggleShowLogin() { setShowLogin(!showLogin) }
+    function toggleShowLogin() { 
+        setShowLogin(!showLogin)
+        setShowSignup(false)
+    }
 
     const [showSignup, setShowSignup] = useState(false)
-    function toggleShowSignup() { setShowSignup(!showSignup) }
+    function toggleShowSignup() { 
+        setShowSignup(!showSignup)
+        setShowLogin(false)
+    }
 
     const [user, setUser] = useState({username: 'guest', id: 0})
     // const user_id = 1 //change this to update when user is set
@@ -76,7 +83,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 } else {
                     tabIdxData = 0
                 }
-                tabData = await fetchTabsRequest(user.id)
+                tabData = await fetchTabsRequest()
                 await tabData.forEach((tab) => {
                     cardsData[tab.id] = tab.Card
                 })
@@ -254,6 +261,10 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
             <div className={showLogin ? styles.loginWrapper : styles.loginWrapperHide}>
                 <Login loginUser={loginUser} toggleShow={toggleShowLogin} darkMode={darkMode} setUser={setUser} />
+            </div>
+
+            <div className={showSignup ? styles.loginWrapper : styles.loginWrapperHide}>
+                <Signup toggleShow={toggleShowSignup} darkMode={darkMode} />
             </div>
         </div>
         </>
