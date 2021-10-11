@@ -5,7 +5,7 @@ import Loader from '../components/Loader'
 
 
 
-const login = (props) => {
+const Login = (props) => {
 
     const Username = useRef(null)
     const Password = useRef(null)
@@ -79,4 +79,4 @@ const login = (props) => {
     );
 }
 
-export default login;
+export default Login;
