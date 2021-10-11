@@ -43,7 +43,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
 
     function handleDeleteTabClick (tab, idx) {
         dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} }) // optimistic delete
-        if (!guestMode) { //delete tab in db
+        if (!guestMode && tabsState.tabs.length > 1) { //delete tab in db
             deleteTabRequest(user_id, tab)
         }
     }
