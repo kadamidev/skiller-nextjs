@@ -5,18 +5,17 @@ import { authenticated } from "../../../../lib/auth";
 
 
 
-export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse) {
     if(req.method !== 'GET') {
         return res.status(405).json({ message: 'Method not allowed' })
     }
-    console.log(user_id)
+    console.log(req.user_id)
 
     const prisma = new PrismaClient({ log: ["query"] })
-    const { userId } = req.query
     try {
         const tabs = await prisma.tab.findMany({
             where: {
-                user_id: user_id
+                user_id: req.user_id
             },
             include: {
                 Card: { include: { items: true } }
