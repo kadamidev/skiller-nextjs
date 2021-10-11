@@ -4,7 +4,7 @@ import { authenticated } from "../../../../lib/auth";
 
 
 
-export default authenticated(async function (req: NextApiRequest, res: NextApiResponse) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id) {
     const prisma = new PrismaClient( {log: ["query"] })
     try {
         const { card: cardData } = req.body
