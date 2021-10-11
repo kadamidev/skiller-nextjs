@@ -51,8 +51,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                 if (userData.remember) cookieSettingsHttp['maxAge'] = (3600 * 24 * 30) //30 days
 
 
-                res.setHeader('Set-Cookie', [cookie.serialize('authHttp', jwtHttp, cookieSettingsHttp),
-                                             cookie.serialize('auth', jwt, cookieSettings)])
+                res.setHeader('Set-Cookie', [cookie.serialize('authHttp', jwtHttp, <any>cookieSettingsHttp),
+                                             cookie.serialize('auth', jwt, <any>cookieSettings)])
                 // res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, cookieSettings))
 
                 // res.status(201).json({message: `Welcome back ${user.username}`})
