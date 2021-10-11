@@ -8,7 +8,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     const prisma = new PrismaClient({ log: ['query', 'info'] })
-    const { userId } = req.query
+    const userId = req.query
     try {
         const cards = await prisma.tab.findMany({
             where: {
@@ -16,7 +16,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
             }
         })
         res.status(200)
-        res.json({ tabs })
+        res.json({ cards })
     } catch(e) {
         res.status(500)
         res.json({ error: "Unable to fetch tabs" })
