@@ -1,15 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { authenticated } from "../../../../lib/auth";
 
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse, user_id) {
     const prisma = new PrismaClient( {log: ["query"] })
 
     try {
         const { item: itemData } = req.body
         const card = await prisma.cardItem.update({
             where: {
-                id: itemData.id
+                authItem: {
+                    id: itemData.id,
+                    user_id: user_id,
+                },
             },
             data: {
                 text: itemData.text,

@@ -20,6 +20,8 @@ model User {
   password String
   avatar String?
   Tab Tab[]
+  Card Card[]
+  items CardItem[]
   createdAt DateTime @default(now())
 }
 
@@ -30,23 +32,32 @@ model Tab {
   User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   Card Card[]
   createdAt DateTime @default(now())
+  @@unique(fields: [id, user_id], name: "authTab")
 }
 
 model Card {
   id Int @id @default(autoincrement())
   tab_id Int
+  user_id Int
   header String
   collapsed Boolean? @default(false)
   Tab Tab @relation(fields: [tab_id], references: [id], onDelete: Cascade)
+  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items CardItem[]
   createdAt DateTime @default(now())
+  @@unique(fields: [id, user_id], name: "authCard")
+
 }
 
 model CardItem {
   id Int @id @default(autoincrement())
   card_id Int
+  user_id Int
   checked Boolean? @default(false)
   text String
   Card Card @relation(fields: [card_id], references: [id], onDelete: Cascade)
+  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  @@unique(fields: [id, user_id], name: "authItem")
+
 } 

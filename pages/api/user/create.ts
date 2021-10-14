@@ -34,9 +34,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                     },
                 })
             }
-            
+
             res.status(201)
-            res.json({user})
+            res.json({user: {username: user.username, id: user.id} })
         })
     } catch(e) {
         res.status(500)

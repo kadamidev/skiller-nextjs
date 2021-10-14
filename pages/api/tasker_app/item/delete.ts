@@ -1,15 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { authenticated } from "../../../../lib/auth";
 
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id) {
     const prisma = new PrismaClient( {log: ["query"] })
 
     try {
         const { cardItem: itemData } = req.body
         const item = await prisma.cardItem.delete({
             where: {
-                id: itemData.id
+                authItem: {
+                    id: itemData.id,
+                    user_id: user_id,
+                },
             }
         })
         
@@ -22,4 +26,4 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         await prisma.$disconnect()
     }
 
-}
+})
