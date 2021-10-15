@@ -169,23 +169,20 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         // const newCardIndex = cardsState[currentTabId].length
         const snapshotTabId = currentTabId
         const newItem = {
-            id: uuidv4(),
+            id: 'T' + uuidv4(),
             checked: false,
             text:'' 
            }
         const newCard = {
-            id: uuidv4(),
+            id: 'T' + uuidv4(),
             header: 'New Card',
             items: [newItem],
         }
         cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId, card: newCard } })
         if (!guestMode) {
             const card = await createCardRequest(snapshotTabId, newCard)
-            const item = await createItemRequest(card.dbid, newItem)
-            console.log(card)
-            console.log(item)
-            cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.dbid }}) //update id after db returns
-            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: item.dbid }})
+            cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
+            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})
         }
     }
 

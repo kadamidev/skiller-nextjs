@@ -43,11 +43,8 @@ export const cardsReducer = (cardsState, action) => {
         case 'newCardItem':
             const updatedCards = {...cardsState}
             updatedCards[action.payload.tabid][action.payload.cardidx]['items'] = [...updatedCards[action.payload.tabid][action.payload.cardidx]['items'],
-                {  
-                id: uuidv4(),
-                checked: false,
-                text:'',
-                }]
+                action.payload.newItem]
+                console.log('called newCardItem reducer')
             return updatedCards
 
 

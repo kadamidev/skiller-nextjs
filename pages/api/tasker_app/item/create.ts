@@ -32,6 +32,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             res.status(400).json({msg: `failed to create item`})
         }
     } catch(e) {
+        console.log(e)
         res.status(500)
         res.json({error: "unable to save item to the database"})
     } finally {

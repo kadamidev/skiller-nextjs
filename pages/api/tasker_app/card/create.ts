@@ -21,10 +21,17 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
                     user_id: user_id
+                }
+            })
+            const cardItem = await prisma.cardItem.create({
+                data: {
+                    text: "",
+                    card_id: card.id,
+                    user_id: user_id
                 },
             })
             res.status(201)
-            res.json({dbid: card.id})
+            res.json({cardDbId: card.id, itemDbId: cardItem.id})
         } else {
             throw "Tab not owned by user"
         }

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { deleteCardRequest, deleteItemRequest, updateCardRequest,
         updateItemRequest, createItemRequest } from '../../lib/tasker_api_requests';
 import  {v4 as uuidv4 } from 'uuid'
+import { useQueuedDbCall } from '../../lib/useQueuedDbCall';
 
 
 
@@ -62,7 +63,8 @@ const Card = (props) => {
     }
 
     function handleItemUpdate(item) {
-        updateItemRequest(item)
+        useQueuedDbCall(item, updateItemRequest, item)
+        // updateItemRequest(item)
     }
 
     function handleItemToggle(item) {
@@ -72,14 +74,14 @@ const Card = (props) => {
     }
 
     async function handleNewItemClick() {
-        props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx} })
+        const newItem = {
+            id: 'T' + uuidv4(),
+            checked: false,
+            text:'' 
+        }
+        props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx, newItem: newItem} })
         if (!props.guestMode) {
             const newItemIndex = props.card.items.length
-            const newItem = {
-                id: uuidv4(),
-                checked: false,
-                text:'' 
-            }
             const item = await createItemRequest(props.card.id, newItem)
             console.log(item)
             props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
@@ -151,7 +153,7 @@ const Card = (props) => {
                             )
                         })}
                     </ul>
-                    <div className={styles.addItemWrapper} onClick={() => handleNewItemClick()}>
+                    <div className={styles.addItemWrapper} onClick={handleNewItemClick}>
                         <Image src='/img/app/plus-item.svg' height={10} width={10}/>
                     </div>
                 </section>
