@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { authenticated } from "../../../../lib/auth";
 
 
-export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, userid) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id) {
     const prisma = new PrismaClient( {log: ["query"] })
 
     try {
@@ -14,20 +14,20 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             }
         })
 
-        if (tab.user_id == userid) {
+        if (tab.user_id == user_id) {
             const card = await prisma.card.create({
                 data: {
                     header: cardData.header,
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
-                    user_id: userid
+                    user_id: <any>user_id
                 }
             })
             const cardItem = await prisma.cardItem.create({
                 data: {
                     text: "",
                     card_id: card.id,
-                    user_id: userid
+                    user_id: user_id
                 },
             })
             res.status(201)
