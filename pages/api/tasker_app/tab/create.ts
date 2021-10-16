@@ -15,6 +15,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
         const tab = await prisma.tab.create({
             data: {
                 name: 'Untitled',
+                    // @ts-ignore
                 user_id: user_id,
             },
         })

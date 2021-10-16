@@ -14,6 +14,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
     try {
         const tabs = await prisma.tab.findMany({
             where: {
+                    // @ts-ignore
                 user_id: user_id
             },
             include: {

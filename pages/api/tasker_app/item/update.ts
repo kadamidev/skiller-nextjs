@@ -11,8 +11,10 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
         console.log(itemData)
         const item = await prisma.cardItem.update({
             where: {
+                    // @ts-ignore
                 authItem: {
                     id: itemData.id,
+                    // @ts-ignore
                     user_id: user_id,
                 },
             },

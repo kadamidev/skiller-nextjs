@@ -10,8 +10,10 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
         const { tab: tabData } = req.body
         const deleteTab = await prisma.tab.delete({
             where: {
+                    // @ts-ignore
                 authTab: {
                     id: tabData.id,
+                    // @ts-ignore
                     user_id: user_id,
                 },
             }

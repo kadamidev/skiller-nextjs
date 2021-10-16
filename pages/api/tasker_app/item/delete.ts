@@ -10,8 +10,10 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
         const { cardItem: itemData } = req.body
         const item = await prisma.cardItem.delete({
             where: {
+                    // @ts-ignore
                 authItem: {
                     id: itemData.id,
+                    // @ts-ignore
                     user_id: user_id,
                 },
             }
