@@ -18,7 +18,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             const card = await prisma.card.create({
                 data: {
                     header: cardData.header,
-                    user_id: user_id,
+                    user_id: 5,
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
                 }
@@ -27,7 +27,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                 data: {
                     text: "",
                     card_id: card.id,
-                    user_id: user_id,
+                    user_id: 5,
                 },
             })
             res.status(201)
