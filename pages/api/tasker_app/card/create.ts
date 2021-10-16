@@ -18,9 +18,9 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             const card = await prisma.card.create({
                 data: {
                     header: cardData.header,
+                    user_id: user_id,
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
-                    user_id: user_id,
                 }
             })
             const cardItem = await prisma.cardItem.create({
