@@ -8,6 +8,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
 
     try {
         const { card: cardData } = req.body
+        cardData.user_id = user_id
         const tab = await prisma.tab.findUnique({
             where: {
                 id: cardData.tab_id
@@ -18,16 +19,16 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             const card = await prisma.card.create({
                 data: {
                     header: cardData.header,
-                    user_id: 5,
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
+                    user_id: cardData.user_id,
                 }
             })
             const cardItem = await prisma.cardItem.create({
                 data: {
                     text: "",
                     card_id: card.id,
-                    user_id: 5,
+                    user_id: cardData.user_id,
                 },
             })
             res.status(201)
