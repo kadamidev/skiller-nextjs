@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { authenticated } from "../../../../lib/auth";
 
 
-export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id: any) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, userid) {
     const prisma = new PrismaClient( {log: ["query"] })
 
     try {
@@ -20,7 +20,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                     header: cardData.header,
                     tab_id: cardData.tab_id,
                     collapsed: cardData.collapsed,
-                    user_id: user_id
+                    user_id: userid
                 }
             })
             const cardItem = await prisma.cardItem.create({
