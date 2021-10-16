@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { deleteCardRequest, deleteItemRequest, updateCardRequest,
         updateItemRequest, createItemRequest } from '../../lib/tasker_api_requests';
 import  {v4 as uuidv4 } from 'uuid'
-import useQueuedDbCall from '../../lib/useQueuedDbCall';
+import queuedDbCall from '../../lib/queuedDbCall';
 
 
 
@@ -95,7 +95,7 @@ const Card = (props) => {
 
 
     function handleItemUpdate(item) {
-        useQueuedDbCall(item, updateItemRequest, item)
+        queuedDbCall(item, updateItemRequest, item)
         // updateItemRequest(item)
     }
 

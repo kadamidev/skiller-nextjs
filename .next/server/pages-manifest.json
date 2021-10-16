@@ -1,6 +1,24 @@
 {
   "/_app": "pages/_app.js",
+  "/api/hello": "pages/api/hello.js",
+  "/api/tasker_app/card/create": "pages/api/tasker_app/card/create.js",
+  "/api/tasker_app/card/delete": "pages/api/tasker_app/card/delete.js",
+  "/api/tasker_app/card/update": "pages/api/tasker_app/card/update.js",
+  "/api/tasker_app/item/create": "pages/api/tasker_app/item/create.js",
+  "/api/tasker_app/item/delete": "pages/api/tasker_app/item/delete.js",
+  "/api/tasker_app/item/update": "pages/api/tasker_app/item/update.js",
+  "/api/tasker_app/tab/create": "pages/api/tasker_app/tab/create.js",
+  "/api/tasker_app/tab/delete": "pages/api/tasker_app/tab/delete.js",
+  "/api/tasker_app/tab": "pages/api/tasker_app/tab.js",
+  "/api/tasker_app/tab/update": "pages/api/tasker_app/tab/update.js",
+  "/api/user/create": "pages/api/user/create.js",
+  "/api/user/delete": "pages/api/user/delete.js",
+  "/api/user/login": "pages/api/user/login.js",
+  "/": "pages/index.html",
+  "/login": "pages/login.html",
+  "/menu": "pages/menu.html",
+  "/tasker_app": "pages/tasker_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/tasker_app": "pages/tasker_app.js"
+  "/404": "pages/404.html"
 }
