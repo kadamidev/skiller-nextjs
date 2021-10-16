@@ -44,7 +44,6 @@ export const cardsReducer = (cardsState, action) => {
             const updatedCards = {...cardsState}
             updatedCards[action.payload.tabid][action.payload.cardidx]['items'] = [...updatedCards[action.payload.tabid][action.payload.cardidx]['items'],
                 action.payload.newItem]
-                console.log('called newCardItem reducer')
             return updatedCards
 
 
