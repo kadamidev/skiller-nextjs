@@ -115,7 +115,7 @@ const Card = (props) => {
         if (!props.guestMode) {
             const newItemIndex = props.card.items.length
             const item = await createItemRequest(props.card.id, newItem)
-            console.log(item)
+            console.log(`db id returned: ${item.dbid}`)
             props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
         }
     }
