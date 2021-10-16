@@ -14,6 +14,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
             }
         })
 
+        // @ts-ignore
         if (tab.user_id == user_id) {
             const card = await prisma.card.create({
                 data: {

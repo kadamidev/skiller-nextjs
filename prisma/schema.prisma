@@ -6,58 +6,58 @@ datasource db {
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
- 
+
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["referentialActions"] 
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
 }
 
-
 model User {
-  id Int @id @default(autoincrement())
-  username String @unique
-  email String? @unique
-  password String
-  avatar String?
-  Tab Tab[]
-  Card Card[]
-  items CardItem[]
-  createdAt DateTime @default(now())
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  email     String?    @unique
+  password  String
+  avatar    String?
+  Tab       Tab[]
+  Card      Card[]
+  items     CardItem[]
+  createdAt DateTime   @default(now())
 }
 
 model Tab {
-  id Int @id @default(autoincrement())
-  user_id Int
-  name String
-  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Card Card[]
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  name      String
+  User      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Card      Card[]
   createdAt DateTime @default(now())
+
   @@unique(fields: [id, user_id], name: "authTab")
 }
 
 model Card {
-  id Int @id @default(autoincrement())
-  tab_id Int
-  user_id Int
-  header String
-  collapsed Boolean? @default(false)
-  Tab Tab @relation(fields: [tab_id], references: [id], onDelete: Cascade)
-  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  items CardItem[]
-  createdAt DateTime @default(now())
-  @@unique(fields: [id, user_id], name: "authCard")
+  id        Int        @id @default(autoincrement())
+  tab_id    Int
+  user_id   Int
+  header    String
+  collapsed Boolean?   @default(false)
+  Tab       Tab        @relation(fields: [tab_id], references: [id], onDelete: Cascade)
+  User      User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  items     CardItem[]
+  createdAt DateTime   @default(now())
 
+  @@unique(fields: [id, user_id], name: "authCard")
 }
 
 model CardItem {
-  id Int @id @default(autoincrement())
-  card_id Int
-  user_id Int
-  checked Boolean? @default(false)
-  text String
-  Card Card @relation(fields: [card_id], references: [id], onDelete: Cascade)
-  User User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  card_id   Int
+  user_id   Int
+  checked   Boolean? @default(false)
+  text      String
+  Card      Card     @relation(fields: [card_id], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  @@unique(fields: [id, user_id], name: "authItem")
 
-} 
+  @@unique(fields: [id, user_id], name: "authItem")
+}
