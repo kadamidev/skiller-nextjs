@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { authenticated } from "../../../../lib/auth";
 
 
-export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id: number) {
+export default authenticated(async function (req: NextApiRequest, res: NextApiResponse, user_id: any) {
     const prisma = new PrismaClient( {log: ["query"] })
 
     try {
