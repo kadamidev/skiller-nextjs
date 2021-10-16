@@ -28,6 +28,7 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                 data: {
                     text: "",
                     card_id: card.id,
+                    // @ts-ignore
                     user_id: user_id,
                 },
             })
