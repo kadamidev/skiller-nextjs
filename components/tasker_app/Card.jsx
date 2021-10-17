@@ -76,19 +76,25 @@ const Card = (props) => {
     function handleDeleteCardClick() {
         props.cardsDispatch({ type: 'deleteCard', payload: {cardidx: props.cardidx, tabid: props.tabid} })
         if (!props.guestMode) { //delete card in db
-            deleteCardRequest(props.card.id)
+            // deleteCardRequest(props.card.id)
+            queuedDbCall(props.card, deleteCardRequest, props.card)
+
         }
     }
 
-    function handleDeleteItemClick(id) {
-        props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: id}})
+    function handleDeleteItemClick(item) {
+        props.cardsDispatch({ type: 'removeCardItem', payload:{cardidx: props.cardidx, tabid: props.tabid, itemid: item.id}})
         if (!props.guestMode) { //delete item in db
-            deleteItemRequest(id)
+            // deleteItemRequest(item.id)
+            queuedDbCall(item, deleteItemRequest, item)
+
         }
     }
 
     function handleCardUpdate() {
-        updateCardRequest(props.card)
+        // updateCardRequest(props.card)
+        queuedDbCall(props.card, updateCardRequest, props.card)
+
     }
 
 
@@ -101,8 +107,10 @@ const Card = (props) => {
 
     function handleItemToggle(item) {
         item.checked = !item.checked
-        console.log(item)
-        updateItemRequest(item)
+        // console.log(item)
+        // updateItemRequest(item)
+        queuedDbCall(item, updateItemRequest, item)
+
     }
 
     async function handleNewItemClick() {
@@ -113,9 +121,9 @@ const Card = (props) => {
         }
         props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx, newItem: newItem} })
         if (!props.guestMode) {
-            const newItemIndex = props.card.items.length
+            const newItemIndex = props.card.items.length.valueOf()
             const item = await createItemRequest(props.card.id, newItem)
-            console.log(`db id returned: ${item.dbid}`)
+            console.log(`db id returned: ${item.dbid}, snapshotted item index: ${newItemIndex}`)
             props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
         }
     }
@@ -178,7 +186,7 @@ const Card = (props) => {
                                     value={item.text} onChange={(e) => props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) } 
                                     onFocus={handleTextareaResizeAll}/>
 
-                                    <div className={styles.deleteWrapper} onClick={() => handleDeleteItemClick(item.id)}>
+                                    <div className={styles.deleteWrapper} onClick={() => handleDeleteItemClick(item)}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>
                                     </div>
                                 </li>

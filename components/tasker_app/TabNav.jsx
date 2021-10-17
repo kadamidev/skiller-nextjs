@@ -6,7 +6,7 @@ import TabsMenu from './TabsMenu';
 import { useMediaQuery } from '../../lib/useMediaQuery';
 import  {v4 as uuidv4 } from 'uuid'
 import { createTabRequest, deleteTabRequest, updateTabRequest } from '../../lib/tasker_api_requests';
-
+import queuedDbCall from '../../lib/queuedDbCall';
 
 
 
@@ -30,7 +30,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
     async function handleNewTabClick() {
         const newTabIndex = tabsState.tabs.length
         const newTab = {
-            id: uuidv4(),
+            id: 'T' + uuidv4(),
             name: 'Untitled'
         }
         dispatch({type: 'addNewTab', payload: {tab: newTab}}) //optimistically add a new tab
@@ -44,12 +44,15 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
     function handleDeleteTabClick (tab, idx) {
         dispatch({ type: 'deleteTab', payload: {id: tab.id, idx: idx} }) // optimistic delete
         if (!guestMode && tabsState.tabs.length > 1) { //delete tab in db
-            deleteTabRequest(user_id, tab)
+            // deleteTabRequest(tab)
+            queuedDbCall(tab, deleteTabRequest, tab)
         }
     }
 
     function handleTabUpdate(tab) {
-        if (!guestMode) updateTabRequest(tab)
+        // if (!guestMode) updateTabRequest(tab)
+        if (!guestMode) queuedDbCall(tab, updateTabRequest, tab)
+
     }
 
 
