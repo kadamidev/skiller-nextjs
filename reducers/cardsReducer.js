@@ -19,22 +19,24 @@ export const cardsReducer = (cardsState, action) => {
             return newCards
 
         case 'updateCardId':
+            console.log(`entered updateItemId reducer`)
             const updatedCardsId = {...cardsState}
             updatedCardsId[action.payload.tabid][action.payload.idx].id = action.payload.newid
             return updatedCardsId
 
         case 'updateItemId':
             const updatedItemIds = {...cardsState}
-            console.log(`entered updateItemId reducer`)
-            console.log(`payload: ${JSON.stringify(action.payload)}`)
+
+            console.log(`1 updateItemId payload: ${JSON.stringify(action.payload)}`)
+            console.log(`2 state entering updateItemId: ${JSON.stringify(updatedItemIds[action.payload.tabid][action.payload.cardidx])}`)
+            console.log(`3 itemidx ${action.payload.itemidx}`)
+
             
             // console.log(`tabid: ${action.payload.tabid}`)
             // console.log(`cardidx: ${action.payload.cardidx}`)
             // console.log(`items(non payload): ${updatedItemIds[action.payload.tabid][action.payload.cardidx]['items']}`)
             // console.log(`itemidx: ${action.payload.itemidx}`)
             // console.log(`new dbid: ${action.payload.newid}`)
-
-
 
             updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx].id = action.payload.newid
             return updatedItemIds
@@ -55,6 +57,7 @@ export const cardsReducer = (cardsState, action) => {
             const updatedCards = {...cardsState}
             updatedCards[action.payload.tabid][action.payload.cardidx]['items'] = [...updatedCards[action.payload.tabid][action.payload.cardidx]['items'],
                 action.payload.newItem]
+                console.log(`new item added, new item idx: ${updatedCards[action.payload.tabid][action.payload.cardidx]['items'].length - 1 }`)
             return updatedCards
 
 

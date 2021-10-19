@@ -14,7 +14,7 @@ import { useMediaQuery } from '../lib/useMediaQuery'
 // import { ReactQueryDevtools } from 'react-query-devtools'
 // import { useQuery, useMutation, queryCache } from 'react-query'
 import  {v4 as uuidv4 } from 'uuid'
-import { fetchTabsRequest, createCardRequest, createItemRequest } from '../lib/tasker_api_requests'
+import { fetchTabsRequest, createCardRequest, createItemRequest, deleteCardRequest } from '../lib/tasker_api_requests'
 import Dialog from '../components/Dialog'
 import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
@@ -165,9 +165,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     
     async function handleNewCardClick(currentTabId) {
         let newCardIndex = 0
-        if (cardsState[currentTabId]) newCardIndex = cardsState[currentTabId].length
+        if (cardsState[currentTabId]) newCardIndex = cardsState[currentTabId].length.valueOf()
         // const newCardIndex = cardsState[currentTabId].length
-        const snapshotTabId = currentTabId
+        const snapshotTabId = tabsState.tabs[tabsState.currentTabIdx].id.valueOf()
         const newItem = {
             id: 'T' + uuidv4(),
             checked: false,
@@ -182,7 +182,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         if (!guestMode) {
             const card = await createCardRequest(snapshotTabId, newCard)
             cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
-            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})
+            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
         }
     }
 
