@@ -60,9 +60,22 @@
         margin-left: 5%;
         margin-top: 1em;
 
-        label {
-            margin-top: .3em;
-            font-size: 0.9rem;
+
+        .labelErrContainer {
+            display: flex;
+            justify-content: space-between;
+
+            label {
+                margin-top: .3em;
+                font-size: 0.9rem;
+            }
+    
+            .validationError {
+                display: inline;
+                color: #ff8282;
+                font-size: 0.8em;
+                align-self: flex-end;
+            }
         }
         
         input {

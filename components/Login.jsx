@@ -1,30 +1,44 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/app/Login.module.scss'
 import Image from 'next/image'
 import Loader from '../components/Loader'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
+
 
 
 
 const Login = (props) => {
-
-    const Username = useRef(null)
-    const Password = useRef(null)
-    const Remember = useRef(null)
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
     
-    async function handleFormSubmit(e) {
-        e.preventDefault()
+
+    const loginFormik = useFormik({
+        initialValues: {
+            username: "",
+            password: "",
+            remember: false
+        },
+        validationSchema: Yup.object({
+            username: Yup.string().required("Required"),
+            password: Yup.string().required("Required")
+        }),
+        onSubmit: (values) => { handleFormSubmit(values) }
+
+    })
+    
+    async function handleFormSubmit(values) { 
         setMessage('')
         setLoading(true)
-        const response =  await fetch('/api/user/login', {
+        const response =  await fetch('/api/user/login', { 
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 user: {
-                    username: Username.current.value,
-                    password: Password.current.value,
-                    remember: Remember.current.checked
+                    username: values.username,
+                    password: values.password,
+                    remember: values.remember
                 }
             })
         })
@@ -56,20 +70,26 @@ const Login = (props) => {
                     <Loader />
                 </div>
 
-                <form className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
+                <form onSubmit={loginFormik.handleSubmit} className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
+                    <div className={styles.labelErrContainer}>
                     <label htmlFor="username">Username</label>
-                    <input ref={Username} type="text" name="user[username]" id="username" />
+                    {loginFormik.touched.username && loginFormik.errors.username ? <p className={styles.validationError}>{loginFormik.errors.username}</p> : null}
+                    </div>
+                    <input onBlur={loginFormik.handleBlur} type="text" name="username" id="username" value={loginFormik.values.username} onChange={loginFormik.handleChange} />
 
+                    <div className={styles.labelErrContainer}>
                     <label htmlFor="password">Password</label>
-                    <input ref={Password} type="password" name="user[password]" id="password" />
+                    {loginFormik.touched.password && loginFormik.errors.password ? <p className={styles.validationError}>{loginFormik.errors.password}</p> : null}
+                    </div>
+                    <input onBlur={loginFormik.handleBlur} type="password" name="password" id="password" value={loginFormik.values.password} onChange={loginFormik.handleChange} />
 
                     <div className={styles.bottomRow}>
                         <div className={styles.checkContainer}>
-                            <input ref={Remember} className={styles.checkbox} id="rememberCheck" type="checkbox"/>
+                            <input className={styles.checkbox} name="remember" id="rememberCheck" type="checkbox" value={loginFormik.values.remember} onChange={loginFormik.handleChange}/>
                             <label className={styles.customCheckbox} htmlFor="rememberCheck">Remember Me</label>
                         </div>
 
-                    <button onClick={handleFormSubmit}>Login</button>
+                    <button type="submit">Login</button>
                     {/* <input type="submit" value="Login" /> */}
                     </div>
                 </form>

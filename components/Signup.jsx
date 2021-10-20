@@ -1,19 +1,39 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/app/Signup.module.scss'
 import Image from 'next/image'
 import Loader from '../components/Loader'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
 
 
 
 const Signup = (props) => {
 
-    const Username = useRef(null)
-    const Password = useRef(null)
+
     const [message, setMessage] = useState({color: '#52E9C5', msg: ''})
     const [loading, setLoading] = useState(false)
+
+    const signupFormik = useFormik({
+        initialValues: {
+            username: "",
+            password: "",
+        },
+        validationSchema: Yup.object({
+            username: Yup.string()
+                        .min(4, 'Must be 4 characters or more')
+                        .max(16, `Must be 16 characters or less`)
+                        .required("Required"),
+            password: Yup.string()
+                        .min(6, 'Must be 6 characters or more')
+                        .max(256, 'Must be 256 characters or less')
+                        .required("Required")
+        }),
+        onSubmit: (values) => { handleFormSubmit(values) }
+    })
+
     
-    async function handleFormSubmit(e) {
-        e.preventDefault()
+    async function handleFormSubmit(values) {
         setMessage('')
         setLoading(true)
         const response =  await fetch('/api/user/create', {
@@ -21,8 +41,8 @@ const Signup = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 user: {
-                    username: Username.current.value,
-                    password: Password.current.value,
+                    username: values.username,
+                    password: values.password, 
                 }
             })
         })
@@ -54,17 +74,22 @@ const Signup = (props) => {
                     <Loader />
                 </div>
 
-                <form className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
+                <form onSubmit={signupFormik.handleSubmit} className={loading ? [styles.userForm, styles.userFormHide].join(' ') : styles.userForm} action="/api/user/login" method="POST">
+                    <div className={styles.labelErrContainer}>
                     <label htmlFor="username">Username</label>
-                    <input ref={Username} type="text" name="user[username]" id="username" />
+                    {signupFormik.touched.username && signupFormik.errors.username ? <p className={styles.validationError}>{signupFormik.errors.username}</p> : null}
+                    </div>
+                    <input onBlur={signupFormik.handleBlur} type="text" name="username" id="username" onChange={signupFormik.handleChange} value={signupFormik.values.username}/>
 
+                    <div className={styles.labelErrContainer}>
                     <label htmlFor="password">Password</label>
-                    <input ref={Password} type="password" name="user[password]" id="password" />
+                    {signupFormik.touched.password && signupFormik.errors.password ? <p className={styles.validationError}>{signupFormik.errors.password}</p> : null}
+                    </div>
+                    <input onBlur={signupFormik.handleBlur}  type="password" name="password" id="password" onChange={signupFormik.handleChange} value={signupFormik.values.password}/>
 
                     <div className={styles.bottomRow}>
 
-                    <button onClick={handleFormSubmit}>Signup</button>
-                    {/* <input type="submit" value="Login" /> */}
+                    <button type="submit">Signup</button>
                     </div>
                 </form>
                 <span className={styles.errorMsg} style={{color: message.color}}>{message.msg}</span>
