@@ -64,6 +64,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     useEffect(() => { //Load data
         const getData = async () => {
             setLoadingOverlay(true)
+            if (Cookies.get('auth')) sessionLogin()
             let tabData = null
             let tabIdxData = 0
             let cardsData = {}
@@ -145,6 +146,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     }, [settings])
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    async function sessionLogin() {
+        const response =  await fetch('/api/user/sessionLogin')
+        const json = await response.json()
+        if (response.ok) loginUser(json.user)
+    }
 
     function loginUser(user) {
         setUser(user)

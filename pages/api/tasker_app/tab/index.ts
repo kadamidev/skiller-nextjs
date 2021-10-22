@@ -17,8 +17,18 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                     // @ts-ignore
                 user_id: user_id
             },
+            orderBy: {
+                id: 'asc'
+            },
             include: {
-                Card: { include: { items: true } }
+                Card: { 
+                    orderBy: {
+                        id: 'asc'
+                    },
+                    include: {
+                        items: true
+                    }
+                }
             }
         })
         res.status(200)

@@ -22,6 +22,7 @@ model User {
   Card      Card[]
   items     CardItem[]
   createdAt DateTime   @default(now())
+  updatedAt DateTime?   @updatedAt
 }
 
 model Tab {
@@ -31,6 +32,9 @@ model Tab {
   User      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   Card      Card[]
   createdAt DateTime @default(now())
+  updatedAt DateTime?   @updatedAt
+
+
 
   @@unique(fields: [id, user_id], name: "authTab")
 }
@@ -45,6 +49,8 @@ model Card {
   User      User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items     CardItem[]
   createdAt DateTime   @default(now())
+  updatedAt DateTime?   @updatedAt
+
 
   @@unique(fields: [id, user_id], name: "authCard")
 }
@@ -58,6 +64,8 @@ model CardItem {
   Card      Card     @relation(fields: [card_id], references: [id], onDelete: Cascade)
   User      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  updatedAt DateTime?   @updatedAt
+
 
   @@unique(fields: [id, user_id], name: "authItem")
 }
