@@ -26,11 +26,16 @@ export default authenticated(async function (req: NextApiRequest, res: NextApiRe
                         id: 'asc'
                     },
                     include: {
-                        items: true
+                        items: {
+                            orderBy: {
+                                id: 'asc'
+                            }
+                        }
                     }
-                }
+                },
             }
         })
+
         res.status(200)
         res.json({ tabs })
     } catch(e) {
