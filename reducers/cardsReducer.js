@@ -71,6 +71,7 @@ export const cardsReducer = (cardsState, action) => {
             const toggledCards = {...cardsState}
             // console.log(`card idx:${action.payload.cardidx} tabid:${action.payload.tabid} itemidx:${action.payload.idx}`)
             toggledCards[action.payload.tabid][action.payload.cardidx]['items'][action.payload.idx]['checked'] = !action.payload.checked
+            console.log('item toggle complete')
             return toggledCards
         
 

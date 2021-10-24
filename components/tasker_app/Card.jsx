@@ -105,12 +105,9 @@ const Card = (props) => {
         // updateItemRequest(item)
     }
 
-    function handleItemToggle(item) {
-        item.checked = !item.checked
-        // console.log(item)
-        // updateItemRequest(item)
+    function handleItemToggle(item, flag) {
+        item.checked = flag
         queuedDbCall(item, updateItemRequest, item)
-
     }
 
     async function handleNewItemClick() {
@@ -168,12 +165,12 @@ const Card = (props) => {
                                         <Image src='/img/app/checked.svg' width={16} height={16} index={index} 
                                         onClick={() =>  {
                                             props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
-                                            if (!props.guestMode) handleItemToggle(item)
+                                            if (!props.guestMode) handleItemToggle(item, false)
                                         }} />
                                         :
                                         <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => {
                                             props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
-                                            if (!props.guestMode) handleItemToggle(item)
+                                            if (!props.guestMode)  handleItemToggle(item, true)
                                         }} />
                                         }
                                     </div>
