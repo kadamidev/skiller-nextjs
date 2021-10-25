@@ -105,6 +105,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 transition: color 0.3s;
+                white-space: pre-wrap;
 
                 .crossed {
                     text-decoration: line-through;

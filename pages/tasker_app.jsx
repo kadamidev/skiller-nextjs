@@ -40,11 +40,11 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
     const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
-
+    
+    const [loadingOverlay, setLoadingOverlay] = useState(true)
     const [guestMode, setGuestMode] = useState(true)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
 
-    const [loadingOverlay, setLoadingOverlay] = useState(false)
 
     const [showLogin, setShowLogin] = useState(false)
     function toggleShowLogin() { 
@@ -68,15 +68,18 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             let tabData = null
             let tabIdxData = 0
             let cardsData = {}
+            let overwritten = false
             if (guestMode) { 
                 console.log('guestmode')
                 if (localStorage.getItem('tabs') !== null) {
+                    overwritten = true
                     tabData = await JSON.parse(localStorage.getItem('tabs'))
                     tabIdxData = await JSON.parse(localStorage.getItem('tabsIdx'))
                     cardsData = await JSON.parse(localStorage.getItem('cards'))
                 }
             } else { //fetch from db
                 console.log('not guestmode')
+                overwritten = true
                 tabData = await JSON.parse(localStorage.getItem(`[${user.id}]tabs`))
                 const storedTabIdx = await JSON.parse(localStorage.getItem(`[${user.id}]tabsIdx`))
                 if (storedTabIdx !== null) {
@@ -89,9 +92,10 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     cardsData[tab.id] = tab.Card
                 })
             }
-            if (tabData && tabData !== null) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
-            if (cardsData && cardsData !== null) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
-
+            if (overwritten) {
+                if (tabData && tabData !== null) dispatch({type: 'setTabs', payload: {tabs: tabData, currentTabIdx: tabIdxData}})
+                if (cardsData && cardsData !== null) cardsDispatch({type: 'setCards', payload: {cards: cardsData}}) 
+            }
 
             let settingsData = await localStorage.getItem('settings')
             settingsData = await JSON.parse(settingsData)
@@ -210,9 +214,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     return (
         <>
-        <div className={styles.toggleBtn}>
+        {/* <div className={styles.toggleBtn}>
             <button onClick={() => { setLoadingOverlay(!loadingOverlay) }}>toggle overlay</button>
-        </div>
+        </div> */}
         
         <div className={styles.loadingOverlayWrapper}>
             <LoadingOverlay show={loadingOverlay} darkMode={darkMode} />
