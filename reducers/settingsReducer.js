@@ -14,6 +14,11 @@ export const settingsReducer = (settings, action) => {
             layoutChangedSettings.layout = action.payload.layout
             return layoutChangedSettings
 
+        case 'toggleProgressBars':
+            const toggledProgressSettings = {...settings}
+            toggledProgressSettings.progress = !settings.progress
+            return toggledProgressSettings
+
         default:
             console.log('hit default')
             return settings

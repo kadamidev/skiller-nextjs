@@ -5,6 +5,7 @@ import { deleteCardRequest, deleteItemRequest, updateCardRequest,
         updateItemRequest, createItemRequest } from '../../lib/tasker_api_requests';
 import  {v4 as uuidv4 } from 'uuid'
 import queuedDbCall from '../../lib/queuedDbCall';
+import ProgressBar from './ProgressBar';
 
 
 
@@ -45,6 +46,16 @@ const Card = (props) => {
     //     if (finished) return
     // }
 
+    const [checkedCount, setCheckedCount] = useState(0)
+
+
+    useEffect(() => {
+        let count = 0
+        props.card.items.forEach((item) => {
+            if (item.checked) count++
+        })
+        setCheckedCount(count)
+    }, [])
 
 
 
@@ -139,6 +150,7 @@ const Card = (props) => {
     let cardClass = styles.cardContainer 
     if (props.darkMode)
         cardClass = [styles.cardContainer, styles.darkMode].join (" ")
+
         
     return (
         <>
@@ -176,11 +188,13 @@ const Card = (props) => {
                                         onClick={() =>  {
                                             props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
                                             if (!props.guestMode) handleItemToggle(item, false)
+                                            setCheckedCount(checkedCount - 1)
                                         }} />
                                         :
                                         <Image src='/img/app/unchecked.svg' width={16} height={16} index={index} onClick={() => {
                                             props.cardsDispatch({ type: 'toggleCardItem', payload: {tabid: props.tabid, idx: index, checked: item.checked, cardidx: props.cardidx} })
                                             if (!props.guestMode)  handleItemToggle(item, true)
+                                            setCheckedCount(checkedCount + 1)
                                         }} />
                                         }
                                     </div>
@@ -210,6 +224,9 @@ const Card = (props) => {
                         <Image src='/img/app/plus-item.svg' height={10} width={10}/>
                     </div>
                 </section>
+            </div>
+            <div className={styles.progressWrapper}>
+                <ProgressBar percent={checkedCount/props.card.items.length * 100} darkMode={props.darkMode} />
             </div>
         </>
     );

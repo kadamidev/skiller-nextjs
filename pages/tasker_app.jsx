@@ -211,12 +211,12 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
     const isDesktop = useMediaQuery('(min-width: 769px')
 
-
     return (
         <>
         {/* <div className={styles.toggleBtn}>
             <button onClick={() => { setLoadingOverlay(!loadingOverlay) }}>toggle overlay</button>
         </div> */}
+
         
         <div className={styles.loadingOverlayWrapper}>
             <LoadingOverlay show={loadingOverlay} darkMode={darkMode} />

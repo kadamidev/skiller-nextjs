@@ -3,7 +3,7 @@ import styles from '../styles/app/LoadingOverlay.module.scss'
 import Loader from './Loader';
 
 const LoadingOverlay = (props) => {
-    const containerClass = props.show ? styles.overlayContainer : styles.hide
+    const containerClass = props.show ? styles.overlayContainer : styles.loaderHide
     return (
         <div>
             <div className={props.darkMode ? [containerClass, styles.darkMode].join(" ") : containerClass}>

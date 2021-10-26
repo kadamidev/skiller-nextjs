@@ -2,5 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/tasker_app": "pages/tasker_app.js"
+  "/tasker_app": "pages/tasker_app.js",
+  "/api/tasker_app/item/update": "pages/api/tasker_app/item/update.js",
+  "/api/user/sessionLogin": "pages/api/user/sessionLogin.js",
+  "/api/tasker_app/tab": "pages/api/tasker_app/tab.js",
+  "/api/tasker_app/item/create": "pages/api/tasker_app/item/create.js",
+  "/api/tasker_app/item/delete": "pages/api/tasker_app/item/delete.js"
 }
