@@ -39,11 +39,12 @@ export async function getStaticProps() {
 const Tasker_app = ({ allTabsData, allCardsData }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
-    const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2 } )
+    const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2, progress: true } )
     
     const [loadingOverlay, setLoadingOverlay] = useState(true)
     const [guestMode, setGuestMode] = useState(true)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
+
 
 
     const [showLogin, setShowLogin] = useState(false)
@@ -241,7 +242,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                 <Image src="/img/app/settings.svg" width={30} height={30} layout="responsive" />
             </div>
             <div ref={firstRunSettings} className={showSettings ? styles.settingsPanelWrapper : styles.hideSettingsPanel}>
-                { <Settings toggleDarkMode={toggleDarkMode} darkMode={darkMode} layoutSetting={settings.layout} setLayoutSetting={(layout) => {settingsDispatch({type: 'setLayout', payload: {layout: layout}})} } /> }
+                { <Settings settingsState={settings} settingsDispatch={settingsDispatch} toggleDarkMode={toggleDarkMode} darkMode={darkMode}/> }
             </div>
 
             <div className={styles.newCardWrap} onClick={() => handleNewCardClick(currentTabId)}>
@@ -253,7 +254,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
                     {
                         cardsState[currentTabId] && cardsState[currentTabId].map((card, index) => {
                             return (
-                            <li key={card.id} className={styles.card}> <Card guestMode={guestMode} darkMode={darkMode} card={card} layoutSetting={settings.layout} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
+                            <li key={card.id} className={styles.card}> <Card guestMode={guestMode} darkMode={darkMode} card={card} settingsState={settings} layoutSetting={settings.layout} cardidx={index} cardsState={cardsState} cardsDispatch={cardsDispatch} tabid={currentTabId}/> </li>
                             )
                         })
                     }

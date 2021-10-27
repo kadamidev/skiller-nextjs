@@ -225,9 +225,11 @@ const Card = (props) => {
                     </div>
                 </section>
             </div>
+            { props.settingsState.progress &&
             <div className={styles.progressWrapper}>
                 <ProgressBar percent={checkedCount/props.card.items.length * 100} darkMode={props.darkMode} />
             </div>
+            }
         </>
     );
 }
