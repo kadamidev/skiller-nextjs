@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/tasker_app": "pages/tasker_app.js",
   "/api/user/sessionLogin": "pages/api/user/sessionLogin.js",
   "/api/tasker_app/tab": "pages/api/tasker_app/tab.js",
-  "/tasker_app": "pages/tasker_app.js",
   "/api/tasker_app/item/update": "pages/api/tasker_app/item/update.js"
 }

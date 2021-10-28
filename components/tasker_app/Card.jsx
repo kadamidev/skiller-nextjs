@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/app/Card.module.scss'
 import Image from 'next/image'
 import { deleteCardRequest, deleteItemRequest, updateCardRequest,
@@ -6,6 +6,7 @@ import { deleteCardRequest, deleteItemRequest, updateCardRequest,
 import  {v4 as uuidv4 } from 'uuid'
 import queuedDbCall from '../../lib/queuedDbCall';
 import ProgressBar from './ProgressBar';
+import TextareaAutosize from 'react-textarea-autosize'
 
 
 
@@ -69,29 +70,6 @@ const Card = (props) => {
         setEditHeader(!editHeader)
     } 
 
-
-    const textAreaGrandParent = useRef(null) //pointing to the ul with all the card items
-
-    // const handleTextareaResizeAll = () => { //setting the textarea size to fit the content
-    //     textAreaGrandParent.current.childNodes.forEach((li) => {
-    //         let textAreaNode = li.childNodes[2]
-    //         textAreaNode.style.height = `${textAreaNode.scrollHeight}px`
-    //     })
-
-    // }
-
-    const handleTextareaResize = (e) => { //increases the size of the text area as more text is added to fit
-        e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
-    }
-
-    useEffect(() => {
-        if (editItem) {
-            textAreaGrandParent.current.childNodes.forEach((li) => {
-                let textAreaNode = li.childNodes[2]
-                textAreaNode.style.height = `${textAreaNode.scrollHeight}px`
-            })
-        }
-    }, [editItem])
     
 
     function handleDeleteCardClick() {
@@ -176,7 +154,7 @@ const Card = (props) => {
 
                 </header>
                 <section className={styles.cardBody}>
-                    <ul ref={textAreaGrandParent}>
+                    <ul>
                         { props.card.items.map((item, index) => {
                             let pClass = !item.checked ? styles.itemText : [styles.itemText, styles.crossed].join(' ')
                             let textAreaClass = !item.checked ? styles.editText : [styles.editText, styles.crossed].join(" ")
@@ -199,19 +177,16 @@ const Card = (props) => {
                                         }
                                     </div>
                                     <p onClick={editItemToggle} className={!editItem ? pClass : styles.hide}>{item.text}</p>
-                                    <textarea className={editItem ? textAreaClass : styles.hide} type="text" 
-                                    // <textarea onInput={handleTextareaResize} styles={ { height = `${textAreaNode.scrollHeight}px`} } className={editItem ? textAreaClass : styles.hide} type="text" 
+                                    <TextareaAutosize className={editItem ? textAreaClass : styles.hide} type="text"
                                     onBlur={() => {
                                         editItemToggle()
                                         if (!props.guestMode) handleItemUpdate(item)
                                     }}
-                                    value={item.text} onChange={(e) => {
+                                    value={item.text}
+                                    onChange={(e) => {
                                         props.cardsDispatch({ type: 'editCardItem', payload: {idx: index, cardidx: props.cardidx, tabid: props.tabid, value: e.target.value} }) 
-                                        handleTextareaResize(e)
                                     }} 
-                                    />  {/*  remove that to revert */}
-                                    {/* onFocus={handleTextareaResizeAll}/> */}
-
+                                    />
 
                                     <div className={styles.deleteWrapper} onClick={() => handleDeleteItemClick(item)}>
                                         <Image src='/img/app/delete.svg' height={10} width={10}/>

@@ -127,6 +127,21 @@
                     }
                 }
 
+                .textAreaClass {
+                    background: none;
+                    color: #949494;
+                    width: 100%;
+                    height: 1em;
+                    resize: none;
+                    font-family: rubik;
+                    // border: 1px solid black;
+
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
                 .deleteWrapper {
                     display: none;
                 }
