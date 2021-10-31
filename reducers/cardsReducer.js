@@ -1,5 +1,5 @@
 import  {v4 as uuidv4 } from 'uuid'
-
+import { deleteCardRequest, deleteItemRequest } from '../lib/tasker_api_requests'
 
 export const cardsReducer = (cardsState, action) => {
     switch(action.type) {
@@ -19,9 +19,14 @@ export const cardsReducer = (cardsState, action) => {
             return newCards
 
         case 'updateCardId':
-            console.log(`entered updateItemId reducer`)
+            console.log(`entered updateCardId reducer`)
             const updatedCardsId = {...cardsState}
-            updatedCardsId[action.payload.tabid][action.payload.idx].id = action.payload.newid
+            if (updatedCardsId[action.payload.tabid][action.payload.idx]) {
+                updatedCardsId[action.payload.tabid][action.payload.idx].id = action.payload.newid
+            } else {
+                console.log(`card nolonger exists, deleting from db`)
+                deleteCardRequest({id: action.payload.newid})
+            }
             return updatedCardsId
 
         case 'updateItemId':
@@ -30,15 +35,19 @@ export const cardsReducer = (cardsState, action) => {
             console.log(`1 updateItemId payload: ${JSON.stringify(action.payload)}`)
             console.log(`2 state entering updateItemId: ${JSON.stringify(updatedItemIds[action.payload.tabid][action.payload.cardidx])}`)
             console.log(`3 itemidx ${action.payload.itemidx}`)
-
-            
             // console.log(`tabid: ${action.payload.tabid}`)
             // console.log(`cardidx: ${action.payload.cardidx}`)
             // console.log(`items(non payload): ${updatedItemIds[action.payload.tabid][action.payload.cardidx]['items']}`)
             // console.log(`itemidx: ${action.payload.itemidx}`)
             // console.log(`new dbid: ${action.payload.newid}`)
-
-            updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx].id = action.payload.newid
+            if (updatedItemIds[action.payload.tabid][action.payload.cardidx]) {
+                if (updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx]) {
+                    updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx].id = action.payload.newid
+                }
+            } else {
+                console.log(`item nolonger exists, deleting from db`)
+                deleteItemRequest({id: action.payload.newid})
+            }
             return updatedItemIds
 
 

@@ -1,4 +1,5 @@
 import  {v4 as uuidv4 } from 'uuid'
+import { deleteTabRequest } from '../lib/tasker_api_requests'
 
 
 export const tabsReducer = (tabsState, action) => {
@@ -12,11 +13,16 @@ export const tabsReducer = (tabsState, action) => {
                     currentTabIdx: tabsState.currentTabIdx}
 
         case 'updateTabId':
-            const updatedIdTabs = [...tabsState.tabs]
-            const updatedTab = {...tabsState.tabs[action.payload.newTabIdx]}
-            updatedTab.id = action.payload.tabDbId
-            updatedIdTabs[action.payload.newTabIdx] = updatedTab
-            return {tabs: updatedIdTabs, currentTabIdx: tabsState.currentTabIdx}
+            if (tabsState.tabs[action.payload.newTabIdx]) {
+                const updatedIdTabs = [...tabsState.tabs]
+                const updatedTab = {...tabsState.tabs[action.payload.newTabIdx]}
+                updatedTab.id = action.payload.tabDbId
+                updatedIdTabs[action.payload.newTabIdx] = updatedTab
+                return {tabs: updatedIdTabs, currentTabIdx: tabsState.currentTabIdx}
+            } else {
+                console.log(`tab deleted: ${tabsState.tabs[action.payload.newTabIdx]} deleting frmo db`)
+                deleteTabRequest({id: action.payload.tabDbId})
+            }
             
         case 'deleteTab':
             if (tabsState.tabs.length <= 1)  //can't delete a tab if it's the only one

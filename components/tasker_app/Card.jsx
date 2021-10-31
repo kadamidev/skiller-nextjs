@@ -120,7 +120,9 @@ const Card = (props) => {
             const newItemIndex = props.card.items.length.valueOf()
             const item = await createItemRequest(props.card.id, newItem)
             console.log(`db id returned: ${item.dbid}, snapshotted item index: ${newItemIndex}`)
-            props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
+            console.log(props.card.items[newItemIndex])
+                props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
+
         }
     }
 

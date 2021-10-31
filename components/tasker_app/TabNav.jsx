@@ -28,7 +28,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
     const [editNodeVisible, setEditNodeVisible] = useState(false)
 
     async function handleNewTabClick() {
-        const newTabIndex = tabsState.tabs.length
+        const newTabIndex = tabsState.tabs.length.valueOf()
         const newTab = {
             id: 'T' + uuidv4(),
             name: 'Untitled'
@@ -37,6 +37,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
         if (!guestMode) { //persist tab to db
         const tab = await createTabRequest(user_id)
         console.log(tab)
+
         dispatch({type: 'updateTabId', payload: {newTabIdx: newTabIndex, tabDbId: tab.dbid}})
         }
     }

@@ -14,7 +14,7 @@ import { useMediaQuery } from '../lib/useMediaQuery'
 // import { ReactQueryDevtools } from 'react-query-devtools'
 // import { useQuery, useMutation, queryCache } from 'react-query'
 import  {v4 as uuidv4 } from 'uuid'
-import { fetchTabsRequest, createCardRequest, createItemRequest, deleteCardRequest } from '../lib/tasker_api_requests'
+import { fetchTabsRequest, createCardRequest, createItemRequest, deleteCardRequest, deleteItemRequest } from '../lib/tasker_api_requests'
 import Dialog from '../components/Dialog'
 import UserPanel from '../components/UserPanel'
 import Login from '../components/Login'
@@ -194,8 +194,13 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId, card: newCard } })
         if (!guestMode) {
             const card = await createCardRequest(snapshotTabId, newCard)
+            // if (cardsState[snapshotTabId][newCardIndex]) { //checking if the new card still exists
             cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
             cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
+            // } else {
+            // deleteCardRequest({id: card.cardDbId})
+            // deleteItemRequest({id: card.itemDbId})
+            // }
         }
     }
 
