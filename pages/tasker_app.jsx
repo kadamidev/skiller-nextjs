@@ -176,11 +176,16 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         Cookies.remove('auth')
     }
     
+    const upToDateTabId = useRef()
+    upToDateTabId.current = tabsState.tabs[tabsState.currentTabIdx].id
+    
+
     async function handleNewCardClick(currentTabId) {
         let newCardIndex = 0
         if (cardsState[currentTabId]) newCardIndex = cardsState[currentTabId].length.valueOf()
         // const newCardIndex = cardsState[currentTabId].length
-        const snapshotTabId = tabsState.tabs[tabsState.currentTabIdx].id.valueOf()
+        const snapshotCurrentTabIdx = tabsState.currentTabIdx.valueOf()
+        const snapshotTabId = tabsState.tabs[tabsState.currentTabIdx].id
         const newItem = {
             id: 'T' + uuidv4(),
             checked: false,
@@ -193,15 +198,29 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         }
         cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId, card: newCard } })
         if (!guestMode) {
-            const card = await createCardRequest(snapshotTabId, newCard)
-            // if (cardsState[snapshotTabId][newCardIndex]) { //checking if the new card still exists
-            cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
-            cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
-            // } else {
-            // deleteCardRequest({id: card.cardDbId})
-            // deleteItemRequest({id: card.itemDbId})
-            // }
+            dbCardCreation(newCard, newCardIndex)
+            // const card = await createCardRequest(snapshotTabId, newCard)
+            // cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
+            // cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
         }
+    }
+
+    async function dbCardCreation(newCard, newCardIndex) {
+        console.log(`id is: ${JSON.stringify(upToDateTabId.current)}, entered func`)
+
+        if (upToDateTabId.current[0] == 'T') { // never updates, is never false, stuck in endless loop
+            console.log(`id is: ${JSON.stringify(upToDateTabId.current)}, recalling func`)
+
+            setTimeout(() => {
+                dbCardCreation(newCard, newCardIndex)
+            }, 500)
+            return
+        }
+        console.log(`id is: ${JSON.stringify(upToDateTabId.current)}, adding card to db`)
+        const card = await createCardRequest(upToDateTabId.current, newCard)
+        cardsDispatch({type: 'updateCardId', payload: { tabid: upToDateTabId.current, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
+        cardsDispatch({type: 'updateItemId', payload: { tabid: upToDateTabId.current, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
+
     }
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id
@@ -232,7 +251,7 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         </div>
         <div className={styles.container}>
             <nav ref={firstRunTabs} className={styles.tabs}>
-                <TabNav guestMode={guestMode} user_id={user.id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch}/>
+                <TabNav guestMode={guestMode} user_id={user.id} darkMode={darkMode} tabsState={tabsState} dispatch={dispatch} cardsDispatch={cardsDispatch}/>
             </nav>
 
             <aside className={styles.sideNavWrapper}>

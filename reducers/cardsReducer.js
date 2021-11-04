@@ -18,8 +18,18 @@ export const cardsReducer = (cardsState, action) => {
             newCards[action.payload.tabid] = [...newCards[action.payload.tabid], action.payload.card]
             return newCards
 
+        case 'updateCardTabId':
+
+            const updatedCardsTabId = {...cardsState}
+            updatedCardsTabId[action.payload.newId] = updatedCardsTabId[action.payload.oldId]
+            delete updatedCardsTabId[action.payload.oldId]
+            
+            return updatedCardsTabId
+
+
         case 'updateCardId':
-            console.log(`entered updateCardId reducer`)
+            console.log(`entered updateCardId reducer tabid: ${action.payload.tabid} idx:${action.payload.idx} dbid:${action.payload.newid}`)
+            console.log(`current cardState: ${JSON.stringify(cardsState[action.payload.tabid])}`)
             const updatedCardsId = {...cardsState}
             if (updatedCardsId[action.payload.tabid][action.payload.idx]) {
                 updatedCardsId[action.payload.tabid][action.payload.idx].id = action.payload.newid
@@ -31,23 +41,16 @@ export const cardsReducer = (cardsState, action) => {
 
         case 'updateItemId':
             const updatedItemIds = {...cardsState}
-
-            console.log(`1 updateItemId payload: ${JSON.stringify(action.payload)}`)
-            console.log(`2 state entering updateItemId: ${JSON.stringify(updatedItemIds[action.payload.tabid][action.payload.cardidx])}`)
-            console.log(`3 itemidx ${action.payload.itemidx}`)
-            // console.log(`tabid: ${action.payload.tabid}`)
-            // console.log(`cardidx: ${action.payload.cardidx}`)
-            // console.log(`items(non payload): ${updatedItemIds[action.payload.tabid][action.payload.cardidx]['items']}`)
-            // console.log(`itemidx: ${action.payload.itemidx}`)
-            // console.log(`new dbid: ${action.payload.newid}`)
-            if (updatedItemIds[action.payload.tabid][action.payload.cardidx]) {
-                if (updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx]) {
+            // console.log(`does the card still exist?: ${JSON.stringify(cardsState[action.payload.tabid][action.payload.cardidx])}`)
+            // console.log(`does the item still exist?: ${JSON.stringify(cardsState[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx])}`)
+            // console.log(`${JSON.stringify(action.payload)}`)
+            if (cardsState[action.payload.tabid][action.payload.cardidx]) { //does the card still exist
+                if (cardsState[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx]) { //does the item still exist
                     updatedItemIds[action.payload.tabid][action.payload.cardidx]['items'][action.payload.itemidx].id = action.payload.newid
+                } else {
+                    deleteItemRequest({id: action.payload.newid})
                 }
-            } else {
-                console.log(`item nolonger exists, deleting from db`)
-                deleteItemRequest({id: action.payload.newid})
-            }
+            } 
             return updatedItemIds
 
 

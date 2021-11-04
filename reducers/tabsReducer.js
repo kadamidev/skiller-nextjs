@@ -15,9 +15,11 @@ export const tabsReducer = (tabsState, action) => {
         case 'updateTabId':
             if (tabsState.tabs[action.payload.newTabIdx]) {
                 const updatedIdTabs = [...tabsState.tabs]
+                // updatedIdTabs[action.payload.newTabIdx].id = action.payload.tabDbId
                 const updatedTab = {...tabsState.tabs[action.payload.newTabIdx]}
                 updatedTab.id = action.payload.tabDbId
                 updatedIdTabs[action.payload.newTabIdx] = updatedTab
+                console.log(`new tab id updated to: ${action.payload.tabDbId}`)
                 return {tabs: updatedIdTabs, currentTabIdx: tabsState.currentTabIdx}
             } else {
                 console.log(`tab deleted: ${tabsState.tabs[action.payload.newTabIdx]} deleting frmo db`)

@@ -10,7 +10,7 @@ import queuedDbCall from '../../lib/queuedDbCall';
 
 
 
-const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
+const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch, cardsDispatch}) => {
 
     const [tabEdit, setTabEdit] = useState(false)
     const [editableTabIdx, setEditableTabIdx] = useState(false)
@@ -39,6 +39,7 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch}) => {
         console.log(tab)
 
         dispatch({type: 'updateTabId', payload: {newTabIdx: newTabIndex, tabDbId: tab.dbid}})
+        cardsDispatch({type: 'updateCardTabId', payload: {oldId: newTab.id, newId: tab.dbid}})
         }
     }
 

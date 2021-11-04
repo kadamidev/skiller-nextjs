@@ -115,16 +115,26 @@ const Card = (props) => {
             checked: false,
             text:'' 
         }
+        const newItemIndex = props.card.items.length.valueOf()
         props.cardsDispatch({type: 'newCardItem', payload: {id: props.card.id, tabid: props.tabid, cardidx: props.cardidx, newItem: newItem} })
         if (!props.guestMode) {
-            const newItemIndex = props.card.items.length.valueOf()
-            const item = await createItemRequest(props.card.id, newItem)
-            console.log(`db id returned: ${item.dbid}, snapshotted item index: ${newItemIndex}`)
-            console.log(props.card.items[newItemIndex])
-                props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
-
+            dbItemCreation(newItem, newItemIndex)
         }
     }
+
+    async function dbItemCreation(newItem, newItemIndex) {
+        if (props.card.id[0] == 'T') {
+            console.log(`id is: ${props.card.id}, recalling func`)
+            setTimeout(() => {
+                dbItemCreation(newItem, newItemIndex)
+            }, 500)
+            return
+        }
+        console.log(`id is: ${props.card.id}, adding item to db`)
+        const item = await createItemRequest(props.card.id, newItem) //queue this part
+        props.cardsDispatch({type: 'updateItemId', payload: { tabid: props.tabid, cardidx: props.cardidx, itemidx: newItemIndex, newid: item.dbid }})
+    }
+
 
     
     let cardClass = styles.cardContainer 
