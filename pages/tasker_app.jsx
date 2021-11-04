@@ -183,9 +183,6 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     async function handleNewCardClick(currentTabId) {
         let newCardIndex = 0
         if (cardsState[currentTabId]) newCardIndex = cardsState[currentTabId].length.valueOf()
-        // const newCardIndex = cardsState[currentTabId].length
-        const snapshotCurrentTabIdx = tabsState.currentTabIdx.valueOf()
-        const snapshotTabId = tabsState.tabs[tabsState.currentTabIdx].id
         const newItem = {
             id: 'T' + uuidv4(),
             checked: false,
@@ -199,9 +196,6 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         cardsDispatch({ type: 'addNewCard', payload: { tabid: currentTabId, card: newCard } })
         if (!guestMode) {
             dbCardCreation(newCard, newCardIndex)
-            // const card = await createCardRequest(snapshotTabId, newCard)
-            // cardsDispatch({type: 'updateCardId', payload: { tabid: snapshotTabId, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
-            // cardsDispatch({type: 'updateItemId', payload: { tabid: snapshotTabId, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
         }
     }
 
