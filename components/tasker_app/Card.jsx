@@ -56,7 +56,7 @@ const Card = (props) => {
             if (item.checked) count++
         })
         setCheckedCount(count)
-    }, [])
+    }, [props.card.items])
 
 
 

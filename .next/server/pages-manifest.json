@@ -2,9 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/api/user/sessionLogin": "pages/api/user/sessionLogin.js",
   "/tasker_app": "pages/tasker_app.js",
-  "/api/tasker_app/tab": "pages/api/tasker_app/tab.js",
-  "/api/tasker_app/tab/create": "pages/api/tasker_app/tab/create.js"
+  "/": "pages/index.js",
+  "/api/tasker_app/item/create": "pages/api/tasker_app/item/create.js",
+  "/api/tasker_app/item/delete": "pages/api/tasker_app/item/delete.js"
 }
