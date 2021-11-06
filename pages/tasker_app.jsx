@@ -214,7 +214,6 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         const card = await createCardRequest(upToDateTabId.current, newCard)
         cardsDispatch({type: 'updateCardId', payload: { tabid: upToDateTabId.current, idx: newCardIndex, newid: card.cardDbId }}) //update id after db returns
         cardsDispatch({type: 'updateItemId', payload: { tabid: upToDateTabId.current, cardidx: newCardIndex, itemidx: 0, newid: card.itemDbId }})  //update id after db returns
-
     }
 
     const currentTabId = tabsState.tabs[tabsState.currentTabIdx].id

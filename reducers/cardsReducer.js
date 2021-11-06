@@ -21,9 +21,11 @@ export const cardsReducer = (cardsState, action) => {
         case 'updateCardTabId':
 
             const updatedCardsTabId = {...cardsState}
+            console.log(`[updateCardTabId]payload: ${JSON.stringify(action.payload)}`)
             updatedCardsTabId[action.payload.newId] = updatedCardsTabId[action.payload.oldId]
             delete updatedCardsTabId[action.payload.oldId]
-            
+            console.log(`[updateCardTabId]current cardState: ${JSON.stringify(updatedCardsTabId[action.payload.newId])}`)
+            console.log('[updateCardTabId]card Tab Id updated finished')
             return updatedCardsTabId
 
 

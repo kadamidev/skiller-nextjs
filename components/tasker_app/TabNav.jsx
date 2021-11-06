@@ -35,11 +35,12 @@ const TabNav = ({guestMode, user_id, darkMode, tabsState, dispatch, cardsDispatc
         }
         dispatch({type: 'addNewTab', payload: {tab: newTab}}) //optimistically add a new tab
         if (!guestMode) { //persist tab to db
+        const tempIdSnapshot = newTab.id.valueOf()
         const tab = await createTabRequest(user_id)
         console.log(tab)
 
         dispatch({type: 'updateTabId', payload: {newTabIdx: newTabIndex, tabDbId: tab.dbid}})
-        cardsDispatch({type: 'updateCardTabId', payload: {oldId: newTab.id, newId: tab.dbid}})
+        cardsDispatch({type: 'updateCardTabId', payload: {oldId: tempIdSnapshot, newId: tab.dbid}})
         }
     }
 
