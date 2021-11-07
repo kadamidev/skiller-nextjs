@@ -36,15 +36,13 @@ export async function getStaticProps() {
   }
 
 
-const Tasker_app = ({ allTabsData, allCardsData }) => {
+const Tasker_app = ({ allTabsData, allCardsData, loader }) => {
     const [tabsState, dispatch] = useReducer(tabsReducer, { tabs: allTabsData, currentTabIdx: 0  })
     const [cardsState, cardsDispatch] = useReducer(cardsReducer, {1: allCardsData})
     const [settings, settingsDispatch] = useReducer(settingsReducer, { darkMode: false, layout: 2, progress: true } )
     
-    const [loadingOverlay, setLoadingOverlay] = useState(true)
     const [guestMode, setGuestMode] = useState(true)
     const [showGuestDialog, setShowGuestDialog] = useState(true)
-
 
 
     const [showLogin, setShowLogin] = useState(false)
@@ -60,12 +58,17 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
     }
 
     const [user, setUser] = useState({username: 'guest', id: 0})
-    // const user_id = 1 //change this to update when user is set
     
+    const firstRun = useRef(true)
     useEffect(() => { //Load data
         const getData = async () => {
-            setLoadingOverlay(true)
-            if (Cookies.get('auth')) sessionLogin()
+            loader.setLoading(true)
+            const auth = await Cookies.get('auth')
+            if (auth) {
+                sessionLogin()
+            } else {
+                loader.setLoading(false)
+            }
             let tabData = null
             let tabIdxData = 0
             let cardsData = {}
@@ -101,7 +104,14 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
             let settingsData = await localStorage.getItem('settings')
             settingsData = await JSON.parse(settingsData)
             if (settingsData) settingsDispatch({type: 'setSettings', payload: {settings: settingsData}})
-            setLoadingOverlay(false)
+
+
+            if (firstRun.current == true) {
+                firstRun.current = false
+            } else {
+                loader.setLoading(false)
+            }
+        
         }
         getData()
     }, [guestMode])
@@ -171,9 +181,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
         localStorage.removeItem(`[${user.id}]tabs`)
         localStorage.removeItem(`[${user.id}]tabsIdx`)
 
+        Cookies.remove('auth')
         setUser({username: 'guest', id: 0})
         setGuestMode(true)
-        Cookies.remove('auth')
     }
     
     const upToDateTabId = useRef()
@@ -237,8 +247,9 @@ const Tasker_app = ({ allTabsData, allCardsData }) => {
 
         
         <div className={styles.loadingOverlayWrapper}>
-            <LoadingOverlay show={loadingOverlay} darkMode={darkMode} />
+            <LoadingOverlay show={loader.loading} darkMode={darkMode} />
         </div>
+
 
         <div className={darkMode ? [styles.bkgContainer, styles.darkMode].join(" ") : styles.bkgContainer}>
         </div>

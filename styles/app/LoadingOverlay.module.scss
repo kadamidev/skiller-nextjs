@@ -9,13 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-
-    // .loaderWrapper {
-    // }
 }
 
 .loaderHide {
+    // display: none;
     opacity: 0%;
     backdrop-filter: blur(0px);
     transition: 0.5s ease-out;
@@ -28,21 +25,6 @@
     align-items: center;
 }
 
-.overlayContainer {
-    opacity: 100%;
-    backdrop-filter: blur(50px);
-    transition: 0.5s ease-in;
-    width: 100vw;
-    height: 100vh;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-
-    // .loaderWrapper {
-    // }
-}
 
 
 .darkMode {

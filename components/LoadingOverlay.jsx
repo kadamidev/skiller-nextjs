@@ -8,7 +8,7 @@ const LoadingOverlay = (props) => {
         <div>
             <div className={props.darkMode ? [containerClass, styles.darkMode].join(" ") : containerClass}>
                 <div className={styles.loaderWrapper}>
-                    <Loader/>
+                    <Loader />
                 </div>
             </div>
         </div>
