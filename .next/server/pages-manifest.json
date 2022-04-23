@@ -1,9 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/tasker_app": "pages/tasker_app.js",
-  "/menu": "pages/menu.js",
-  "/api/user/sessionLogin": "pages/api/user/sessionLogin.js",
-  "/api/tasker_app/tab": "pages/api/tasker_app/tab.js"
+  "/_document": "pages/_document.js"
 }
