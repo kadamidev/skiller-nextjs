@@ -1,34 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Skiller
 
-## Getting Started
+A productivity app(glorified note taking app) made using Javascript/NextJS/React/Sass for the frontend and NextAPI/Prisma 2 ORM, Postgresql for the backend.
 
-First, run the development server:
+<a href="https://skiller-nextjs.herokuapp.com/">![Demo](https://img.shields.io/badge/-Live_Demo-4E4E4E?style=for-the-badge&logo=heroku)
+</a>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Functionality
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Responsive across Mobile/web/tablets
+- Landing page
+- Create multiple tabs
+- Create lists within tabs
+- Guest Mode (local persistence)
+- Progress Bars for lists
+- Settings to configure darkmode, display options
+- Auth/Sign in option for persistence across devices
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Considerations/Things I would of done differently
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- In hindsight I should of used a data fetching solution like react-query or useSWR to handle fetching/caching and updating data, for learnings sake I reinvented the wheel and while authed this can sometimes lead to bugs if actions are taken too quickly and the local/db ids become out of sync, these libraries handle those edgecases wholey.
+- I should of used redux for state management in this project from the start, instead I started with regular react state hooks, then changed to reacts reducer hook later on, redux would've been optimal in this project.
